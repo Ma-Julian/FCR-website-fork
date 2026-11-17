@@ -1,0 +1,114 @@
+/* Intro: a fixed dusk world (same in light and dark themes) with a responsive text layer on top. */
+.intro {
+  position: relative;
+  height: 100svh;
+  min-height: 560px;
+  max-height: 1100px;
+  overflow: hidden;
+  background: #0A1430;
+  color: #FFFFFF;
+  isolation: isolate;
+}
+
+/* ---------- scene (scaled to cover by intro.js) ---------- */
+.intro-scene { position: absolute; left: 0; top: 0; width: 1440px; height: 810px; transform-origin: 0 0; overflow: hidden; }
+.intro-sky { position: absolute; inset: 0; background: linear-gradient(180deg, #0A1430 0%, #1E2D55 18%, #4A4470 30%, #B8706E 37%, #EBA56C 41.4%, #F4C99A 42%, #3E5872 42.1%, #24394F 55%, #0E1B2C 100%); }
+.intro-glow { position: absolute; left: 0; right: 0; top: 30%; height: 24%; background: radial-gradient(ellipse 38% 60% at 50% 50%, rgba(255, 214, 160, .55), rgba(255, 180, 120, 0) 70%); }
+.intro-hills { position: absolute; }
+.intro-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, transparent 35%, rgba(5, 10, 22, .55) 100%); pointer-events: none; }
+
+.br-cam { position: absolute; inset: 0; perspective: 700px; perspective-origin: 50% 42%; }
+.br-world { position: absolute; left: 50%; top: 42%; transform-style: preserve-3d; }
+.br-world > *, .br-features, .br-carrier, .br-run, .br-gantry { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
+.br-plane { position: absolute; left: 0; top: 0; height: 8000px; transform-origin: 50% 0; }
+.br-dash { background-image: repeating-linear-gradient(180deg, #EDE4CC 0 200px, transparent 200px 600px); }
+.br-cables { position: absolute; left: 0; top: 0; pointer-events: none; }
+/* A project lane: a camera-fixed window holding the haze, with the lane strip sliding inside it. */
+.br-run-fog { position: absolute; left: 0; top: 0; overflow: hidden; transform-origin: 50% 0; }
+.br-run-strip { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; }
+.br-run-tint { position: absolute; left: 2px; top: 0; height: 100%; }
+.br-run-line { position: absolute; top: 0; width: 14px; height: 100%; background: linear-gradient(90deg, #EDE4CC 0 5px, transparent 5px 9px, #EDE4CC 9px 14px); }
+.br-girder { position: absolute; left: 0; top: 0; width: 8000px; height: 58px; transform-origin: 0 0; background: linear-gradient(180deg, #D04A3C 0 5px, #A42E25 5px 30px, #8A251F 30px 34px, #A42E25 34px 52px, #6F1E19 52px 58px); }
+/* Distance haze: intro's bridge-world.js sets --fog per moving carrier; only flat leaves take it. */
+.br-tower, .br-post, .br-beam, .br-sign { opacity: var(--fog, 1); }
+
+.br-tower { position: absolute; left: -364px; top: -1100px; width: 728px; height: 1500px; }
+.br-leg { position: absolute; top: 0; width: 78px; height: 1500px; clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); }
+.br-leg-l { left: 0; background: linear-gradient(90deg, #8A251F 0 18%, #B9372C 18% 42%, #92271F 42% 50%, #B9372C 50% 74%, #C9443A 74% 100%); }
+.br-leg-r { right: 0; background: linear-gradient(90deg, #C9443A 0 26%, #B9372C 26% 50%, #92271F 50% 58%, #B9372C 58% 82%, #8A251F 82% 100%); }
+.br-saddle { position: absolute; top: -52px; width: 70px; height: 56px; border-radius: 30px 30px 4px 4px; background: linear-gradient(90deg, #7E221C 0%, #C4392D 45%, #A42E25 100%); }
+.br-strut { position: absolute; left: 68px; right: 68px; background: linear-gradient(180deg, #B9372C 0 70%, #8A251F 70% 100%); }
+
+.br-post { position: absolute; top: -196px; width: 10px; height: 296px; background: linear-gradient(90deg, #5E6876, #9AA4B2 50%, #6B7584); }
+.br-beam { position: absolute; left: -318px; width: 636px; background: linear-gradient(180deg, #A8B1BE, #6B7584); }
+.br-sign { position: absolute; top: -166px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: #00673E; color: #FFFFFF; border-radius: 8px; box-shadow: inset 0 0 0 3px #00673E, inset 0 0 0 5px #FFFFFF; font-family: var(--font-sign); }
+.br-lane-sign { width: 108px; height: 124px; }
+.br-band { padding: 8px 6px 5px; font-size: 17px; line-height: 1; font-weight: 800; text-align: center; white-space: nowrap; }
+.br-lane-sign .br-line { padding: 5px 6px 0; text-align: center; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.br-lane-sign .br-ar { align-self: center; margin-top: 2px; }
+.br-exit-sign { left: 112px; width: 206px; height: 118px; }
+.br-tab { align-self: flex-end; margin: 7px 8px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .06em; border: 2px solid #FFFFFF; border-radius: 4px; padding: 1px 6px 0; }
+.br-name { padding: 0 12px; font-size: 30px; line-height: 1; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; }
+.br-exit-sign .br-line { padding: 4px 12px 0; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.br-ar-exit { position: absolute; right: 10px; bottom: 8px; }
+
+/* ---------- text layer ---------- */
+.intro-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.intro-layer > * { pointer-events: auto; }
+.intro-dim { position: absolute; inset: 0; background: rgba(8, 14, 30, .45); opacity: 0; pointer-events: none; }
+.intro-titles {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.1rem;
+  text-align: center; padding-inline: max(20px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-right, 0px));
+}
+.intro-titles h1 { margin: 0; font-size: clamp(2.6rem, 7.2vw, 6rem); line-height: 1; font-weight: 900; letter-spacing: -.03em; text-wrap: balance; }
+.intro-titles h1 span { display: block; }
+.intro-titles p { margin: .4rem 0 0; max-width: 46rem; font-size: clamp(1.05rem, 1.7vw, 1.4rem); line-height: 1.45; font-weight: 500; color: #E7ECF5; text-wrap: balance; }
+.intro-titles p strong { color: #F05F36; font-weight: 800; font-size: 1.25em; white-space: nowrap; }
+/* The small line under the subhead that tells FCR's own times from end-to-end bridge time. */
+.intro-titles p.intro-fine { margin: -.35rem 0 0; max-width: 40rem; font-size: clamp(.85rem, 1.05vw, 1rem); line-height: 1.5; color: #B9C3D6; }
+.intro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1rem; }
+
+.intro-counter {
+  position: absolute; left: 0; right: 0; bottom: clamp(48px, 9vh, 80px); display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  font-variant-numeric: tabular-nums; text-shadow: 0 2px 24px rgba(5, 10, 22, .6); opacity: 0; pointer-events: none;
+}
+.intro-counter .num-row { display: flex; align-items: baseline; gap: .9rem; }
+.intro-counter .num { font-size: clamp(6rem, 13vw, 10.5rem); line-height: .9; font-weight: 900; letter-spacing: -.04em; min-width: 2ch; text-align: right; }
+.intro-counter .unit { font-size: clamp(1.8rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -.02em; }
+.intro-counter .label { font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: 500; color: #E7ECF5; padding: .35rem 1rem; border-radius: 999px; }
+.intro-counter .label.is-done { font-weight: 700; color: #0B1630; background: #F05F36; text-shadow: none; animation: intro-pop .35s ease-out; }
+
+.intro-foot { position: absolute; left: 0; right: 0; bottom: max(16px, env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; align-items: center; gap: 12px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); opacity: 0; }
+/* The text, then the arrow centred under it. */
+.intro-next { display: inline-flex; flex-direction: column; align-items: center; gap: .3rem; padding-block: 6px; min-height: 44px; color: #FFFFFF; font-weight: 700; text-decoration: none; }
+.intro-next:hover { color: #F05F36; }
+
+/* ---------- the sequence (classes set by intro.js) ---------- */
+@keyframes intro-black { from { opacity: 1 } to { opacity: 0 } }
+@keyframes intro-in { from { opacity: 0 } to { opacity: 1 } }
+@keyframes intro-reveal { from { opacity: 0; transform: scale(1.12); filter: blur(10px) } to { opacity: 1; transform: none; filter: none } }
+@keyframes intro-count-in { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
+@keyframes intro-count-out { to { opacity: 0; transform: scale(.92); filter: blur(6px) } }
+@keyframes intro-pop { 0% { transform: scale(1) } 40% { transform: scale(1.08) } 100% { transform: scale(1) } }
+
+/* Starts black so the tagline does not flash before the sequence; a <noscript> rule removes it without JS. */
+.intro-black { position: absolute; inset: 0; z-index: 3; background: #050A16; pointer-events: none; }
+.intro.is-still .intro-black { opacity: 0; }
+.intro.is-playing .intro-black { animation: intro-black .5s ease-out forwards; }
+.intro.is-playing .intro-counter { animation: intro-count-in .3s ease-out .25s both, intro-count-out .35s ease-in 2.35s forwards; }
+.intro.is-playing .intro-dim { animation: intro-in .5s ease-out 2.3s both; }
+.intro.is-playing .reveal-1 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.55s both; }
+.intro.is-playing .reveal-2 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.8s both; }
+.intro.is-playing .reveal-3 { animation: intro-in .6s ease-out 3.15s both; }
+.intro.is-playing .intro-foot { animation: intro-in .6s ease-out 3.4s both; }
+.intro.is-paused * { animation-play-state: paused !important; }
+.intro.is-still .intro-dim, .intro.is-still .intro-foot { opacity: 1; }
+.intro.is-still .intro-counter { display: none; }
+/* Without JS (or before it runs) the tagline is simply there. */
+.intro:not(.is-playing):not(.is-still) .intro-counter { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro * { animation: none !important; }
+  .intro-dim, .intro-foot { opacity: 1; }
+  .intro.is-still .intro-black { opacity: 0; }
+}

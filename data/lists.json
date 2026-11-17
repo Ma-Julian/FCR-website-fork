@@ -1,0 +1,6 @@
+{
+  "chains": ["Base", "Arbitrum One", "OP Mainnet", "Linea", "Scroll", "ZKsync Era", "Starknet", "Unichain", "Ink", "Taiko", "Mantle", "Celo", "Polygon PoS", "Ronin", "MegaETH", "Gnosis Chain", "BOB", "Fraxtal", "Manta Pacific", "Plume", "Metis", "Zora", "Mode", "World Chain", "Soneium", "Robinhood Chain", "X Layer", "Katana", "Lighter", "Aztec", "Metal", "Hemi", "Paradex", "Morph", "Arbitrum Nova", "ADI Chain"],
+  "bridges": ["Across", "LayerZero", "Wormhole", "Hyperlane", "Chainlink CCIP", "Axelar", "Circle CCTP", "deBridge", "Stargate", "Relay", "Socket", "Connext"],
+  "issuance": ["Ethereum", "Ethereum and Chainlink", "Ethereum and LayerZero", "Ethereum and Wormhole", "Ethereum and Axelar", "Ethereum and Hyperlane"],
+  "venues": ["Across", "UniswapX", "1inch Fusion+", "deBridge", "Relay", "Mayan", "Everclear"]
+}

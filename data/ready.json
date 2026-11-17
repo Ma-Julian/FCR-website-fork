@@ -1,0 +1,114 @@
+{
+  "checkedOn": "2026-11-03",
+  "clients": [
+    {
+      "name": "Lighthouse",
+      "status": "shipped",
+      "detail": "v8.3.0+",
+      "flag": "--enable-fast-confirmation",
+      "release": {
+        "version": "v8.3.0",
+        "date": "2026-10-19",
+        "url": "https://github.com/sigp/lighthouse/releases/tag/v8.3.0"
+      },
+      "enable": "--enable-fast-confirmation",
+      "note": "Off by default: turn it on with the flag on the beacon node."
+    },
+    {
+      "name": "Prysm",
+      "status": "shipped",
+      "detail": "v7.2.0+",
+      "flag": "--enable-fast-confirmation",
+      "release": {
+        "version": "v7.2.0",
+        "date": "2026-09-25",
+        "url": "https://github.com/OffchainLabs/prysm/releases/tag/v7.2.0"
+      },
+      "enable": "--enable-fast-confirmation",
+      "note": "If the confirmed block is unavailable, safe falls back to justified, not finalized."
+    },
+    {
+      "name": "Nimbus",
+      "status": "shipped",
+      "detail": "v26.6.0+, on by default",
+      "release": {
+        "version": "v26.6.0",
+        "date": "2026-06-22",
+        "url": "https://github.com/status-im/nimbus-eth2/releases/tag/v26.6.0"
+      },
+      "enable": null,
+      "note": "From this release, safe follows FCR with no flag."
+    },
+    {
+      "name": "Lodestar",
+      "status": "shipped",
+      "detail": "v1.44.0+",
+      "flag": "--chain.fastConfirmation",
+      "release": {
+        "version": "v1.44.0",
+        "date": "2026-07-01",
+        "url": "https://github.com/ChainSafe/lodestar/releases/tag/v1.44.0"
+      },
+      "enable": "--chain.fastConfirmation",
+      "note": "No longer experimental. Off by default: turn it on with the flag."
+    },
+    {
+      "name": "Teku",
+      "status": "experimental",
+      "detail": "v26.9.0+, hidden flag",
+      "flag": "--Xfast-confirmation-enabled",
+      "release": {
+        "version": "26.9.0",
+        "url": "https://github.com/Consensys/teku/releases/tag/26.9.0"
+      },
+      "enable": "--Xfast-confirmation-enabled",
+      "note": "Hidden, experimental flag, off by default. Not in the changelog."
+    },
+    {
+      "name": "Grandine",
+      "status": "none",
+      "detail": "No FCR implementation"
+    }
+  ],
+  "users": [
+    {
+      "id": "gnosis",
+      "name": "Gnosis Chain",
+      "status": "live",
+      "detail": "Since 7 Oct 2026, its bridges wait for FCR instead of finality (~13 min)"
+    },
+    {
+      "id": "chainlink",
+      "name": "Chainlink CCIP",
+      "status": "testnet",
+      "detail": "Live on testnet in CCIP 2.0; mainnet lanes come next"
+    }
+  ],
+  "rpc": [],
+  "proof": [
+    {
+      "label": "Research paper",
+      "detail": "The rule and its safety argument",
+      "url": "https://arxiv.org/abs/2405.00549",
+      "icon": "paper"
+    },
+    {
+      "label": "Lean 4 safety proof",
+      "detail": "Formally verified under its assumptions",
+      "url": "https://github.com/fradamt/verified-fast-confirmation",
+      "icon": "proof"
+    },
+    {
+      "label": "EF bug bounty",
+      "detail": "FCR is in scope",
+      "url": "https://ethereum.org/bug-bounty/",
+      "icon": "bounty"
+    },
+    {
+      "label": "One-year backtest",
+      "detail": "0 false confirmations in 2.56M mainnet slots",
+      "url": "https://ethpandaops.io/posts/fcr-simulator/",
+      "icon": "backtest"
+    }
+  ]
+}

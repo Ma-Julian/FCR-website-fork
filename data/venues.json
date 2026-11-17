@@ -1,0 +1,81 @@
+{
+  "checkedOn": "2026-10-22",
+  "note": "How fillers on each venue wait for a deposit on Ethereum today. 'fill': a filler pays out on another chain before the Ethereum deposit is final. 'single-chain': orders settle on one chain. 'settlement': a clearing layer, not a fill venue. Waits come from each venue's reference code or docs; none reads Ethereum's safe block.",
+  "venues": [
+    {
+      "name": "Across",
+      "kind": "fill",
+      "win": "The first relayer to fill wins the order.",
+      "tiers": [
+        {
+          "upToUsd": 100,
+          "blocks": 2
+        },
+        {
+          "upToUsd": 1000,
+          "blocks": 4
+        },
+        {
+          "upToUsd": 10000,
+          "blocks": 32
+        },
+        {
+          "upToUsd": null,
+          "blocks": 33
+        }
+      ],
+      "config": "MIN_DEPOSIT_CONFIRMATIONS",
+      "repaid": "Repaid from HubPool bundles after a 30 minute challenge period; inventory moves over the canonical bridges.",
+      "source": "Across relayer, src/common/Constants.ts",
+      "sourceUrl": "https://github.com/across-protocol/relayer/blob/9322e808dd68814f5431c4f53a696fe99f4b0efe/src/common/Constants.ts#L126-L174"
+    },
+    {
+      "name": "deBridge",
+      "kind": "fill",
+      "win": "The first taker to fulfill the order wins it.",
+      "blocks": 12,
+      "config": "requiredConfirmationsThresholds",
+      "repaid": "Unlocked on Ethereum after deBridge validators confirm the fill, typically within a few hours.",
+      "source": "dln-taker, src/config.ts (reference taker default)",
+      "sourceUrl": "https://github.com/debridge-finance/dln-taker/blob/762f30afdd07839bc40258275248b877b16532b5/src/config.ts#L27-L38"
+    },
+    {
+      "name": "1inch Fusion+",
+      "kind": "fill",
+      "win": "Whitelisted resolvers bid in a Dutch auction.",
+      "seconds": 24,
+      "repaid": "Withdrawn from the Ethereum escrow once the finality lock and the secret are out.",
+      "source": "Finality lock on all 99 Ethereum escrows created 21–22 Oct 2026",
+      "sourceUrl": "https://github.com/1inch/cross-chain-sdk/blob/b2b72a173de7922004cc3171b94a56a8eed30aa9/src/domains/time-locks/src-time-locks.ts"
+    },
+    {
+      "name": "Relay",
+      "kind": "fill",
+      "win": "Solvers fill right away, with no auction window.",
+      "repaid": "Relay’s oracle credits an Ethereum deposit after 10 blocks and 60 seconds.",
+      "source": "Relay oracle config (solver waits are not published)",
+      "sourceUrl": "https://github.com/relayprotocol/relay-protocol-oracle/blob/55b22de6358c212c22eebb48d2df5b793a16e863/configs/chains.mainnets.prod.json"
+    },
+    {
+      "name": "Mayan",
+      "kind": "fill",
+      "win": "Drivers bid in an auction on Solana; the best offer wins.",
+      "repaid": "Unlocked after Wormhole attests the Ethereum deposit.",
+      "source": "Mayan docs (driver waits are not published)",
+      "sourceUrl": "https://docs.mayan.finance/"
+    },
+    {
+      "name": "Everclear",
+      "kind": "settlement",
+      "repaid": "Settles in batches over its own Hyperlane deployment; how long it waits on Ethereum is not published.",
+      "source": "Everclear contracts (its own Hyperlane mailbox on Ethereum, read on-chain 3 Nov 2026)",
+      "sourceUrl": "https://www.npmjs.com/package/@everclear-org/contracts"
+    },
+    {
+      "name": "UniswapX",
+      "kind": "single-chain",
+      "source": "UniswapX README: every reactor settles on one chain",
+      "sourceUrl": "https://github.com/Uniswap/UniswapX/blob/eb7ce077036258b9510b42ad37aa920cf3aaf308/README.md"
+    }
+  ]
+}

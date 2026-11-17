@@ -1,0 +1,82 @@
+/* The site's palette (src/styles/base.css) mapped onto VitePress's theme variables. Dark only. */
+:root, .dark {
+  --vp-font-family-base: 'Overpass', 'Helvetica Neue', Arial, sans-serif;
+  --vp-font-family-mono: 'Overpass Mono', ui-monospace, Menlo, monospace;
+
+  --vp-c-bg: #0E1B2C;          /* night */
+  --vp-c-bg-alt: #0A1424;      /* deep: sidebar, code */
+  --vp-c-bg-elv: #15263C;      /* card */
+  --vp-c-bg-soft: #15263C;
+  --vp-c-divider: #24394F;
+  --vp-c-border: #24394F;
+  --vp-c-gutter: #0A1424;
+
+  --vp-c-text-1: #FFFFFF;
+  --vp-c-text-2: #C3CDDB;
+  --vp-c-text-3: #9AA8BE;      /* mist */
+
+  --vp-c-brand-1: #F05F36;     /* accent: the original site's orange */
+  --vp-c-brand-2: #FF7A50;
+  --vp-c-brand-3: #F05F36;
+  --vp-c-brand-soft: rgba(240, 95, 54, .14);
+
+  --vp-button-brand-bg: #F05F36;
+  --vp-button-brand-text: #0B1630;
+  --vp-button-brand-hover-bg: #FF7A50;
+  --vp-button-brand-hover-text: #0B1630;
+
+  --vp-code-bg: #0A1424;
+  --vp-code-color: #FF9A78;
+  --vp-code-block-bg: #0A1424;
+
+  --vp-custom-block-tip-bg: rgba(240, 95, 54, .08);
+  --vp-custom-block-tip-border: rgba(240, 95, 54, .35);
+  --vp-custom-block-info-bg: #15263C;
+
+  --vp-nav-bg-color: #0E1B2C;
+  --vp-sidebar-bg-color: #0A1424;
+  --vp-local-nav-bg-color: #0E1B2C;
+}
+
+.VPNavBarTitle .title { font-weight: 900; letter-spacing: -.01em; color: #F05F36; }
+.VPNavBarTitle .logo { height: 30px; }
+.vp-doc h1 { font-weight: 800; letter-spacing: -.02em; }
+.vp-doc h2 { font-weight: 800; letter-spacing: -.01em; border-top-color: #24394F; }
+.vp-doc h3 { font-weight: 800; }
+.vp-doc a { text-underline-offset: 3px; }
+.VPSidebarItem.level-0 > .item .text { font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; color: #9AA8BE; }
+.vp-doc table { font-variant-numeric: tabular-nums; }
+
+/* Status pills used in tables: <span class="pill live">Live</span> */
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .02em; border: 1px solid #4A5D7A; color: #C3CDDB; white-space: nowrap; }
+.pill.live { background: #F05F36; border-color: #F05F36; color: #0B1630; }
+.pill.dev { border-color: #9AA8BE; }
+
+/* Plain-page build (DOCS_MPA=1): these need the app, so they're hidden there. */
+.vp-mpa .VPLocalNavOutlineDropdown, .vp-mpa .VPNavBarSearch { display: none; }
+
+/* Hand-drawn diagrams have a white background; show them as light panels on the dark docs. */
+.vp-doc img.diagram {
+  display: block;
+  margin: 24px auto 8px;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+/* Narrow screens (below 960px): the sidebar sits behind the "Menu" button in the bar under the nav.
+   VitePress draws it as small grey text; here it is an orange pill so it reads as the way into the docs. */
+.VPLocalNav .menu {
+  margin: 8px 0 8px 24px; padding: 6px 16px 6px 12px; gap: 8px;
+  border: 1.5px solid #F05F36; border-radius: 999px;
+  color: #F05F36; font-size: 15px; font-weight: 800; line-height: 22px;
+  transition: background-color .15s, color .15s;
+}
+.VPLocalNav .menu:hover, .VPLocalNav .menu:focus-visible { background: #F05F36; color: #0B1630; }
+.VPLocalNav .menu .menu-text { color: inherit; }
+.VPLocalNav .menu .menu-icon { margin-right: 0; font-size: 18px; color: inherit; }
+/* Phones: the top-right button that opens the site links. */
+.VPNavBarHamburger .container > span { background-color: #F05F36; }
+.VPNavBarHamburger { width: 48px; }
+@media (min-width: 768px) { .VPLocalNav .menu { margin-left: 32px; } }

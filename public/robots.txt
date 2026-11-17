@@ -3,19 +3,8 @@
 
 User-agent: *
 Allow: /
-Disallow: /assets/
-
-# AI crawlers welcome
-User-agent: GPTBot
-Allow: /
-
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: CCBot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
 
 Sitemap: https://fastconfirm.it/sitemap.xml
+Sitemap: https://fastconfirm.it/docs/sitemap.xml
+
+# A plain-text summary for AI assistants and answer engines: https://fastconfirm.it/llms.txt

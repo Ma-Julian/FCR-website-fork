@@ -1,0 +1,140 @@
+{
+  "checkedOn": "2026-11-03",
+  "note": "How long each bridge waits on Ethereum before acting on a message or deposit, by default, and the one setting that moves it to FCR. None reads Ethereum's safe block by default today. Re-checked 3 Nov 2026 (on-chain reads at block ~26.33M where noted). Intent bridges (Across, Relay) are \"variable\": each filler sets its own wait.",
+  "bridges": [
+    {
+      "name": "Across",
+      "wait": "variable",
+      "actor": "your relayers",
+      "switchTitle": "Fill at `safe` instead of by deposit size",
+      "switch": "The reference relayer counts 2 to 33 blocks depending on the deposit's size, set in `MIN_DEPOSIT_CONFIRMATIONS`. Replace the count with a check that the deposit's block is at or below `safe`.",
+      "source": "Across relayer, src/common/Constants.ts",
+      "sourceUrl": "https://github.com/across-protocol/relayer/blob/9322e808dd68814f5431c4f53a696fe99f4b0efe/src/common/Constants.ts#L126-L174",
+      "checkedOn": "2026-10-22",
+      "how": "Each relayer picks its wait"
+    },
+    {
+      "name": "LayerZero",
+      "wait": "blocks",
+      "blocks": 15,
+      "actor": "your DVNs",
+      "switchTitle": "Have your DVNs confirm at `safe`",
+      "switch": "Every default Ethereum route waits 15 confirmations before the DVNs verify a message. Apps can already set their own count; a DVN that checks the block is at or below `safe` replaces the count with FCR.",
+      "source": "LayerZero default config API, all Ethereum routes; SendUln302 read on-chain",
+      "sourceUrl": "https://metadata.layerzero-api.com/v1/metadata/defaultConfig"
+    },
+    {
+      "name": "Wormhole",
+      "wait": "finalized",
+      "actor": "the Guardians",
+      "lede": "Wormhole already has a Safe level. FCR makes it fast: Guardians read `safe` from their own Ethereum nodes.",
+      "switchTitle": "Use consistency level `201` (Safe)",
+      "switch": "The Token Bridge uses finalized today. Guardians already honour level 201, Ethereum's `safe` block. With FCR on the Guardians' nodes, that block is seconds old instead of minutes.",
+      "source": "Token Bridge finality() read on-chain; Wormhole consistency levels",
+      "sourceUrl": "https://wormhole.com/docs/reference/consistency-levels/"
+    },
+    {
+      "name": "Hyperlane",
+      "wait": "blocks",
+      "blocks": 15,
+      "actor": "your validators",
+      "switchTitle": "Set Ethereum's `reorgPeriod` to `safe`",
+      "switch": "Validators sign Ethereum checkpoints 15 blocks behind the head. `reorgPeriod` already takes a block tag (BSC and Polygon use `finalized`), so moving to FCR is a change in the registry's `chains/ethereum/metadata.yaml`.",
+      "source": "Hyperlane registry, chains/ethereum/metadata.yaml",
+      "sourceUrl": "https://github.com/hyperlane-xyz/hyperlane-registry/blob/c02f061/chains/ethereum/metadata.yaml"
+    },
+    {
+      "name": "Chainlink CCIP",
+      "wait": "finalized",
+      "actor": "Chainlink's node operators",
+      "lede": "No node to run: Chainlink’s node operators read Ethereum. Two switches, in order.",
+      "source": "Chainlink, faster-than-finality",
+      "sourceUrl": "https://docs.chain.link/ccip/concepts/execution-latency/ftf",
+      "hideSource": true,
+      "steps": [
+        {
+          "title": "Chainlink enables the safe flag",
+          "body": "CCIP 2.0 has a faster-than-finality mode that can wait for Ethereum’s `safe` block, the block FCR confirms. It is live on testnet; Chainlink switches it on for each mainnet lane."
+        },
+        {
+          "title": "You opt in",
+          "body": "As the token pool owner, call `setAllowedFinalityConfig` with `WAIT_FOR_SAFE_FLAG` (`0x00010000`). Senders then ask for it per transfer; everything else keeps waiting for finality."
+        },
+        {
+          "title": "Cap and fund the rare reorg",
+          "body": "A transfer released at `safe` could be undone if Ethereum reorgs that block, leaving tokens minted on the other side without their lock or burn. Give these transfers their own rate limit (`setRateLimitConfig` with `fastFinality: true`) and a fee (`fastFinalityTransferFeeBps`) to cover that risk, and keep finality for large transfers."
+        }
+      ]
+    },
+    {
+      "name": "Axelar",
+      "wait": "finalized",
+      "actor": "your validators",
+      "switchTitle": "Read `safe` where vald reads `finalized`",
+      "switch": "Validators wait for Ethereum's `finalized` block, falling back to 200 confirmations. Reading `safe` from a node with FCR is a change in vald's Ethereum client.",
+      "source": "axelar-core, vald/evm/rpc/ethereum_2.go",
+      "sourceUrl": "https://github.com/axelarnetwork/axelar-core/blob/b992e71/vald/evm/rpc/ethereum_2.go"
+    },
+    {
+      "name": "Circle CCTP",
+      "wait": "finalized",
+      "actor": "Circle's attestation service",
+      "lede": "Only Circle can switch it on: its own service decides when a burn on Ethereum is attested.",
+      "switchTitle": "Attest Standard Transfers at `safe`",
+      "switch": "Standard Transfers wait for finality, about 65 blocks. Fast Transfer already attests after 2 blocks, but it is paid and capped by an allowance. With FCR, Standard Transfers could be attested in seconds, backed by attestations instead of a block count.",
+      "fast": "Fast Transfer (opt-in, paid): 2 blocks, about 20 s",
+      "source": "Circle, CCTP required block confirmations",
+      "sourceUrl": "https://developers.circle.com/cctp/required-block-confirmations"
+    },
+    {
+      "name": "deBridge",
+      "wait": "blocks",
+      "blocks": 12,
+      "actor": "deBridge's validators",
+      "switchTitle": "Sign Ethereum messages at `safe`",
+      "switch": "Validators sign a message after 12 confirmations on Ethereum. DLN orders are separate: takers choose their own wait, 12 blocks in the reference taker.",
+      "source": "deBridge, cross-chain call lifecycle",
+      "sourceUrl": "https://docs.debridge.com/dmp-details/dev-guides/cross-chain-call-lifecycle"
+    },
+    {
+      "name": "Stargate",
+      "wait": "blocks",
+      "blocks": 15,
+      "actor": "the DVNs it requires",
+      "lede": "Stargate inherits LayerZero's wait: its pools require 4 DVNs that each count 15 blocks.",
+      "switchTitle": "Ask the required DVNs to confirm at `safe`",
+      "switch": "Stargate's pools use LayerZero's 15-block confirmation on Ethereum, for Taxi and Bus alike. Once its DVNs confirm at `safe`, the pools' config can drop the count.",
+      "source": "Stargate USDC pool config read on-chain via LayerZero SendUln302",
+      "sourceUrl": "https://metadata.layerzero-api.com/v1/metadata/defaultConfig"
+    },
+    {
+      "name": "Relay",
+      "wait": "variable",
+      "how": "Each solver picks its wait",
+      "actor": "its solvers",
+      "source": "Relay docs: solvers fill before settlement and set their own wait",
+      "sourceUrl": "https://docs.relay.link/"
+    },
+    {
+      "name": "Socket",
+      "wait": "blocks",
+      "blocks": 6,
+      "actor": "Socket's transmitters",
+      "switchTitle": "Relay at `safe` instead of 6 confirmations",
+      "switch": "Socket's messaging layer waits 6 confirmations on Ethereum. Bungee routes inherit the wait of the bridge they use.",
+      "source": "@socket.tech/dl-core 2.47.0, reSyncInterval constants",
+      "sourceUrl": "https://www.npmjs.com/package/@socket.tech/dl-core/v/2.47.0"
+    },
+    {
+      "name": "Connext",
+      "wait": "blocks",
+      "blocks": 7,
+      "actor": "your routers",
+      "lede": "Connext is in legacy mode; its successor, Everclear, settles over its own Hyperlane deployment.",
+      "switchTitle": "Fill at `safe` instead of 7 confirmations",
+      "switch": "The fast path waits 7 confirmations on Ethereum; the slow path 30 to 60 minutes.",
+      "source": "connext/chaindata, crossChain.json",
+      "sourceUrl": "https://github.com/connext/chaindata/blob/b227483/crossChain.json"
+    }
+  ]
+}

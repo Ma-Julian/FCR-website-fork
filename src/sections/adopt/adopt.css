@@ -1,0 +1,47 @@
+.adopt { background: var(--deep); color: var(--paper); }
+.adopt-inner { max-width: var(--wrap); margin: 0 auto; padding-block: var(--sec-pad); padding-inline: var(--gutter-l) var(--gutter-r); }
+/* Centred title like every other section; the code change and the guides sit under it, side by side. */
+.ad-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(32px, 6vw, 80px); align-items: start; }
+/* The two code lines always fit their box: their size follows the box's width (container units), so a
+   line never turns into a scroll box with a scrollbar across it (it did at 801–879 px and on 320 px phones).
+   A line is 35 characters at 0.625em each (21.9em), plus 36 px of padding, plus 18 px for systems that
+   round each character's width to whole pixels. */
+.ad-diff { container-type: inline-size; margin-top: 0; border-radius: var(--r-md); overflow: hidden; background: var(--card); border: 1px solid var(--rule); font: 600 clamp(.8rem, 2.4vw, 1rem) 'Overpass Mono', ui-monospace, monospace; font-variant-ligatures: none; }
+.ad-diff div { padding: 11px 18px; white-space: nowrap; overflow-x: auto; scrollbar-width: none; font-size: clamp(.6rem, calc((100cqi - 54px) / 22), 1rem); }
+.ad-diff div::-webkit-scrollbar { display: none; }
+.ad-rm { color: #E8A99E; }
+.ad-add { color: #A6DDB4; background: rgba(166, 221, 180, .06); }
+.ad-points { list-style: none; margin: 24px 0 0; padding: 0; color: var(--paper-3); line-height: 1.5; }
+.ad-points li { padding: 10px 0; border-top: 1px solid var(--rule); }
+.ad-points strong { color: var(--paper); }
+.ad-group { margin: 24px 0 8px; font-size: .8rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
+.ad-group:first-child { margin-top: 0; }
+.ad-guide { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 15px 0; border-top: 1px solid var(--rule); color: var(--paper); text-decoration: none; }
+.ad-guide:nth-of-type(3), .ad-guide:last-child { border-bottom: 1px solid var(--rule); }
+.ad-guide b { font-size: 1.1rem; font-weight: 800; white-space: nowrap; }
+.ad-guide b span { display: inline-block; transition: transform .15s; }
+.ad-note { color: var(--mist); font-size: .92rem; text-align: right; }
+.ad-guide:hover b, .ad-guide:focus-visible b, .ad-guide.is-yours b { color: var(--accent); }
+.ad-guide:hover b span { transform: translateX(3px); }
+.ad-guide.is-yours .ad-note { color: var(--accent); font-weight: 700; }
+.ad-guide:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+@media (max-width: 800px) { .ad-cols { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 420px) { .ad-note { font-size: .85rem; } }
+
+.closing { background: var(--night); text-align: center; }
+.closing-inner { max-width: var(--wrap); margin: 0 auto; padding-block: var(--sec-pad); padding-inline: var(--gutter-l) var(--gutter-r); }
+/* The closing call to action: an orange card on the navy page, so the orange stays contained. Text on it is ink (5.5:1). */
+.closing-card { background: var(--accent); color: var(--ink); border-radius: var(--r-lg); padding: clamp(48px, 7vw, 88px) clamp(20px, 4vw, 48px); }
+.closing-title { margin: 0; font-size: clamp(2rem, 4.2vw, 3.25rem); font-weight: 900; line-height: 1.08; letter-spacing: -.03em; color: var(--ink); }
+/* Each sentence stays whole: the title breaks between them, never inside "Your users are waiting." */
+.closing-title span { display: inline-block; }
+.closing-actions { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1rem 1.75rem; }
+.closing-actions .btn { min-height: 52px; padding: 0 26px; font-size: 1.1rem; }
+.closing-link { color: var(--ink); font-size: 1.1rem; font-weight: 800; text-decoration: underline; text-decoration-color: rgba(11, 22, 48, .45); text-underline-offset: 4px; }
+.closing-link:hover { color: var(--ink); text-decoration-color: var(--ink); }
+.closing-card :focus-visible { outline-color: var(--ink); }
+/* Phones: keep "Your users are waiting." on one line inside the card. */
+@media (max-width: 480px) {
+  .closing-card { padding-inline: 16px; }
+  .closing-title { font-size: clamp(1.3rem, 6.8vw, 2rem); }
+}

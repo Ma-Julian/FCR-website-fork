@@ -1,41 +1,32 @@
-# Fast Confirmation Rule (FCR) for Ethereum
+# Fast Confirmation Rule (FCR)
 
-> Confirm Ethereum transactions in ~13 seconds instead of ~13 minutes. No hard fork required.
+> FCR lets rollups, bridges, exchanges and apps accept deposits and messages from Ethereum in as little as 24 seconds, backed by Ethereum's validator set. It is a consensus-client feature: no hard fork, no new contracts. Instead of waiting for finality (~13 minutes) or counting a fixed number of blocks, FCR counts validator attestations and marks a block fast-confirmed once enough of them support it. Integrators read the `safe` block tag instead of `finalized`.
 
-## What is FCR?
+Key facts:
 
-The Fast Confirmation Rule (FCR) is a consensus client feature that provides single-slot confirmation for Ethereum transactions. Instead of waiting for full finality via Casper FFG (~13 minutes / 2 epochs), FCR counts attestations within a single slot to deliver deterministic confirmation in approximately 13 seconds.
+- Speed: at minimum 24 seconds for FCR to confirm a block; a bridge adds its own steps on top. Finality takes ~13 minutes.
+- Security: FCR checks that validators keep the block in the chain, under stated assumptions about adversarial stake and network synchrony. If those fail, a fast-confirmed block can reorg; integrators re-check once the block is finalized.
+- Evidence: a research paper (https://arxiv.org/abs/2405.00549), a Lean 4 formal safety proof (https://github.com/fradamt/verified-fast-confirmation), in scope of the Ethereum Foundation bug bounty, and a one-year replay of mainnet through the clients' FCR code with 0 false confirmations (2.56M slots; no fast-confirmed block was reorged).
+- Client support: shipped in Lighthouse, Prysm, Nimbus (on by default) and Lodestar; experimental in Teku.
+- RPC providers: some already serve FCR under `safe`; many still return the justified block, so check what yours returns.
+- In production: Gnosis Chain has used FCR for deposits from Ethereum since 7 October 2026 (its bridges wait for FCR instead of finality, ~13 minutes). Chainlink CCIP 2.0 has it live on testnet.
+- Developed by Ethlabs, the Ethereum Foundation and Ethereum's consensus-client teams.
 
-## Key Facts
+## Docs
 
-- Confirmation time: ~13 seconds (single slot) vs ~13 minutes (finality)
-- Speed improvement: ~98% reduction in confirmation latency
-- Hard forks required: 0 — FCR is a client-side feature, not a protocol change
-- Adversarial threshold: <25% of total stake must be adversarial
-- Communication model: Requires network synchrony (attestations arrive within bound)
-- Failure behavior: Falls back to the last finalized block if assumptions break
-- No economic security (no slashing) — deterministic guarantee under network assumptions
+- [Quick start](https://fastconfirm.it/docs/integrate/quick-start): the one-line change and how to turn FCR on
+- [How it works](https://fastconfirm.it/docs/evaluate/how-it-works): the rule, step by step
+- [Assumptions and attacks](https://fastconfirm.it/docs/evaluate/assumptions-and-attacks): what FCR relies on and how it could fail
+- [Security](https://fastconfirm.it/docs/evaluate/security): the safety argument, the formal proof and the bug bounty
+- [Comparison](https://fastconfirm.it/docs/evaluate/comparison): FCR against finality and k-block waits
+- [Rollups](https://fastconfirm.it/docs/integrate/rollups), [OP Stack](https://fastconfirm.it/docs/integrate/op-stack), [Arbitrum Nitro](https://fastconfirm.it/docs/integrate/arbitrum-nitro), [ZK Stack](https://fastconfirm.it/docs/integrate/zk-stack), [Starknet stack](https://fastconfirm.it/docs/integrate/starknet), [Agglayer CDK](https://fastconfirm.it/docs/integrate/agglayer-cdk)
+- [Bridges](https://fastconfirm.it/docs/integrate/bridges), [Exchanges](https://fastconfirm.it/docs/integrate/exchanges), [RPC providers](https://fastconfirm.it/docs/integrate/rpc-providers)
+- [Reorgs and fallback](https://fastconfirm.it/docs/operate/reorgs-and-fallback): handling the rare reorg
+- [APIs](https://fastconfirm.it/docs/reference/apis) and [the safe tag](https://fastconfirm.it/docs/reference/safe-tag)
+- [Where our numbers come from](https://fastconfirm.it/docs/reference/numbers): how every figure on the site was measured
+- [FAQ](https://fastconfirm.it/docs/faq)
 
-## How It Works
+## Optional
 
-1. Enable the fast confirmation flag on your consensus client (e.g., `lighthouse bn --fast-confirmation-rule`)
-2. Query `eth_getBlockByNumber("safe")` via JSON-RPC
-3. The `safe` block tag returns the last fast-confirmed block
-
-## Use Cases
-
-- **Exchanges**: Credit deposits within seconds instead of minutes
-- **Cross-Chain Bridges**: Reduce capital lockup for cross-chain transfers
-- **L2s**: Confirm L1 deposits within seconds; automatic fallback to safe head
-- **RPC Providers**: The `safe` tag automatically returns fast-confirmed blocks
-
-## Assumptions
-
-1. **Synchrony**: Attestations must arrive within the synchrony bound
-2. **Honest majority**: At least 75% of total stake must be honest and participating
-
-## Contact
-
-- Email: fastconfirm@ethereum.org
-- Website: https://fastconfirm.it
-- Publisher: Ethereum Foundation
+- [Home page](https://fastconfirm.it/): deposit waits per chain today, compared with FCR
+- [Contact the FCR team](https://fastconfirm.paperform.co/)

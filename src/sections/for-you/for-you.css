@@ -1,0 +1,238 @@
+.for-you { background: var(--night); color: var(--paper); }
+.for-you-inner { max-width: var(--wrap); margin: 0 auto; padding-block: var(--sec-pad); padding-inline: var(--gutter-l) var(--gutter-r); }
+
+.fy-head { display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; margin-bottom: var(--gap-lg); }
+.fy-title { margin: 0; font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.08; font-weight: 900; letter-spacing: -.03em; text-wrap: balance; }
+.fy-sub { margin: 16px auto 0; text-align: center; max-width: 46ch; font-size: clamp(1.05rem, 1.6vw, 1.25rem); line-height: 1.5; color: var(--mist); text-wrap: balance; }
+.fy-sentence { margin: 0; text-align: center; font-size: clamp(1.6rem, 2.9vw, 2.6rem); line-height: 1.3; font-weight: 900; letter-spacing: -.03em; }
+/* One line wherever it fits; long names scroll inside the field instead of wrapping the sentence. */
+@media (min-width: 760px) { .fy-sentence { white-space: nowrap; } .fy-input { max-width: 14em; } }
+.fy-slot { font: inherit; letter-spacing: inherit; color: var(--accent); background: rgba(240, 95, 54, .10); border: 0; border-bottom: 5px solid var(--accent); border-radius: 10px 10px 0 0; padding: 0 .3em; margin: 0 2px; }
+.fy-role { cursor: pointer; display: inline-flex; align-items: center; gap: .25em; text-align: left; }
+.fy-input { max-width: 100%; box-sizing: content-box; caret-color: var(--paper); }
+.fy-input::placeholder { color: rgba(240, 95, 54, .55); }
+.fy-input:focus { outline: none; background: rgba(240, 95, 54, .18); }
+.fy-role:focus-visible, .fy-plate:focus-visible, .fy-kchip:focus-visible, .fy-cta:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+@keyframes fy-in { from { opacity: 0; transform: translateY(-8px) } to { opacity: 1; transform: none } }
+/* The picker: names set as plain words, centred under the sentence, like an index. */
+.fy-picker { margin: 2rem auto 0; max-width: 1000px; text-align: center; animation: fy-in .22s ease-out; }
+.fy-plates { display: flex; flex-wrap: wrap; justify-content: center; gap: .35rem 1.6rem; }
+.fy-plate { font: inherit; cursor: pointer; padding: .3rem .35rem .2rem; border: 0; border-radius: 6px; background: none; color: var(--paper-2); font-size: clamp(1.1rem, 1.9vw, 1.4rem); line-height: 1.4; font-weight: 700; letter-spacing: -.01em; text-decoration: underline 3px transparent; text-underline-offset: 7px; transition: color .12s, text-decoration-color .12s; }
+.fy-plate:hover { color: var(--accent); }
+.fy-plate.is-on { color: var(--accent); font-weight: 800; text-decoration-color: var(--accent); }
+.fy-plate.is-active { background: rgba(240, 95, 54, .12); color: var(--accent); }
+.fy-plate.is-new { color: var(--paper); font-style: italic; }
+.fy-picker-hint { margin-top: 1rem; font-size: .95rem; color: var(--mist); }
+.fy-picker-hint:empty { display: none; }
+
+@keyframes fy-card-in { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+.fy-card:not([hidden]) { animation: fy-card-in .35s ease-out; }
+.fy-card { margin-top: var(--gap-lg); background: var(--card); border: 1px solid var(--rule); border-radius: var(--r-lg); padding: clamp(24px, 3.4vw, 44px); }
+.fy-new { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem .9rem; margin-bottom: 1.6rem; padding: .9rem 1.1rem; border-radius: var(--r-md); background: rgba(240, 95, 54, .10); border: 1px solid rgba(240, 95, 54, .35); font-size: 1.05rem; line-height: 1.4; color: var(--paper-2); }
+.fy-example[hidden] { display: none; }
+.fy-example { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: .5rem; margin: 0 auto 1.25rem; text-align: center; font-size: 1rem; line-height: 1.45; color: var(--paper-2); text-wrap: balance; }
+.fy-chip { font-size: .75rem; font-weight: 800; letter-spacing: .08em; padding: 3px 8px 2px; border-radius: 5px; background: var(--accent); color: var(--ink); }
+.fy-headline { margin: 0 0 .25rem; text-align: center; font-size: clamp(1.75rem, 3.6vw, 2.75rem); font-weight: 900; line-height: 1.1; letter-spacing: -.025em; color: var(--paper); text-wrap: balance; overflow-wrap: anywhere; }
+
+.fy-k { margin-top: 1.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; }
+.fy-k-q { font-size: 1.05rem; font-weight: 600; color: var(--paper-3); margin-right: .4rem; }
+.fy-k-chips { display: flex; flex-wrap: wrap; gap: .6rem; }
+.fy-kchip { font: inherit; font-size: 1rem; font-weight: 700; min-width: 52px; min-height: 44px; padding: 0 14px; border-radius: 8px; cursor: pointer; border: 1.5px solid var(--slate); background: transparent; color: var(--paper); }
+.fy-kchip.is-on { background: var(--accent); color: var(--ink); border-color: var(--accent); }
+
+@keyframes fy-pop { 0% { opacity: 0; transform: scale(.6) } 60% { opacity: 1; transform: scale(1.08) } 100% { opacity: 1; transform: scale(1) } }
+
+
+
+/* The main action of the card: centred, like everything above it; the stack guide sits under it. */
+.fy-foot { margin-top: 2rem; display: flex; flex-direction: column-reverse; align-items: center; gap: 1rem; text-align: center; }
+.fy-stack { margin: 0; font-size: .95rem; color: var(--mist); }
+.fy-stack a { color: var(--paper-2); text-decoration: underline; text-decoration-color: var(--slate); text-underline-offset: 3px; }
+.fy-stack a:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.fy-cta { flex: 0 1 auto; max-width: 100%; box-sizing: border-box; display: inline-flex; align-items: center; justify-content: center; text-align: center; min-height: 52px; padding: 10px 24px; line-height: 1.25; border-radius: 10px; background: var(--accent); color: var(--ink); font-weight: 800; font-size: 1.125rem; text-decoration: none; }
+.fy-cta:hover, .fy-cta:focus-visible { background: var(--accent-hi); color: var(--ink); }
+.fy-cta { transition: background-color .15s; }
+.fy-cta { gap: .55rem; }
+.fy-cta-icon { flex: none; }
+.fy-cta[aria-busy='true'] { cursor: progress; opacity: .75; }
+
+@media (max-width: 640px) {
+  .fy-cta { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fy-picker, .fy-card:not([hidden]) { animation: none; }
+  .fy-plate { transition: none; }
+}
+
+/* The card body: a comparison (today against FCR) in thin rules, then a ledger of measured
+   numbers. No boxes inside the card; figures are set in Overpass Mono so data reads as data. */
+.fy-card { --mono: 'Overpass Mono', ui-monospace, monospace; }
+/* Speed and Security: two centred columns, Today and With FCR, as on Apple's compare pages. */
+.fy-live { margin: .75rem auto 1.75rem; max-width: 60ch; text-align: center; font-size: 1.05rem; line-height: 1.45; color: var(--accent); font-weight: 700; }
+.fy-live[hidden] { display: none; }
+.fy-cmp { margin-top: 2.25rem; }
+.fy-cmp-cols, .fy-pairs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(1.25rem, 5vw, 4rem); text-align: center; }
+.fy-cmp-cols { padding-bottom: 1rem; border-bottom: 1px solid var(--rule); font-size: clamp(1.15rem, 2vw, 1.4rem); font-weight: 900; letter-spacing: -.01em; }
+.fy-cmp-cols .is-fcr { color: var(--accent); }
+.fy-grp { margin-top: 2rem; }
+.fy-grp-title { margin: 0 0 .25rem; font-size: 1.15rem; font-weight: 800; letter-spacing: -.01em; color: var(--paper); display: flex; flex-wrap: wrap; align-items: baseline; gap: .25rem .75rem; }
+.fy-cmp .fy-grp-title { justify-content: center; font-size: clamp(1.1rem, 1.6vw, 1.3rem); font-weight: 800; color: var(--paper); }
+.fy-grp-sub { font-size: .95rem; font-weight: 500; color: var(--mist); }
+.fy-grp .fy-k { margin: .75rem 0 .5rem; justify-content: center; }
+.fy-pairs { row-gap: 1.75rem; margin-top: 1.25rem; }
+.fy-cell { min-width: 0; display: flex; flex-direction: column; align-items: center; }
+.fy-cell-col { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* Row labels ("what it checks") sit close in size to the values under them. */
+.fy-lab { font-size: clamp(1rem, 1.3vw, 1.05rem); line-height: 1.3; font-weight: 600; color: var(--mist); margin-bottom: .2rem; }
+.fy-fig { white-space: nowrap; font-size: clamp(1.55rem, 4.4vw, 3.25rem); line-height: 1.05; font-weight: 900; letter-spacing: -.035em; color: var(--paper); font-variant-numeric: tabular-nums; }
+.fy-pre { font-size: .95rem; line-height: 1.3; font-weight: 700; color: var(--mist); }
+.fy-cell.is-fcr .fy-fig { color: var(--accent); }
+.fy-txt { font-size: clamp(1.05rem, 1.6vw, 1.15rem); line-height: 1.35; font-weight: 700; color: var(--paper); text-wrap: balance; max-width: 34ch; }
+.fy-txt > span { display: block; }
+.fy-txt > span + span { margin-top: .2rem; }
+.fy-cap { margin-top: .3rem; font-size: .95rem; line-height: 1.4; color: var(--mist); }
+.fy-gain { margin-top: .6rem; padding: 3px 10px 1px; border-radius: 5px; background: var(--accent); color: var(--ink); font-size: .9rem; font-weight: 800; }
+.fy-gain.is-final { display: inline-block; background: var(--paper); }
+
+.fy-num { margin-top: 2.75rem; padding-top: 1.25rem; border-top: 2px solid var(--paper-2); }
+.fy-num-lede { margin: .5rem 0 1.25rem; max-width: 62ch; font-size: 1.125rem; line-height: 1.45; color: var(--paper-2); text-wrap: pretty; }
+.fy-num-lede strong { color: var(--paper); font-weight: 800; }
+.fy-split-bar[hidden] { display: none; }
+.fy-split-bar { display: flex; gap: 3px; height: 14px; border-radius: 3px; overflow: hidden; }
+.fy-split-seg { min-width: 4px; }
+.fy-split-seg.is-native, .fy-key.is-native { background: #6E7E99; }
+.fy-split-seg.is-intent, .fy-key.is-intent { background: var(--accent); }
+.fy-ledger { margin-top: .5rem; }
+.fy-line { display: flex; align-items: baseline; gap: .75rem; padding: .85rem 0; border-bottom: 1px solid var(--rule); }
+.fy-key { flex: none; width: 10px; height: 10px; border-radius: 2px; align-self: center; }
+.fy-line-label { flex: 1 1 auto; min-width: 0; font-size: 1rem; color: var(--paper-2); }
+.fy-line-value { flex: none; font-family: var(--mono); font-size: 1.15rem; font-weight: 600; color: var(--paper); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fy-pct { display: inline-block; min-width: 3.2em; text-align: right; color: var(--mist); font-weight: 500; }
+@media (max-width: 640px) {
+  .fy-line { flex-wrap: wrap; row-gap: .15rem; }
+}
+
+/* Issuers: what to do for their setup */
+.fy-do[hidden], .fy-cmp[hidden], .fy-do-note[hidden], .fy-do-docs[hidden] { display: none; }
+.fy-do { margin-top: 1.5rem; }
+.fy-do-steps { margin: 0 0 1rem; padding-left: 1.4rem; max-width: 62ch; display: grid; gap: .6rem; font-size: 1.05rem; line-height: 1.5; color: var(--paper-2); }
+.fy-do-steps li::marker { color: var(--accent); font-weight: 800; }
+.fy-do-steps code { font-family: 'Overpass Mono', ui-monospace, monospace; font-size: .9em; color: var(--paper); background: rgba(240, 95, 54, .1); padding: .05em .3em; border-radius: 4px; overflow-wrap: anywhere; }
+.fy-do-note { margin: 0 0 .75rem; max-width: 62ch; padding: .6rem .9rem; border-left: 3px solid var(--accent); color: var(--accent); font-weight: 700; line-height: 1.45; }
+.fy-do-docs { margin: 0; }
+.fy-do-docs a { color: var(--accent); }
+.fy-live-why { display: block; margin-top: .4rem; font-size: .95rem; font-weight: 500; color: var(--paper-2); text-wrap: balance; }
+
+/* Phones: two narrow columns squeeze every phrase onto one or two words a line, so each pair stacks:
+   the row label once, then "Today" and "With FCR" as tags beside left-aligned values. */
+@media (max-width: 640px) {
+  .fy-card { padding: 22px 18px; }
+  .fy-cmp { margin-top: 1.5rem; }
+  .fy-cmp-cols { display: none; }
+  .fy-grp { margin-top: 1.75rem; }
+  .fy-cmp .fy-grp-title { justify-content: flex-start; padding-bottom: .5rem; border-bottom: 1px solid var(--rule); }
+  .fy-pairs { grid-template-columns: minmax(0, 1fr); row-gap: 0; margin-top: 0; text-align: left; }
+  .fy-cell { display: grid; grid-template-columns: 5.6rem minmax(0, 1fr); column-gap: .75rem; align-items: baseline; justify-items: start; padding-top: .9rem; }
+  .fy-cell.is-fcr { padding-top: .45rem; padding-bottom: .9rem; border-bottom: 1px solid var(--rule); }
+  .fy-cell > * { grid-column: 2; }
+  .fy-cell > .fy-lab { grid-column: 1 / -1; grid-row: 1; margin-bottom: .35rem; }
+  .fy-cell.is-fcr > .fy-lab, .fy-pre.is-empty { display: none; }
+  .fy-cell-col { position: static; width: auto; height: auto; overflow: visible; clip-path: none; grid-column: 1; grid-row: 2; align-self: baseline;
+    font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--mist); }
+  .fy-cell:not(:has(.fy-lab)) > .fy-cell-col, .fy-cell.is-fcr > .fy-cell-col { grid-row: 1; }
+  .fy-cell.is-fcr .fy-cell-col { color: var(--accent); }
+  .fy-fig { font-size: 1.9rem; }
+  .fy-txt { max-width: none; text-wrap: pretty; }
+  .fy-gain { justify-self: start; }
+}
+
+
+/* RPC providers: who wants it, and how to turn it on */
+.fy-dim { color: var(--mist); font-weight: 500; }
+.fy-line-label b { color: var(--paper); font-weight: 800; }
+.fy-badge { flex: none; padding: 3px 10px 1px; border-radius: 5px; font-size: .85rem; font-weight: 800; letter-spacing: .02em; white-space: nowrap; }
+.fy-badge.is-live { background: var(--accent); color: var(--ink); }
+.fy-badge.is-building, .fy-badge.is-testnet { border: 1.5px solid var(--accent); color: var(--accent); }
+.fy-more { margin: 1rem 0 0; max-width: 62ch; font-size: 1rem; line-height: 1.45; color: var(--mist); }
+.fy-steps { list-style: none; counter-reset: fy-step; margin: .75rem 0 0; padding: 0; display: grid; gap: 1.5rem; }
+.fy-step { counter-increment: fy-step; position: relative; padding-left: 3rem; }
+.fy-step::before { content: counter(fy-step); position: absolute; left: 0; top: -.1rem; width: 2rem; height: 2rem; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--ink); font-family: var(--mono); font-weight: 600; font-size: 1rem; }
+.fy-step-title { font-size: clamp(1.1rem, 1.8vw, 1.25rem); font-weight: 800; color: var(--paper); line-height: 1.3; }
+.fy-step-body { margin: .3rem 0 0; max-width: 58ch; font-size: 1rem; line-height: 1.45; color: var(--paper-2); }
+.fy-flags { margin-top: .5rem; max-width: 36rem; }
+.fy-flags .fy-line { padding: .55rem 0; }
+.fy-flag { flex: none; font-family: var(--mono); font-size: .95rem; font-weight: 500; color: var(--accent); white-space: nowrap; }
+@media (max-width: 520px) { .fy-step { padding-left: 2.6rem; } .fy-flag { font-size: .85rem; } }
+
+/* Solvers: who wins the order, waits by order size, sources, who uses FCR */
+.fy-race[hidden], .fy-tiers[hidden], .fy-src[hidden], [data-sec-uses][hidden], [data-sec-fill][hidden] { display: none; }
+.fy-race { margin: .5rem 0 0; max-width: 62ch; font-size: 1.125rem; line-height: 1.45; color: var(--paper-2); text-wrap: pretty; }
+.fy-tiers { margin-top: 1.5rem; }
+.fy-tiers .fy-line-value { min-width: 9.5em; text-align: right; font-size: 1rem; }
+.fy-tiers .fy-line-value.is-fcr { min-width: 4.5em; color: var(--accent); }
+.fy-src { margin: 1rem 0 0; font-size: .875rem; line-height: 1.45; color: var(--mist); }
+.fy-src a, .fy-line-label a { color: var(--mist); text-decoration: underline; text-underline-offset: 2px; }
+.fy-tag { flex: none; padding: 3px 10px 1px; border-radius: 5px; font-size: .85rem; font-weight: 800; white-space: nowrap; }
+.fy-tag.is-live { background: var(--accent); color: var(--ink); }
+.fy-tag.is-soon { border: 1.5px solid var(--accent); color: var(--accent); }
+.fy-tag.is-none { border: 1.5px solid var(--rule); color: var(--mist); }
+[data-sec-fill] .fy-do-steps { margin-top: 1rem; }
+.fy-do-note.is-plain { padding: 0; border: 0; color: var(--paper-2); font-weight: 400; font-size: 1.05rem; }
+@media (max-width: 640px) {
+  .fy-tiers .fy-line { flex-wrap: nowrap; }
+  .fy-tiers .fy-line-value { min-width: 0; font-size: .9rem; }
+  .fy-tiers .fy-line-value.is-fcr { display: none; }
+}
+
+/* Every text block on the card is centred, whatever the role (Julian, 3 Nov 2026). Ledger rows stay
+   label-left, value-right, as a centred table. */
+.fy-num, .fy-do { text-align: center; }
+.fy-num > .fy-grp-title, .fy-do > .fy-grp-title { justify-content: center; }
+.fy-num-lede, .fy-more, .fy-race, .fy-src, .fy-do-note, .fy-do-docs, .fy-step-body { margin-inline: auto; text-align: center; text-wrap: balance; }
+.fy-do-note { border-left: 0; padding-inline: 0; }
+.fy-do-steps { list-style-position: inside; padding-left: 0; margin-inline: auto; justify-items: center; }
+.fy-steps { justify-items: center; max-width: 62ch; margin-inline: auto; }
+.fy-step { padding-left: 0; text-align: center; }
+.fy-step::before { position: static; margin: 0 auto .5rem; }
+.fy-ledger, .fy-flags { max-width: 44rem; margin-inline: auto; text-align: left; }
+.fy-stack { text-align: center; }
+/* One figure across both columns (solvers). */
+.fy-pairs > .fy-solo { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: center; }
+.fy-solo .fy-fig { color: var(--accent); }
+@media (max-width: 640px) {
+  .fy-pairs > .fy-solo { display: flex; padding: .5rem 0 1rem; border-bottom: 0; }
+  .fy-pairs > .fy-solo > * { grid-column: auto; }
+  .fy-step { padding-left: 0; }
+}
+.fy-grp-title { text-align: center; }
+/* Phones: the comparison stays stacked, but centred: each row label, then "Today" and "With FCR"
+   tags above their values. */
+@media (max-width: 640px) {
+  .fy-cmp .fy-grp-title { justify-content: center; }
+  .fy-pairs { text-align: center; }
+  .fy-cell { display: flex; flex-direction: column; align-items: center; }
+  .fy-cell > .fy-lab { margin-bottom: .35rem; }
+  .fy-cell-col { margin-bottom: .15rem; }
+  .fy-gain { align-self: center; }
+}
+@media (max-width: 640px) {
+  .fy-cell > .fy-lab { order: -2; }
+  .fy-cell > .fy-cell-col { order: -1; align-self: center; }
+}
+/* Solvers' two ways in, side by side, each with an icon instead of a number. */
+.fy-options { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(1.5rem, 4vw, 3rem); max-width: 56rem; align-items: start; }
+.fy-options .fy-step::before { content: none; }
+/* Chainlink issuers: the three steps as cards side by side, numbered, with as little text as possible. */
+.fy-do-steps[hidden], .fy-cards[hidden] { display: none; }
+.fy-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; max-width: 60rem; margin: 1.25rem auto; justify-items: stretch; align-items: stretch; }
+.fy-cards .fy-step { height: 100%; box-sizing: border-box; padding: 1.3rem 1.1rem 1.2rem; background: var(--night); border: 1px solid var(--rule); border-radius: var(--r-md); }
+.fy-cards .fy-step-body { font-size: .95rem; text-wrap: balance; }
+.fy-cards code { font-family: var(--mono); font-size: .85em; color: var(--paper); background: rgba(240, 95, 54, .1); padding: .05em .3em; border-radius: 4px; overflow-wrap: anywhere; }
+.fy-card-tag { position: absolute; top: .75rem; right: .85rem; font-size: .68rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--mist); }
+@media (max-width: 760px) { .fy-cards { grid-template-columns: minmax(0, 1fr); max-width: 26rem; } }
+.fy-step-icon { display: block; width: 28px; height: 28px; margin: 0 auto .55rem; color: var(--accent); }
+.fy-step-icon svg { display: block; }
+@media (max-width: 640px) { .fy-options { grid-template-columns: minmax(0, 1fr); } }
+/* The period under the Numbers title, on its own line. */
+.fy-period { margin: .15rem 0 0; text-align: center; }

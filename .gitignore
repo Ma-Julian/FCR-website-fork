@@ -1,27 +1,5 @@
-# OS
-.DS_Store
-
-# Environment
-.env
-.env.local
-
-# Dependencies
 node_modules/
-
-# Logs
-*.log
-
-# Build output
 dist/
-
-# Netlify
 .netlify/
-
-# Claude / Playwright
-.claude/
-.playwright-mcp/
-
-# Design screenshots (local reference only)
-*.png
-*.jpeg
-!public/*.png
+.DS_Store
+*.log

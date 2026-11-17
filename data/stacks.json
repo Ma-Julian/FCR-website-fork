@@ -1,0 +1,12 @@
+[
+  { "name": "Arbitrum stack", "guide": "integrate/arbitrum-nitro", "guideName": "Arbitrum Nitro guide",
+    "chains": ["Arbitrum One", "Arbitrum Nova", "Robinhood Chain", "Plume"] },
+  { "name": "OP Stack", "guide": "integrate/op-stack", "guideName": "OP Stack guide",
+    "chains": ["Base", "OP Mainnet", "Unichain", "Ink", "Zora", "Mode", "World Chain", "Soneium", "Mantle", "Celo", "MegaETH", "BOB", "Fraxtal", "Manta Pacific", "Metal", "Hemi"] },
+  { "name": "ZK Stack", "guide": "integrate/zk-stack", "guideName": "ZK Stack guide",
+    "chains": ["ZKsync Era", "ADI Chain"] },
+  { "name": "Starknet stack", "guide": "integrate/starknet", "guideName": "Starknet stack guide",
+    "chains": ["Starknet", "Paradex"] },
+  { "name": "Agglayer CDK", "guide": "integrate/agglayer-cdk", "guideName": "Agglayer CDK guide",
+    "chains": ["X Layer", "Katana"] }
+]

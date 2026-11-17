@@ -1,0 +1,25 @@
+.ready { background: var(--night); color: var(--paper); }
+.ready-inner { max-width: var(--wrap); margin: 0 auto; padding-block: var(--sec-pad); padding-inline: var(--gutter-l) var(--gutter-r); }
+.rd-cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 4rem); }
+.rd-col-title { margin: 0 0 .5rem; font-size: 1.15rem; font-weight: 800; padding-bottom: .6rem; border-bottom: 1px solid var(--rule); }
+.rd-list { list-style: none; margin: 0; padding: 0; }
+.rd-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .15rem 1rem; padding: .8rem 0; border-bottom: 1px solid var(--rule); align-items: baseline; }
+.rd-name { font-weight: 800; font-size: 1.05rem; }
+.rd-detail { grid-column: 1 / -1; font-size: .95rem; color: var(--mist); }
+.rd-pill { justify-self: end; font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; padding: 3px 8px 1px; border-radius: 4px; border: 1px solid var(--slate); color: var(--paper-2); }
+.rd-pill.is-shipped, .rd-pill.is-live, .rd-pill.is-serves { background: var(--accent); border-color: var(--accent); color: var(--ink); }
+/* A second list in the same column (RPC providers under "Who uses it"). */
+.rd-col-title.rd-col-next { margin-top: var(--gap-sm); }
+a.rd-name { color: inherit; text-decoration: none; }
+a.rd-name:hover, a.rd-name:focus-visible { color: var(--accent); }
+.rd-proof-list { list-style: none; margin: var(--gap-lg) 0 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.rd-proof { display: flex; flex-direction: column; gap: .3rem; height: 100%; box-sizing: border-box; padding: 1.3rem 1.3rem 1.2rem; background: var(--card); transition: border-color .15s, transform .15s; border: 1px solid var(--rule); border-radius: var(--r-md); color: inherit; text-decoration: none; }
+.rd-proof:hover, .rd-proof:focus-visible { border-color: var(--accent); color: inherit; transform: translateY(-2px); }
+.rd-proof-icon { color: var(--accent); margin-bottom: .55rem; }
+@media (prefers-reduced-motion: reduce) { .rd-proof { transition: none; } .rd-proof:hover { transform: none; } }
+.rd-proof:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.rd-proof-label { font-weight: 800; font-size: 1.05rem; }
+.rd-proof-label::after { content: ' ↗'; color: var(--accent); }
+.rd-proof-detail { font-size: .9rem; color: var(--mist); line-height: 1.4; }
+@media (max-width: 860px) { .rd-proof-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .rd-cols { grid-template-columns: minmax(0, 1fr); } }
