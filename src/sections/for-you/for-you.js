@@ -532,7 +532,7 @@ export function mountForYou(root) {
     if (example) {
       cta.innerHTML = '<span>See what FCR changes for your chain</span>'
       cta.href = '#for-you'
-      cta.onclick = (ev) => { ev.preventDefault(); root.scrollIntoView({ behavior: 'smooth', block: 'start' }); input.focus({ preventScroll: true }) }
+      cta.onclick = (ev) => { ev.preventDefault(); root.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); input.focus({ preventScroll: true }) }
     }
     if (sp && sp.kind !== 'single-chain') { cta.innerHTML = '<span>Read the quick start</span>'; cta.href = guideUrl('integrate/quick-start') }
 

@@ -38,9 +38,12 @@ function siteData() {
 }
 
 // Draft partners (data/integrations.json, "draft": true) appear in local dev, in `npm run build:drafts`
-// and in Cloudflare Pages preview builds (any branch but main), never on the production site.
+// and in Netlify deploy previews and branch deploys or Cloudflare Pages preview builds (any branch but
+// main), never on the production site.
 const showDrafts = (command) =>
-  command === 'serve' || process.env.SHOW_DRAFTS === '1' || (process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH !== 'main')
+  command === 'serve' || process.env.SHOW_DRAFTS === '1' ||
+  ['deploy-preview', 'branch-deploy'].includes(process.env.CONTEXT) ||
+  (process.env.CF_PAGES === '1' && process.env.CF_PAGES_BRANCH !== 'main')
 
 // The site's own pages for search engines; the docs write theirs to /docs/sitemap.xml.
 function sitemap() {

@@ -66,6 +66,8 @@ export function mountIntro(section) {
     shownCount = -1
     section.classList.remove('is-playing', 'is-still')
     if (reduce.matches) {
+      if (raf) cancelAnimationFrame(raf)
+      raf = 0
       // One still frame: a project lane in view, the tagline already up.
       world.update(1.5 * SPAN - 1300)
       counter.textContent = String(site.timing.fcrMinimumSeconds)
@@ -103,7 +105,9 @@ export function mountIntro(section) {
     if (a.target && a.target !== '_self') return
     const to = new URL(a.href, location.href)
     if (to.origin === location.origin && to.pathname === location.pathname && to.search === location.search) return
-    setVisible(false)
+    // Wait until every click listener has run: the contact card (and the wordmark) cancel their
+    // clicks to stay on the page, and the hero must keep playing behind them.
+    setTimeout(() => { if (!ev.defaultPrevented) setVisible(false) })
   })
   window.addEventListener('pageshow', (ev) => { if (ev.persisted) setVisible(!document.hidden) })
   if ('ResizeObserver' in window) new ResizeObserver(fit).observe(section)

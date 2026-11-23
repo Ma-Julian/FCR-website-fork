@@ -52,6 +52,6 @@ export function mountGameTrigger() {
     const now = Date.now()
     taps = [...taps.filter((t) => now - t < 1200), now]
     if (taps.length >= 3) { taps = []; start() }
-    else window.scrollTo({ top: 0, behavior: 'smooth' })
+    else window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
   })
 }
