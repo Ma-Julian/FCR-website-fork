@@ -39,6 +39,7 @@ export function mountContact() {
       </ul>
       <div class="bc-foot">
         <a class="bc-org" href="${esc(c.orgUrl)}" target="_blank" rel="noopener" aria-label="${esc(c.org)}">${ethlabsLogo}</a>
+        <a class="bc-form" href="${esc(site.contactUrl)}" target="_blank" rel="noopener">Prefer a form?</a>
       </div>
     </div>`
   document.body.append(dlg)

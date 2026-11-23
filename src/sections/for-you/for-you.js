@@ -187,11 +187,18 @@ export function mountForYou(root) {
     input.style.width = `${w.toFixed(2)}em`
   }
 
-  function plate({ label, tab, on, active, pick, isNew }) {
+  // Role plates are toggle buttons. Entity plates are the combobox's listbox options: the input keeps
+  // focus and points at the highlighted one with aria-activedescendant, so screen readers announce it.
+  function plate({ label, tab, on, active, pick, isNew, optionId }) {
     const b = document.createElement('button')
     b.type = 'button'
     b.className = `fy-plate${on ? ' is-on' : ''}${active ? ' is-active' : ''}${isNew ? ' is-new' : ''}`
-    b.setAttribute('aria-pressed', on ? 'true' : 'false')
+    if (optionId) {
+      b.id = optionId
+      b.setAttribute('role', 'option')
+      b.setAttribute('aria-selected', active ? 'true' : 'false')
+      b.tabIndex = -1
+    } else b.setAttribute('aria-pressed', on ? 'true' : 'false')
     b.innerHTML = `<span class="fy-plate-label">${esc(label)}</span>`
     b.addEventListener('mousedown', (ev) => ev.preventDefault()) // keep focus in the input
     b.addEventListener('click', pick)
@@ -203,9 +210,11 @@ export function mountForYou(root) {
     picker.hidden = state.open === null
     roleBtn.setAttribute('aria-expanded', String(state.open === 'role'))
     input.setAttribute('aria-expanded', String(state.open === 'entity'))
+    input.removeAttribute('aria-activedescendant')
     if (state.open === null) return
     const q = state.query.trim()
     plates.setAttribute('aria-label', state.open === 'role' ? 'What do you do?' : r.title)
+    plates.setAttribute('role', state.open === 'role' ? 'group' : 'listbox')
     root.querySelector('[data-picker-hint]').textContent = state.open === 'role'
       ? '' : q ? 'Not listed? Pick “Use” and we’ll note it.' : 'Not listed? Type its name and press Enter.'
     plates.replaceChildren()
@@ -227,9 +236,11 @@ export function mountForYou(root) {
           label: o.isNew ? `Use “${o.name}”` : o.name,
           tab: o.isNew ? 'NOT LISTED' : r.usesWaits ? (w ? waitTab(w) : 'SET YOUR WAIT') : r.tab,
           on: !o.isNew && o.name === state.entity, active: i === state.hi, isNew: o.isNew,
+          optionId: `fy-opt-${i}`,
           pick: () => commit(o.name),
         }))
       })
+      if (plates.children[state.hi]) input.setAttribute('aria-activedescendant', `fy-opt-${state.hi}`)
     }
   }
 
@@ -586,7 +597,8 @@ export function mountForYou(root) {
     blurTimer = setTimeout(() => {
       if (state.open !== 'entity') return
       const cur = state.query.trim()
-      if (cur && cur !== state.entity) commit(cur)
+      // Leaving the field (Tab, a click elsewhere) picks what Enter would: the highlighted option.
+      if (cur && cur !== state.entity) { const opts = options(); const o = opts[state.hi] || opts[0]; commit(o ? o.name : cur) }
       else { state.query = state.entity; close(); renderSentence() }
     }, 120)
   })

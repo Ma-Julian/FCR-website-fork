@@ -29,6 +29,8 @@
 .bc-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #ECEEF1; }
 .bc-org { display: block; width: 92px; color: #14181F; }
 .bc-org svg { display: block; width: 100%; height: auto; }
+.bc-form { color: #4B5361; font-size: .95rem; text-decoration: underline; text-underline-offset: 3px; }
+.bc-form:hover { color: var(--accent); }
 
 @media (max-width: 420px) {
   .bc-card { padding: 24px 20px 18px; }
