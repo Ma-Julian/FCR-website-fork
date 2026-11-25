@@ -1,109 +1,201 @@
-/* Site-wide tokens and base styles. The site commits to one dusk look in every theme. */
-@import '@fontsource/overpass/latin-400.css';
-@import '@fontsource/overpass/latin-500.css';
+/* Site-wide tokens and base styles. The page follows the original fastconfirm.it: its system type,
+   orange on white and cream, inside an orange frame. The intro keeps its own dusk scene (intro.css),
+   and the F+C+R game keeps the dark palette below. */
+/* Overpass is kept only for the road signs (the bridge and the "saved" sign): it descends from
+   Highway Gothic, the US road-sign face. Only the weights the signs use. */
 @import '@fontsource/overpass/latin-600.css';
 @import '@fontsource/overpass/latin-700.css';
 @import '@fontsource/overpass/latin-800.css';
-@import '@fontsource/overpass/latin-900.css';
 
-/* A local fallback sized to match Overpass, so text keeps its size and position when the web font
-   swaps in. Overrides measured against Arial's metrics (Liberation Sans) on the site's own text. */
+/* A local fallback sized to match Overpass, so the signs keep their size while it loads. */
 @font-face { font-family: 'Overpass Fallback'; font-weight: 100 599; src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('Helvetica Neue'), local('Helvetica');
   size-adjust: 100.76%; ascent-override: 87.64%; descent-override: 38.01%; line-gap-override: 0%; }
 @font-face { font-family: 'Overpass Fallback'; font-weight: 600 900; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('Helvetica Neue Bold'), local('Helvetica Bold');
   size-adjust: 99.81%; ascent-override: 88.47%; descent-override: 38.37%; line-gap-override: 0%; }
 
 :root {
-  color-scheme: dark;
-  /* Overpass descends from Highway Gothic, the US road-sign face: it suits the bridge. */
-  --font: 'Overpass', 'Overpass Fallback', 'Helvetica Neue', Arial, sans-serif;
-  --font-sign: var(--font);
-  --night: #0E1B2C;   /* page ground */
-  --deep: #0A1424;    /* panels */
-  --card: #15263C;    /* raised card */
-  --plate: #1E3A6B;   /* picker plates */
-  --rule: #24394F;
+  color-scheme: light;
+  /* The original site's type: the system UI face, and its code face for code. */
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sign: 'Overpass', 'Overpass Fallback', 'Helvetica Neue', Arial, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Monaco, Inconsolata, 'Fira Code', monospace;
+
+  /* The page: orange on white and cream, as on the original fastconfirm.it. */
+  --bg: #FFFFFF;
+  --bg-alt: #F5F5E9;              /* the original site's cream, for alternate bands */
+  --surface: #FFFFFF;             /* cards on the cream bands */
+  --text: #1C1714;                /* warm near-black: 16:1 on cream */
+  --muted: #6B645B;               /* warm grey: 5.3:1 on cream, 5.8:1 on white */
+  --line: rgba(28, 23, 20, .10);  /* hairlines recede into either background */
+  --line-strong: rgba(28, 23, 20, .18);
+  /* One orange, three strengths, so every use passes WCAG AA:
+     --accent is the brand orange, for fills, bars, the frame and large display type on white (3.3:1);
+     --accent-head is a hair deeper so large orange type passes on cream too (3.4:1, large text);
+     --accent-ink carries small orange text and white button labels (4.5:1 on cream, 5:1 under white). */
+  --accent: #F05F36;
+  --accent-head: #E5532A;
+  --accent-ink: #C93F18;
+  --accent-ink-hi: #AE3412;       /* hover on --accent-ink */
+  --accent-line: rgba(240, 95, 54, .40);
+  --accent-tint: rgba(240, 95, 54, .08);
+  --live: #1A7F43;                /* the live status green, as light as --accent-ink (white text 5:1) */
+
+  /* The dusk palette, kept for the F+C+R game (game.css) and the bridge's overlays. */
+  --night: #0E1B2C;
+  --deep: #0A1424;
+  --card: #15263C;
   --slate: #4A5D7A;
-  --mist: #9AA8BE;    /* secondary text */
+  --mist: #9AA8BE;
   --paper: #FFFFFF;
   --paper-2: #E7ECF5;
   --paper-3: #C9D3E3;
-  /* The one accent: the bright orange of the original fastconfirm.it, kept as its heritage.
-     It passes WCAG AA on every dark surface here (4.6:1 on --card and up). Text set on it is
-     --ink (5.5:1); white on orange does not pass, so never put --paper on --accent. */
-  --accent: #F05F36;
-  --accent-hi: #FF7A50;  /* hover on orange */
-  --ink: #0B1630;        /* text on orange */
+  --ink: #0B1630;
+  --rule: #24394F;
+  --accent-hi: #FF7A50;
+
+  /* The orange frame around the page, as on the original site: 24 px on wide screens, less on phones.
+     It runs along the top and sides; its bottom edge is the end of the page. */
+  --frame: clamp(10px, 2vw, 24px);
+  --frame-r: clamp(14px, 2vw, 24px);   /* the inside corners of the frame */
+  /* The frame's sides: the same width, until the page inside reaches 1880 px (1920 less 40); on wider
+     screens the sides grow and the page stays 1880 px, centred. 100% is the screen's width wherever
+     this is used (the body's padding, the fixed frame and header), scrollbar excluded. */
+  --frame-x: max(var(--frame), (100% - 1880px) / 2);
+
   /* One width and one vertical rhythm for every section, so their edges line up. */
-  --wrap: 1120px;
+  --wrap: 1280px;
   --gutter-l: max(20px, env(safe-area-inset-left, 0px));
   --gutter-r: max(20px, env(safe-area-inset-right, 0px));
-  --sec-pad: clamp(72px, 10vw, 120px);
+  --sec-pad: clamp(64px, 9vw, 112px);
   --gap-lg: clamp(32px, 4.5vw, 52px);   /* section head to its content, and between big blocks in a section */
   --gap-sm: 1.5rem;                      /* a note or link under a block */
-  --r-lg: 24px;                          /* big cards: the result card, the closing card */
-  --r-md: 12px;                          /* small cards, code, tooltips */
+  --r-lg: 24px;                          /* big cards, as on the original site */
+  --r-md: 16px;                          /* small cards, code, tooltips */
+  --header-h: 72px;
+  --ease-out: cubic-bezier(.23, 1, .32, 1);
+  --ease-frame: cubic-bezier(.32, .72, 0, 1);  /* the frame lifting and settling: quick, then a long soft finish */
 }
-/* Every section's head: one title size and one gap to the content, on every section. */
-.sec-head { text-align: center; margin-bottom: var(--gap-lg); }
-.sec-title { margin: 0; font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.08; font-weight: 900; letter-spacing: -.03em; text-wrap: balance; }
-.sec-sub { margin: 16px auto 0; max-width: 52ch; font-size: clamp(1.05rem, 1.6vw, 1.2rem); line-height: 1.5; color: var(--mist); text-wrap: balance; }
-.sec-sub strong { color: var(--accent); }
+
+/* Every section's head: one title size and one gap to the content, on every section. The subhead
+   runs as wide as the title (or 40rem under a short title), not a narrower block of its own. */
+.sec-head { width: fit-content; min-width: min(100%, 40rem); max-width: 100%; margin: 0 auto var(--gap-lg); text-align: center; }
+/* Section titles in ink: orange is kept for actions, figures and highlights, so it still stands out. */
+.sec-title { margin: 0; font-size: clamp(2rem, 4.2vw, 3.25rem); line-height: 1.08; font-weight: 800; letter-spacing: -.025em; color: var(--text); text-wrap: balance; }
+.sec-sub { contain: inline-size; margin: 16px 0 0; font-size: clamp(1.05rem, 1.6vw, 1.2rem); line-height: 1.5; color: var(--muted); text-wrap: pretty; }
+.sec-sub strong { color: var(--text); }
 /* The shared section container: every section's inner box uses these. */
 .wrap { max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter-l) var(--gutter-r); box-sizing: border-box; }
 
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
-html { -webkit-text-size-adjust: 100%; }
-body { margin: 0; background: var(--night); color: var(--paper); font-family: var(--font); font-size: 1rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); background: var(--accent); }
+/* The page sits inside the frame: the padding shows the orange behind it. The sections paint their
+   own backgrounds, so the footer's rounded bottom corners show orange around them. */
+body { margin: 0; padding: var(--frame) var(--frame-x); color: var(--text); font-family: var(--font); font-size: 1rem; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+main { background: var(--bg); }
+/* The top and sides of the frame stay put while the page scrolls inside them: a window cut out of
+   orange, rounded at the top and open at the bottom. The bottom edge arrives with the end of the page
+   (body's bottom padding, under the footer's rounded corners). */
+body::after { content: ''; position: fixed; inset: var(--frame) var(--frame-x) calc(-1 * var(--frame)); z-index: 30; border-radius: var(--frame-r) var(--frame-r) 0 0; box-shadow: 0 0 0 100vmax var(--accent); pointer-events: none;
+  transition: transform .4s var(--ease-frame); }
+/* Once the page scrolls, the frame's top edge slides up out of view and the page meets the top of the
+   screen; the header moves with it. Both slide back at the top (src/lib/header.js sets .is-scrolled).
+   The window reaches one frame below the screen, so lifting it never shows orange at the bottom. */
+html.is-scrolled body::after, html.is-scrolled .site-header { transform: translateY(calc(-1 * var(--frame))); }
+/* The page's scrollbar, after the original site's: a slim rounded thumb, here white on the frame's
+   orange so the bar reads as part of the frame. Firefox takes the standard properties instead. */
+html::-webkit-scrollbar { width: 10px; }
+html::-webkit-scrollbar-track { background: var(--accent); }
+html::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, .75); border: 2px solid var(--accent); border-radius: 999px; }
+html::-webkit-scrollbar-thumb:hover { background: #FFFFFF; }
+@supports not selector(::-webkit-scrollbar) { html { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, .75) var(--accent); } }
 img, svg { max-width: 100%; }
-a { color: var(--accent); }
-a:hover { color: var(--paper); }
+a { color: var(--accent-ink); }
+a:hover { color: var(--accent-ink-hi); }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+::selection { background: rgba(240, 95, 54, .22); }
 .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
-.skip-link { position: absolute; left: 12px; top: -60px; z-index: 50; padding: 10px 14px; border-radius: 8px; background: var(--accent); color: var(--ink); font-weight: 800; text-decoration: none; }
-.skip-link:focus { top: 12px; }
+.skip-link { position: absolute; left: calc(var(--frame-x) + 12px); top: -60px; z-index: 50; padding: 12px 16px; border-radius: 999px; background: var(--accent-ink); color: #FFFFFF; font-weight: 800; line-height: 1; text-decoration: none; }
+.skip-link:focus { top: calc(var(--frame) + 12px); color: #FFFFFF; }
 
-.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 10px; font: inherit; font-weight: 800; font-size: 1rem; text-decoration: none; cursor: pointer; border: 1.5px solid transparent; }
-.btn-accent { background: var(--accent); color: var(--ink); transition: background-color .15s; }
-.btn-accent:hover, .btn-accent:focus-visible { background: var(--accent-hi); color: var(--ink); }
-/* On an orange surface the button turns ink, with white text. */
-.btn-ink { background: var(--ink); color: var(--paper); transition: background-color .15s; }
-.btn-ink:hover, .btn-ink:focus-visible { background: #1B2A4A; color: var(--paper); }
-.btn-ghost { background: rgba(5, 10, 22, .35); color: var(--paper); border-color: rgba(255, 255, 255, .5); }
-.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+/* Buttons: pills, as on the original site. line-height 1 keeps the label centred in the pill. */
+.btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border-radius: 999px; font: inherit; font-weight: 700; font-size: 1rem; line-height: 1; text-decoration: none; cursor: pointer; border: 2px solid transparent;
+  transition: background-color .15s ease, color .15s ease, border-color .15s ease, scale .15s ease-out; }
+/* Hovered (on devices that hover): a little larger. Pressed: a little smaller. */
+.btn:active { scale: .97; }
+@media (hover: hover) and (pointer: fine) { .btn:hover { scale: 1.03; } .btn:hover:active { scale: .97; } }
+.btn-accent { background: var(--accent-ink); color: #FFFFFF; }
+.btn-accent:hover, .btn-accent:focus-visible { background: var(--accent-ink-hi); color: #FFFFFF; }
+/* On an orange surface the button turns white, with orange text. */
+.btn-light { background: #FFFFFF; color: var(--accent-ink); }
+.btn-light:hover, .btn-light:focus-visible { background: var(--bg-alt); color: var(--accent-ink-hi); }
 
-/* Header floats over the intro. */
+/* Header: fixed to the top of the frame. Clear over the intro, then a white bar once the page scrolls
+   past it (src/lib/header.js sets .is-stuck). The frame's rounded corners sit over its ends. */
 .site-header {
-  position: absolute; left: 0; right: 0; top: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  padding-block: max(16px, env(safe-area-inset-top, 0px)) 16px; padding-inline: var(--gutter-l) var(--gutter-r);
+  position: fixed; left: var(--frame-x); right: var(--frame-x); top: var(--frame); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: var(--header-h);
+  padding-block: 12px; padding-inline: max(24px, env(safe-area-inset-left, 0px)) max(24px, env(safe-area-inset-right, 0px));
+  border-bottom: 1px solid transparent;
+  transition: background-color .2s ease, border-color .2s ease, transform .4s var(--ease-frame);
 }
-.wordmark { display: inline-flex; flex-direction: column; align-items: flex-start; gap: 3px; color: var(--accent); text-decoration: none; line-height: 1; }
-.wordmark-fcr { font-weight: 900; font-size: 1.9rem; letter-spacing: -.02em; line-height: .9; }
-.wordmark-sub { white-space: nowrap; font-weight: 600; font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: var(--accent); }
-.wordmark:hover .wordmark-fcr, .wordmark:focus-visible .wordmark-fcr { color: var(--accent-hi); }
-.site-header .btn { min-height: 44px; font-size: .95rem; white-space: nowrap; }
-@media (max-width: 380px) { .wordmark-sub { display: none; } }
+.site-header.is-stuck { background: rgba(255, 255, 255, .9); border-bottom-color: var(--line); -webkit-backdrop-filter: saturate(1.4) blur(12px); backdrop-filter: saturate(1.4) blur(12px); }
+/* The wordmark is set in em, so the footer can show the same mark at any size. */
+.wordmark { display: inline-flex; flex-direction: column; align-items: flex-start; gap: .19em; font-size: 1rem; color: var(--accent); text-decoration: none; line-height: 1; }
+.wordmark-fcr { font-weight: 900; font-size: 1.9em; letter-spacing: -.03em; line-height: .9; }
+.wordmark-sub { white-space: nowrap; font-weight: 600; font-size: .6em; letter-spacing: .2em; text-transform: uppercase; }
+.wordmark:hover { color: var(--accent); }
+.site-header .btn { min-height: 44px; padding: 0 20px; font-size: .95rem; white-space: nowrap; }
+@media (max-width: 380px) { .site-header .wordmark-sub { display: none; } }
 
-.site-footer { border-top: 1px solid var(--rule); background: var(--deep); color: var(--mist); }
-.site-footer .inner { max-width: var(--wrap); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; align-items: center; padding-block: 28px; padding-inline: var(--gutter-l) var(--gutter-r); font-size: .9rem; }
-.site-footer nav { display: flex; flex-wrap: wrap; gap: 8px 20px; }
-.site-footer a { color: var(--paper-3); text-decoration: none; }
-.site-footer a:hover { color: var(--accent); }
-.site-footer span a { text-decoration: underline; text-underline-offset: 2px; }
-
-/* Main navigation. */
+/* Main navigation: white over the intro, ink once the header is stuck. */
 .site-nav { display: flex; align-items: center; gap: clamp(12px, 2.4vw, 28px); }
-.site-nav > a:not(.btn) { color: var(--paper); font-weight: 700; text-decoration: none; padding: 10px 2px; white-space: nowrap; }
-/* Small phones: the header keeps Status and the main button; contact stays in the footer. */
-/* Phones: the Integrate FCR button already leads to the docs. */
+.site-nav > a:not(.btn) { color: #FFFFFF; font-weight: 600; text-decoration: none; padding: 10px 2px; white-space: nowrap; transition: color .15s ease; }
+.site-header.is-stuck .site-nav > a:not(.btn) { color: var(--text); }
+.site-nav > a:not(.btn):hover, .site-nav > a[aria-current="page"],
+.site-header.is-stuck .site-nav > a:not(.btn):hover { color: var(--accent); }
+/* Phones: the Integrate FCR button already leads to the docs; contact stays in the footer. */
 @media (max-width: 600px) { .site-nav .nav-docs { display: none; } }
 @media (max-width: 560px) { .site-nav .nav-contact { display: none; } }
-/* Phones: the wordmark, Status and the main button share one row. */
 @media (max-width: 440px) {
-  .wordmark-sub { letter-spacing: .1em; }
-  .site-header .btn { padding: 0 14px; font-size: .9rem; }
+  .site-header { padding-inline: 16px; }
+  .site-header .wordmark-sub { letter-spacing: .1em; }
+  .site-header .btn { padding: 0 16px; font-size: .9rem; }
 }
-.site-nav > a:not(.btn):hover, .site-nav > a[aria-current="page"] { color: var(--accent); }
-/* On pages without the intro the header sits in the flow. */
-.site-header.is-static { position: relative; background: var(--deep); border-bottom: 1px solid var(--rule); }
+/* On pages without the intro the header is stuck from the start. */
+.site-header.is-static { position: sticky; }
+
+/* Footer: the header's wordmark set large, FCR and "Fast Confirmation Rule" on one line, scaled to
+   span the page (src/lib/footer-mark.js measures the mark once). Both sit on the footer's bottom
+   edge, so the letters meet the frame's bottom border. */
+.site-footer { background: var(--bg); color: var(--muted); border-top: 1px solid var(--line); border-radius: 0 0 var(--frame-r) var(--frame-r); }
+.site-footer .inner { max-width: var(--wrap); margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; align-items: baseline; padding-block: 32px 0; padding-inline: var(--gutter-l) var(--gutter-r); font-size: .9rem; }
+.site-footer .inner > span { max-width: 60ch; }
+.site-footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
+.site-footer nav a { color: var(--text); font-weight: 600; text-decoration: none; }
+.site-footer nav a:hover { color: var(--accent-ink); }
+.site-footer span a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.site-footer span a:hover { color: var(--accent-ink); }
+.footer-mark-wrap { container-type: inline-size; padding: clamp(48px, 7vw, 96px) max(var(--gutter-r), var(--frame-r)) 0 max(var(--gutter-l), var(--frame-r)); }
+/* --fit scales the line to the width; --descent pulls the baseline down onto the bottom edge. */
+.footer-mark { display: flex; width: max-content; flex-direction: row; align-items: baseline; gap: .3em; font-size: calc(var(--fit, 6.6) * 1cqi); margin-bottom: calc(var(--descent, .2) * -1em); }
+.footer-mark .wordmark-fcr { line-height: 1; }
+/* The sub's letter-spacing trails after its last letter; pull it back so the line ends flush. */
+.footer-mark .wordmark-sub { margin-right: -.2em; }
+/* Phones: stacked like the header's mark, FCR over "Fast Confirmation Rule". The longer line, the sub,
+   spans the width, and its baseline meets the bottom edge. */
+/* It sinks 1 px past the edge, so the letters read as set into the frame rather than resting on it. */
+@media (max-width: 600px) { .footer-mark { flex-direction: column; align-items: flex-start; gap: .19em; margin-bottom: calc(var(--descent, .2) * -1em - 1px); } }
+
+/* Entrances (src/lib/reveal.js): each part waits hidden, then arrives after its --rv-delay. The individual
+   translate and scale properties leave transform, and any hover scale, to the element's own rules. */
+.rv { transition: opacity .5s var(--ease-out), translate .5s var(--ease-out), scale .5s var(--ease-out); transition-delay: var(--rv-delay, 0ms); }
+.rv-rise:not(.is-in) { opacity: 0; translate: 0 16px; }
+.rv-fade:not(.is-in) { opacity: 0; }
+.rv-pop:not(.is-in) { opacity: 0; scale: .95; }
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header, .btn, .site-nav > a { transition: none; }
+  .btn:active, .btn:hover, .btn:hover:active { scale: 1; }
+  body::after { transition: none; }
+}

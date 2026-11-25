@@ -6,15 +6,14 @@
   <title>Fast Confirmation Rule: the security you trust, the speed you need</title>
   <meta name="description" content="Accept deposits and messages from Ethereum in as little as {{site.timing.fcrMinimumSeconds}} seconds, backed by its validator set. The Fast Confirmation Rule is a consensus-client feature; no hard fork required.">
   <link rel="canonical" href="https://fastconfirm.it/">
-  <!-- The fonts the first screen uses, fetched with the page instead of after its CSS. -->
-  <link rel="preload" href="../node_modules/@fontsource/overpass/files/overpass-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <!-- The road-sign fonts the first screen uses, fetched with the page instead of after its CSS.
+       All other text is set in the system UI face, which needs no download. -->
   <link rel="preload" href="../node_modules/@fontsource/overpass/files/overpass-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="../node_modules/@fontsource/overpass/files/overpass-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="preload" href="../node_modules/@fontsource/overpass/files/overpass-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="icon" href="/favicon.ico" sizes="48x48">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-  <meta name="theme-color" content="#0A1430">
+  <meta name="theme-color" content="#F05F36">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="author" content="Ethlabs and the Ethereum Foundation">
   <meta property="og:type" content="website">
@@ -89,11 +88,6 @@
     </nav>
   </header>
 
-  <aside class="saved-box" data-time-saved aria-labelledby="saved-title" hidden>
-    <p class="saved-figure"><span class="saved-more" aria-label="at least">≥</span><span data-saved-number></span><span class="saved-unit" data-saved-unit></span></p>
-    <p class="saved-label" id="saved-title">saved with FCR</p>
-  </aside>
-
   <main>
     <section class="intro" data-intro aria-labelledby="intro-title">
       <div class="intro-scene" data-intro-scene role="img" aria-label="Driving fast across a red suspension bridge at dusk, with highway signs for projects that use FCR."></div>
@@ -104,15 +98,18 @@
           <div class="label" data-intro-count-label>Collecting attestations</div>
         </div>
         <div class="intro-titles">
+          <!-- "Time saved with FCR": a road sign above the tagline (src/sections/saved/). Divs, not paragraphs,
+               so the tagline's paragraph styles stay off it. -->
+          <aside class="saved-box reveal-0" data-time-saved aria-labelledby="saved-title" hidden>
+            <div class="saved-figure"><span class="saved-more" aria-label="at least">≥</span><span data-saved-number></span><span class="saved-unit" data-saved-unit></span></div>
+            <div class="saved-label" id="saved-title">saved with FCR</div>
+          </aside>
           <h1 id="intro-title" class="reveal-1"><span>The security you trust.</span><span>The speed you need.</span></h1>
           <p class="reveal-2">Accept deposits and messages from Ethereum in <strong>as little as {{site.timing.fcrMinimumSeconds}} seconds</strong>, backed by its validator set.</p>
-          <!-- One FCR time on the whole site, given as a minimum, so readers don't meet several numbers.
-               End to end, a bridge adds its own steps. -->
-          <p class="intro-fine reveal-3">{{site.timing.fcrMinimumSeconds}} seconds is the minimum. Bridges add their own steps on top.</p>
         </div>
         <div class="intro-foot">
           <a class="intro-next" href="#for-you">See what changes for you
-            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v11M4 9.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+            <!-- Carbon arrow--down (@carbon/icons), inline so it shows before scripts run; outlined one weight up like the rest (src/lib/icons.js). --><svg width="20" height="20" viewBox="0 0 32 32" fill="currentColor" stroke="currentColor" stroke-width=".5" stroke-miterlimit="10" aria-hidden="true" focusable="false"><path d="M24.59 16.59 17 24.17 17 4 15 4 15 24.17 7.41 16.59 6 18 16 28 26 18 24.59 16.59z"/></svg></a>
         </div>
       </div>
       <div class="intro-black"></div>
@@ -138,12 +135,9 @@
           <h2 class="sec-title" id="waits-title">How long Ethereum deposits wait today</h2>
           <p class="sec-sub">FCR speeds up nearly every chain, and gives chains that count blocks a stronger guarantee than they have today.</p>
         </div>
+        <!-- Two columns of bars on wide screens (waits.js fills them), each with FCR's line at its minimum. -->
         <div class="wt">
-          <div class="wt-axis" aria-hidden="true"><span></span><span class="wt-axis-bar"><span class="wt-fcr-label" data-waits-fcr-label><span class="wt-l-now">FCR: at minimum {{site.timing.fcrMinimumSeconds}} s</span></span></span><span></span></div>
-          <div class="wt-body">
-            <div class="wt-lines" aria-hidden="true"><span class="wt-fcr-line wt-now" data-waits-fcr></span></div>
-            <ol class="wt-list" data-waits-list></ol>
-          </div>
+          <div class="wt-body" data-waits-body></div>
         </div>
         <p class="wt-note">From each chain’s code or measured on chain, October 2026 (<a href="{{site.docsUrl}}reference/numbers#deposit-waits-per-chain">sources</a>). Hover or tap a chain to compare it with FCR.</p>
       </div>
@@ -155,19 +149,22 @@
           <h2 class="sec-title" id="ready-title">Readiness</h2>
           <p class="sec-sub">Four clients have shipped FCR.</p>
         </div>
-        <div class="rd-cols">
-          <div>
+        <div class="rd-groups">
+          <div class="rd-group">
             <h3 class="rd-col-title">Consensus clients</h3>
             <ul class="rd-list" data-ready-clients></ul>
           </div>
-          <div>
+          <div class="rd-group">
             <h3 class="rd-col-title">Who uses it</h3>
             <ul class="rd-list" data-ready-users></ul>
-            <h3 class="rd-col-title rd-col-next" data-ready-rpc-title hidden>RPC providers</h3>
-            <ul class="rd-list" data-ready-rpc hidden></ul>
+          </div>
+          <div class="rd-group" data-ready-rpc-group hidden>
+            <h3 class="rd-col-title" data-ready-rpc-title>RPC providers</h3>
+            <ul class="rd-list" data-ready-rpc></ul>
           </div>
         </div>
-        <ul class="rd-proof-list" data-ready-proof aria-label="Why you can trust it"></ul>
+        <h3 class="rd-col-title rd-proof-title" id="ready-proof-title">Learn more</h3>
+        <ul class="rd-proof-list" data-ready-proof aria-labelledby="ready-proof-title"></ul>
       </div>
     </section>
 
@@ -177,19 +174,17 @@
           <h2 class="sec-title" id="adopt-title">Easy to adopt</h2>
           <p class="sec-sub">No hard fork, no new contracts. FCR runs in the consensus client you already have. The core change is the block you read:</p>
         </div>
-        <div class="ad-cols">
-          <div class="ad-main">
-            <div class="ad-diff" aria-label="Read the safe block instead of the finalized block">
-              <div class="ad-rm"><span aria-hidden="true">−</span> eth_getBlockByNumber("finalized")</div>
-              <div class="ad-add"><span aria-hidden="true">+</span> eth_getBlockByNumber("safe")</div>
-            </div>
-            <ul class="ad-points">
-              <li><strong>Turn it on.</strong> Enable FCR in Lighthouse, Prysm, Lodestar or Nimbus, or use an RPC provider that serves it.</li>
-              <li><strong>Handle the rare reorg.</strong> Re-check deposits once they are finalized.</li>
-            </ul>
+        <div class="ad-main">
+          <div class="ad-diff" aria-label="Read the safe block instead of the finalized block">
+            <div class="ad-rm"><span aria-hidden="true">−</span> eth_getBlockByNumber("finalized")</div>
+            <div class="ad-add"><span aria-hidden="true">+</span> eth_getBlockByNumber("safe")</div>
           </div>
-          <nav class="ad-guides" aria-label="Integration guides" data-adopt-guides></nav>
+          <ul class="ad-points">
+            <li><strong>Turn it on.</strong> Enable FCR in Lighthouse, Prysm, Lodestar or Nimbus, or use an RPC provider that serves it.</li>
+            <li><strong>Handle the rare reorg.</strong> Re-check deposits once they are finalized.</li>
+          </ul>
         </div>
+        <nav class="ad-guides" aria-label="Integration guides" data-adopt-guides></nav>
       </div>
     </section>
 
@@ -198,7 +193,7 @@
         <div class="closing-card">
           <h2 class="closing-title" id="closing-title"><span>Your users are waiting.</span> <span>FCR is ready.</span></h2>
           <div class="closing-actions">
-            <a class="btn btn-ink" href="{{site.docsUrl}}">Integrate FCR</a>
+            <a class="btn btn-light" href="{{site.docsUrl}}">Integrate FCR</a>
             <a class="closing-link" href="{{site.contactUrl}}">Talk to us</a>
           </div>
         </div>
@@ -214,6 +209,11 @@
         <a href="https://arxiv.org/abs/2405.00549">Research paper</a>
         <a href="{{site.contactUrl}}">Contact</a>
       </nav>
+    </div>
+    <div class="footer-mark-wrap">
+      <a class="wordmark footer-mark" href="/" aria-label="FCR, Fast Confirmation Rule: home" data-footer-mark>
+        <span class="wordmark-fcr">FCR</span><span class="wordmark-sub">Fast Confirmation Rule</span>
+      </a>
     </div>
   </footer>
 </body>

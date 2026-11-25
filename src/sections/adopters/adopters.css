@@ -1,19 +1,22 @@
-/* A thin band between the hero and "for you": label, then partners with a status each. */
-.adopters { background: var(--deep); color: var(--paper); border-block: 1px solid var(--rule); }
-.adopters-inner { max-width: var(--wrap); margin: 0 auto; padding-block: clamp(48px, 6vw, 72px); padding-inline: var(--gutter-l) var(--gutter-r); display: flex; flex-direction: column; align-items: center; gap: 24px; text-align: center; }
-.adopters-label { margin: 0; font-size: clamp(.8125rem, .9vw, .95rem); font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--mist); }
-.adopters-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-start; gap: 28px clamp(48px, 8vw, 128px); }
-.adopter { display: flex; flex-direction: column; align-items: center; gap: 10px; }
-.adopter-type { font-size: clamp(.75rem, .8vw, .875rem); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
-/* Names scale with the screen, up to the size of the "I work on a chain called …" sentence below. */
-.adopter-name { display: inline-flex; align-items: center; gap: .35em; font-size: clamp(1.75rem, 2.9vw, 2.6rem); font-weight: 800; letter-spacing: -.01em; }
-.adopter-name a { display: inline-flex; align-items: center; gap: .35em; }
-.adopter-logo { display: inline-flex; width: 1.25em; height: 1.25em; flex: none; }
+/* A thin band between the hero and "for you": the label, then each partner: its type, logo and name, and status. */
+.adopters { background: var(--bg); color: var(--text); border-bottom: 1px solid var(--line); }
+.adopters-inner { max-width: var(--wrap); margin: 0 auto; padding-block: clamp(20px, 2.6vw, 28px); padding-inline: var(--gutter-l) var(--gutter-r);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 16px clamp(24px, 4vw, 48px); }
+.adopters-label { margin: 0; padding-right: clamp(24px, 4vw, 48px); border-right: 1px solid var(--line); font-size: .75rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); line-height: 1; align-self: stretch; display: flex; align-items: center; }
+.adopters-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 16px clamp(28px, 5vw, 64px); }
+/* Each partner reads top to bottom, left-aligned: its type, then its logo and name, then its status. */
+.adopter { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.adopter-name { display: inline-flex; align-items: center; gap: .4em; font-size: 1.25rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.2; }
+.adopter-name a { display: inline-flex; align-items: center; gap: .4em; color: inherit; text-decoration: none; transition: color .15s ease; }
+.adopter-name a:hover, .adopter-name a:focus-visible { color: var(--accent-ink); }
+.adopter-logo { display: inline-flex; width: 1.5em; height: 1.5em; flex: none; }
 .adopter-logo svg { width: 100%; height: 100%; }
-.adopter-name a { color: inherit; text-decoration: none; }
-.adopter-name a:hover, .adopter-name a:focus-visible { text-decoration: underline; text-underline-offset: 4px; }
-.adopter-status { display: inline-flex; align-items: center; gap: 6px; font-size: clamp(.875rem, 1vw, 1rem); font-weight: 600; color: var(--mist); white-space: nowrap; }
-.adopter-status i { width: 8px; height: 8px; border-radius: 50%; border: 2px solid var(--slate); box-sizing: border-box; }
-.adopter.is-live .adopter-status { color: var(--accent); }
-.adopter.is-live .adopter-status i { background: var(--accent); border-color: var(--accent); }
-.adopter.is-testnet .adopter-status i { border-color: var(--mist); }
+.adopter-type { font-size: .6875rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); line-height: 1.3; }
+.adopter-status { display: inline-flex; align-items: center; gap: 6px; font-size: .8125rem; font-weight: 700; color: var(--muted); white-space: nowrap; line-height: 1.3; }
+.adopter-status i { width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--muted); }
+.adopter.is-live .adopter-status { color: var(--live); }
+.adopter.is-live .adopter-status i { background: var(--live); border-color: var(--live); }
+@media (max-width: 640px) {
+  .adopters-label { width: 100%; padding-right: 0; border-right: 0; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { .adopter-name a { transition: none; } }

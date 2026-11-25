@@ -1,48 +1,32 @@
-/* "User time saved with FCR": a small highway sign under the header, over the intro, from the first
-   frame. Same green, white inset border and sign typeface as the exit signs on the bridge
-   (src/sections/intro/intro.css .br-sign), hung from two short posts.
-   Corner: .saved-box sits top-left; add .is-right on the element for the top-right corner. */
+/* "User time saved with FCR": a road sign centred above the tagline, in one line: the figure, then
+   "saved with FCR". Same green, white inset border and sign typeface as the exit signs on the bridge
+   (src/sections/intro/intro.css .br-sign). Each hero option recolours it there. */
 .saved-box {
   --sign-green: #00673E;
-  position: absolute; z-index: 10; top: calc(max(14px, env(safe-area-inset-top, 0px)) + 70px);
-  --arm: max(28px, env(safe-area-inset-left, 0px));
-  left: var(--arm);
-  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
-  /* A fixed size, so the sign never resizes while fonts or the number load. */
-  box-sizing: border-box; width: 184px; height: 84px; white-space: nowrap; overflow: hidden;
-  margin: 0; padding: 12px 18px;
+  /* The figure and the label share a baseline; their line is centred in the sign (align-content
+     needs the wrap to apply to a single line). */
+  display: flex; flex-wrap: wrap; align-items: baseline; align-content: center; justify-content: center; gap: 5px;
+  /* A fixed height, so the tagline under it never moves while fonts or the number load. */
+  box-sizing: border-box; height: 56px; padding: 0 18px; margin: 0 0 .4rem; white-space: nowrap; overflow: hidden;
   background: var(--sign-green); color: #FFFFFF; border-radius: 8px;
   box-shadow: inset 0 0 0 3px var(--sign-green), inset 0 0 0 5px #FFFFFF;
   font-family: var(--font-sign);
-  animation: saved-in .6s cubic-bezier(.2, .8, .2, 1) .15s both;
 }
-/* Two arms from the edge of the screen hold it, like a sign on a cantilever mast. They are as long as
-   the gap to the edge, so they always start at the edge. */
-.saved-box::before, .saved-box::after {
-  content: ''; position: absolute; right: 100%; width: var(--arm); height: 4px; background: #8E99A8;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .25);
-}
-.saved-box::before { top: 26%; }
-.saved-box::after { bottom: 26%; }
-.saved-box.is-right { left: auto; right: var(--arm); }
-.saved-box.is-right::before, .saved-box.is-right::after { right: auto; left: 100%; }
-.saved-box p { margin: 0; }
-.saved-figure { display: flex; justify-content: center; align-items: baseline; gap: 5px; font-size: 2.125rem; font-weight: 800; line-height: 1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
-.saved-more { font-size: .6em; }
-.saved-unit { font-size: .5em; font-weight: 700; }
-.saved-label { margin-top: 3px !important; font-size: 1rem; font-weight: 700; line-height: 1.2; white-space: nowrap; }
-/* It swings out from the side it is fixed to. */
-@keyframes saved-in { from { transform: translateX(calc(-100% - var(--arm))); } }
-.saved-box.is-right { animation-name: saved-in-right; }
-@keyframes saved-in-right { from { transform: translateX(calc(100% + var(--arm))); } }
-@media (prefers-reduced-motion: reduce) { .saved-box { animation: none; } }
+/* Until its fonts load (saved.js), it holds its place in the column, unseen, so nothing jumps when it appears. */
+.saved-box[hidden] { display: flex; visibility: hidden; }
+/* Centred by the letters, not the font's line box: Overpass reserves more room below the baseline than
+   above the capitals, so a centred line box sits the text high. Trimmed to cap height and baseline,
+   the gap above the figure's capitals matches the gap below its baseline. */
+.saved-figure, .saved-label { line-height: 1; text-box: trim-both cap alphabetic; }
+.saved-figure { font-size: 2rem; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.saved-more { font-size: .6em; margin-right: 5px; }
+.saved-unit { margin-left: 5px; }
+/* "hours" and "saved with FCR" read as one phrase: the same size and weight. */
+.saved-unit, .saved-label { font-size: 1rem; font-weight: 700; }
 
-/* Phones: a smaller sign, so the tagline keeps the middle of the screen. */
+/* Phones: a smaller sign. */
 @media (max-width: 600px) {
-  .saved-box { top: calc(max(14px, env(safe-area-inset-top, 0px)) + 64px); padding: 9px 13px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--sign-green), inset 0 0 0 4px #FFFFFF; }
-  .saved-box { --arm: max(16px, env(safe-area-inset-left, 0px)); }
-  .saved-box::before, .saved-box::after { height: 3px; }
+  .saved-box { height: 46px; gap: 4px; padding-inline: 14px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--sign-green), inset 0 0 0 4px #FFFFFF; }
   .saved-figure { font-size: 1.5rem; }
-  .saved-label { font-size: .8125rem; }
-  .saved-box { width: 140px; height: 66px; }
-  }
+  .saved-unit, .saved-label { font-size: .8125rem; }
+}

@@ -57,16 +57,57 @@ export function mountWaits(root) {
   const list = rows()
   const max = Math.max(...list.map((r) => r.sec))
   const pct = (s) => `${((100 * s) / max).toFixed(2)}%`
-  root.querySelector('[data-waits-fcr]').style.left = pct(FCR)
-  root.querySelector('[data-waits-fcr-label]').style.left = pct(FCR)
-  root.querySelector('[data-waits-list]').innerHTML = list.map((r, i) => `
-    <li class="wt-row${r.live ? ' is-live' : ''}" tabindex="0" data-i="${i}" aria-describedby="wt-tip">
+  const row = (r, i) => `
+    <li class="wt-row${r.live ? ' is-live' : ''}" value="${i + 1}" tabindex="0" data-i="${i}" aria-describedby="wt-tip">
       <span class="wt-name">${esc(r.name)}</span>
       <span class="wt-track"><span class="wt-bar" style="width:${pct(r.sec)}"></span></span>
       <span class="wt-value">${esc(r.label)}<span class="wt-how">${esc(r.how)}</span></span>
-    </li>`).join('')
+    </li>`
+  // Two columns on one scale, each with its own FCR line, so the comparison holds wherever the eye
+  // lands. On desktop the chains read left to right, then down: the longest waits fill the top rows
+  // across both columns, so the gap to FCR shows at first sight. On one column (phones), they read
+  // straight down. Each row keeps its place in the whole list as its number.
+  const col = (items) => `
+    <div class="wt-col">
+      <div class="wt-axis" aria-hidden="true"><span></span><span class="wt-axis-bar"><span class="wt-fcr-label" style="left:${pct(FCR)}">FCR: at minimum ${FCR} s</span></span><span></span></div>
+      <div class="wt-col-body">
+        <div class="wt-lines" aria-hidden="true"><span class="wt-fcr-line" style="left:${pct(FCR)}"></span></div>
+        <ol class="wt-list">${items.map(([r, i]) => row(r, i)).join('')}</ol>
+      </div>
+    </div>`
+  const body = root.querySelector('[data-waits-body]')
+  // Same breakpoint as .wt-body in waits.css.
+  const twoCols = matchMedia('(min-width: 901px)')
+  let allRows = []
+  function layout() {
+    const all = list.map((r, i) => [r, i])
+    const half = Math.ceil(list.length / 2)
+    const [left, right] = twoCols.matches
+      ? [all.filter(([, i]) => i % 2 === 0), all.filter(([, i]) => i % 2 === 1)]
+      : [all.slice(0, half), all.slice(half)]
+    body.querySelectorAll('.wt-col').forEach((c) => c.remove())
+    body.insertAdjacentHTML('afterbegin', col(left) + col(right))
+    allRows = [...body.querySelectorAll('.wt-row')]
+  }
+  layout()
 
-  const body = root.querySelector('.wt-body')
+  // The bars grow in from the left the first time the chart comes into view, each over a time set by
+  // its wait: 0.375 s per minute, so finality's ~13 min takes about 4.9 s and a 1 min wait 0.4 s.
+  // Each eases out, slowing as it reaches its end. Not with reduced motion.
+  if ('IntersectionObserver' in window && body.querySelector('.wt-bar')?.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    body.classList.add('is-waiting')
+    const io = new IntersectionObserver((es) => {
+      if (!es.some((e) => e.isIntersecting)) return
+      io.disconnect()
+      body.classList.remove('is-waiting')
+      const bars = [...body.querySelectorAll('.wt-bar')]
+      const rowsByBar = bars.map((bar) => list[Number(bar.closest('.wt-row').dataset.i)])
+      bars.forEach((bar, i) => bar.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }],
+        { duration: (rowsByBar[i].sec / 60) * 375, easing: 'cubic-bezier(.33, 1, .68, 1)', fill: 'backwards' }))
+    }, { rootMargin: '0px 0px -25% 0px' })
+    io.observe(body)
+  }
+
   const tip = document.createElement('div')
   tip.className = 'wt-tip'
   tip.id = 'wt-tip'
@@ -120,8 +161,11 @@ export function mountWaits(root) {
     const row = rowOf(ev.target)
     if (!row || (ev.key !== 'ArrowDown' && ev.key !== 'ArrowUp')) return
     ev.preventDefault()
-    const next = ev.key === 'ArrowDown' ? row.nextElementSibling : row.previousElementSibling
+    // Down the first column and on into the second.
+    const next = allRows[allRows.indexOf(row) + (ev.key === 'ArrowDown' ? 1 : -1)]
     next?.focus()
   })
   window.addEventListener('resize', hide)
+  // Crossing the breakpoint swaps the reading order.
+  twoCols.addEventListener('change', () => { hide(); layout() })
 }

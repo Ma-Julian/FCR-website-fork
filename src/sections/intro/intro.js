@@ -26,6 +26,27 @@ function distanceAt(t) {
   return d
 }
 
+// Hero options, for review: a switch at the bottom right of the hero picks one (also ?hero=2 in the
+// address, and the last choice is remembered; 1 by default). Each sets its world, its speed (a share
+// of the original dusk bridge's, option 3) and, through data-look on the section, its colours in intro.css.
+//  1. The bridge as an orange-on-white line drawing, faint hills, no sky or sea; 60% slower.
+//  2. The bridge at 60% slower, in the site's own colours: white and cream, orange, ink.
+//  3. The dusk bridge, as it was.
+//  4. Option 3 at half speed.
+const LOOKS = {
+  1: { speed: 0.4, colors: { cable: '#F05F36', susp: '#F05F36' }, light: true },
+  2: { speed: 0.4, colors: { cable: '#F05F36', susp: '#F05F36' }, light: true },
+  3: { speed: 1 },
+  4: { speed: 0.5 },
+}
+const LOOK_KEY = 'fcr-hero-look'
+function firstLook() {
+  const q = new URLSearchParams(location.search).get('hero')
+  if (LOOKS[q]) return q
+  try { const v = localStorage.getItem(LOOK_KEY); if (LOOKS[v]) return v } catch { /* no storage */ }
+  return '1'
+}
+
 export function mountIntro(section) {
   const sceneHost = section.querySelector('[data-intro-scene]')
   const counter = section.querySelector('[data-intro-count]')
@@ -38,6 +59,31 @@ export function mountIntro(section) {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
 
   let world, start = null, raf = 0, visible = true, shownCount = -1, pausedAt = null
+  let look = firstLook()
+
+  // The switch sits over everything in the hero, so it can be used while the intro plays.
+  const picker = document.createElement('div')
+  picker.className = 'intro-looks'
+  picker.setAttribute('role', 'group')
+  picker.setAttribute('aria-label', 'Hero option')
+  picker.innerHTML = '<span class="intro-looks-label" aria-hidden="true">Option</span>' +
+    Object.keys(LOOKS).map((n) => `<button type="button" data-look="${n}" aria-label="Option ${n}">${n}</button>`).join('')
+  section.appendChild(picker)
+  function applyLook() {
+    section.dataset.look = look
+    section.classList.toggle('is-light', !!LOOKS[look].light)
+    document.documentElement.dataset.heroLook = look
+    for (const b of picker.querySelectorAll('button')) b.setAttribute('aria-pressed', String(b.dataset.look === look))
+  }
+  picker.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button[data-look]')
+    if (!b || b.dataset.look === look) return
+    look = b.dataset.look
+    try { localStorage.setItem(LOOK_KEY, look) } catch { /* no storage */ }
+    applyLook()
+    play()
+  })
+  applyLook()
 
   const fit = () => { fitScene(sceneHost, hills, section.clientWidth, section.clientHeight); world?.redraw() }
 
@@ -56,13 +102,15 @@ export function mountIntro(section) {
     raf = 0
     if (start === null) start = now
     const t = (now - start) / 1000
-    world.update(distanceAt(t))
+    world.update(distanceAt(t) * LOOKS[look].speed)
     setCount(t)
     if (visible) raf = requestAnimationFrame(frame)
   }
 
   function play() {
-    world = createWorld(worldEl, { destinations, routes: bridgeRoutes, nearDrawn: 0 })
+    // A new world for the chosen option, with a fresh canvas for its cables.
+    sceneHost.querySelector('.br-cables')?.remove()
+    world = createWorld(worldEl, { destinations, routes: bridgeRoutes, colors: LOOKS[look].colors })
     shownCount = -1
     section.classList.remove('is-playing', 'is-still')
     if (reduce.matches) {

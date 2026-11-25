@@ -10,6 +10,12 @@ import { mountAdopt } from '@src/sections/adopt/adopt.js'
 import { mountSaved } from '@src/sections/saved/saved.js'
 import { mountDocsPrefetch } from '@src/lib/prefetch-docs.js'
 import { mountContact } from '@src/sections/contact/contact.js'
+import { mountHeader } from '@src/lib/header.js'
+import { mountFooterMark } from '@src/lib/footer-mark.js'
+import { reveal } from '@src/lib/reveal.js'
+
+mountHeader()
+mountFooterMark()
 
 // "Waiting saved with FCR" box in a top corner, shown from the first moment.
 const savedEl = document.querySelector('[data-time-saved]')
@@ -27,6 +33,12 @@ const waitsEl = document.querySelector('[data-waits]')
 if (waitsEl) mountWaits(waitsEl)
 const readyEl = document.querySelector('[data-ready]')
 if (readyEl) mountReady(readyEl)
+// The closing card grows in from 95% as it fades in; then its title and buttons rise in.
+const closingCard = document.querySelector('.closing-card')
+if (closingCard) {
+  reveal(closingCard, [closingCard], { kind: 'pop' })
+  reveal(closingCard, closingCard.children, { start: 250 })
+}
 // The docs load from cache once the page is idle (and prerender on hover where supported).
 mountContact()
 mountDocsPrefetch()

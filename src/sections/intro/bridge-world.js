@@ -66,12 +66,12 @@ function plane(cls, x, w, y, bg, near) {
 }
 
 // `near` is how far toward the camera the deck reaches; the game's high camera sees further back.
-// `nearDrawn` is the nearest distance the cables and suspenders are drawn at. In the intro's
-// camera the browser left out the pooled carriers that came nearer than the camera's plane, so
-// the intro passes 0 to keep that look; the game's camera sits further back and shows them all.
-export function createWorld(container, { destinations, routes, rng = Math.random, near = 650, nearDrawn = NEAR }) {
+// `nearDrawn` is the nearest distance the cables and suspenders are drawn at. Both the intro and
+// the game draw them as near as the deck reaches, so they run off the screen's edges with it.
+// `colors` sets the canvas-drawn cable and suspenders ({ cable, susp }); the rest takes its colours from CSS.
+export function createWorld(container, { destinations, routes, rng = Math.random, near = 650, nearDrawn = NEAR, colors = {} }) {
   // ---- static deck ----
-  let html = plane('', -325, 650, 100, 'linear-gradient(90deg,#262B38 0%,#2E3442 50%,#262B38 100%)', near)
+  let html = plane('br-deck', -325, 650, 100, 'linear-gradient(90deg,#262B38 0%,#2E3442 50%,#262B38 100%)', near)
   // Lane dashes are one DASH longer than the deck at the near end and slide by transform,
   // so they never need repainting.
   for (let e = 1; e < EDGES.length - 1; e++) html += plane('br-dash', EDGES[e] - 3, 6, 99, '', near + DASH)
@@ -85,7 +85,7 @@ export function createWorld(container, { destinations, routes, rng = Math.random
   container.querySelectorAll('.br-carrier').forEach((el) => pool.push({ el, base: Number(el.dataset.base) }))
   const dashes = [...container.querySelectorAll('.br-dash')].map((el) => ({ el, base: el.style.transform }))
   const layer = container.querySelector('.br-features')
-  const cables = createCables(container, Math.max(NEAR, nearDrawn))
+  const cables = createCables(container, Math.max(NEAR, nearDrawn), { cable: colors.cable || CABLE, susp: colors.susp || SUSP })
 
   // ---- random schedule of lanes and signs, on mid-span gantry slots ----
   const slotW = (n) => (n + 0.5) * SPAN
@@ -196,7 +196,7 @@ function taperMask(len) {
 // Points are projected with the same math the browser uses for the page elements: the camera
 // (.br-cam) has perspective PERSPECTIVE with its origin at (50%, 42%) of the scene, where the
 // world element also sits, and the world is offset by the translate3d in its inline transform.
-function createCables(worldEl, rMin) {
+function createCables(worldEl, rMin, { cable, susp }) {
   const cam = worldEl.parentElement
   const host = cam.parentElement
   let canvas = host.querySelector(':scope > .br-cables')
@@ -240,7 +240,7 @@ function createCables(worldEl, rMin) {
     for (const side of [-PLANE_X, PLANE_X]) {
       const X = side + tx
       // suspenders: a 3 px bar from the cable down to the deck, facing the camera
-      ctx.fillStyle = SUSP
+      ctx.fillStyle = susp
       for (let i = Math.ceil(u0 / STEP - 0.5); (i + 0.5) * STEP < u1; i++) {
         const u = (i + 0.5) * STEP, r = u - d + NEAR, s = sAt(r)
         if (!s || r < rMin) continue
@@ -250,7 +250,7 @@ function createCables(worldEl, rMin) {
       }
       // main cable: short flat ribbons in the cable's vertical plane, CABLE_W wide across the
       // cable, so a steep stretch is seen nearly edge-on and looks thin, as the page elements did
-      ctx.fillStyle = CABLE
+      ctx.fillStyle = cable
       const step = SPAN / 48
       // As page elements each piece hung from a suspender toward the camera (a full gap, or half a
       // gap next to a tower) and each tower held half a gap, so the cable starts there.

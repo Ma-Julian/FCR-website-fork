@@ -1,7 +1,7 @@
 /* Intro: a fixed dusk world (same in light and dark themes) with a responsive text layer on top. */
 .intro {
   position: relative;
-  height: 100svh;
+  height: calc(100svh - var(--frame)); /* the screen under the frame's top edge (it has no bottom edge until the page ends) */
   min-height: 560px;
   max-height: 1100px;
   overflow: hidden;
@@ -14,7 +14,9 @@
 .intro-scene { position: absolute; left: 0; top: 0; width: 1440px; height: 810px; transform-origin: 0 0; overflow: hidden; }
 .intro-sky { position: absolute; inset: 0; background: linear-gradient(180deg, #0A1430 0%, #1E2D55 18%, #4A4470 30%, #B8706E 37%, #EBA56C 41.4%, #F4C99A 42%, #3E5872 42.1%, #24394F 55%, #0E1B2C 100%); }
 .intro-glow { position: absolute; left: 0; right: 0; top: 30%; height: 24%; background: radial-gradient(ellipse 38% 60% at 50% 50%, rgba(255, 214, 160, .55), rgba(255, 180, 120, 0) 70%); }
-.intro-hills { position: absolute; }
+/* Always its full 1440 px, centred by scene.js and cropped by the scene: the page's svg { max-width: 100% }
+   would shrink it to the scene's width, which leaves a gap at the right edge on screens narrower than 16:9. */
+.intro-hills { position: absolute; max-width: none; }
 .intro-vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 42%, transparent 35%, rgba(5, 10, 22, .55) 100%); pointer-events: none; }
 
 .br-cam { position: absolute; inset: 0; perspective: 700px; perspective-origin: 50% 42%; }
@@ -62,10 +64,23 @@
 }
 .intro-titles h1 { margin: 0; font-size: clamp(2.6rem, 7.2vw, 6rem); line-height: 1; font-weight: 900; letter-spacing: -.03em; text-wrap: balance; }
 .intro-titles h1 span { display: block; }
+/* Phones: each sentence takes two lines anyway, so set them larger and part them with a gap, so the
+   two read as two statements rather than four lines of one. 14.5vw keeps "The security" on one line. */
+@media (max-width: 600px) {
+  .intro-titles h1 { font-size: clamp(2.6rem, 14.5vw, 3.75rem); }
+  .intro-titles h1 span + span { margin-top: .3em; }
+}
+/* Phones, on the light options (1 and 2): the headline multiplies with the scene, so the bridge and
+   hills show through its letters as darker strokes. The ink is a little lighter than the page's so
+   the effect shows. A blend mode only reaches as far as the nearest stacking context, so the text
+   layer drops its z-index here: it already paints over the scene, coming after it in the page. On
+   the dusk options (3 and 4) the headline is white, which multiply would turn invisible. */
+@media (max-width: 600px) {
+  .intro.is-light .intro-layer { z-index: auto; }
+  .intro.is-light .intro-titles h1 { color: #3D3530; mix-blend-mode: multiply; }
+}
 .intro-titles p { margin: .4rem 0 0; max-width: 46rem; font-size: clamp(1.05rem, 1.7vw, 1.4rem); line-height: 1.45; font-weight: 500; color: #E7ECF5; text-wrap: balance; }
 .intro-titles p strong { color: #F05F36; font-weight: 800; font-size: 1.25em; white-space: nowrap; }
-/* The small line under the subhead that tells FCR's own times from end-to-end bridge time. */
-.intro-titles p.intro-fine { margin: -.35rem 0 0; max-width: 40rem; font-size: clamp(.85rem, 1.05vw, 1rem); line-height: 1.5; color: #B9C3D6; }
 .intro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1rem; }
 
 .intro-counter {
@@ -76,7 +91,7 @@
 .intro-counter .num { font-size: clamp(6rem, 13vw, 10.5rem); line-height: .9; font-weight: 900; letter-spacing: -.04em; min-width: 2ch; text-align: right; }
 .intro-counter .unit { font-size: clamp(1.8rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -.02em; }
 .intro-counter .label { font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: 500; color: #E7ECF5; padding: .35rem 1rem; border-radius: 999px; }
-.intro-counter .label.is-done { font-weight: 700; color: #0B1630; background: #F05F36; text-shadow: none; animation: intro-pop .35s ease-out; }
+.intro-counter .label.is-done { font-weight: 700; color: #FFFFFF; background: #F05F36; text-shadow: none; animation: intro-pop .35s ease-out; }
 
 .intro-foot { position: absolute; left: 0; right: 0; bottom: max(16px, env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; align-items: center; gap: 12px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); opacity: 0; }
 /* The text, then the arrow centred under it. */
@@ -97,9 +112,10 @@
 .intro.is-playing .intro-black { animation: intro-black .5s ease-out forwards; }
 .intro.is-playing .intro-counter { animation: intro-count-in .3s ease-out .25s both, intro-count-out .35s ease-in 2.35s forwards; }
 .intro.is-playing .intro-dim { animation: intro-in .5s ease-out 2.3s both; }
+/* The time-saved sign above the headline (saved.css) comes in just before it, the same way. */
+.intro.is-playing .reveal-0 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.4s both; }
 .intro.is-playing .reveal-1 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.55s both; }
 .intro.is-playing .reveal-2 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.8s both; }
-.intro.is-playing .reveal-3 { animation: intro-in .6s ease-out 3.15s both; }
 .intro.is-playing .intro-foot { animation: intro-in .6s ease-out 3.4s both; }
 .intro.is-paused * { animation-play-state: paused !important; }
 .intro.is-still .intro-dim, .intro.is-still .intro-foot { opacity: 1; }
@@ -112,3 +128,92 @@
   .intro-dim, .intro-foot { opacity: 1; }
   .intro.is-still .intro-black { opacity: 0; }
 }
+
+/* ---------- hero options, for review (intro.js LOOKS) ---------- */
+/* The switch: bottom right, over the whole hero (the black cover too). */
+.intro-looks {
+  position: absolute; z-index: 4; right: max(16px, env(safe-area-inset-right, 0px)); bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  display: flex; align-items: center; gap: 2px; padding: 4px; border-radius: 999px;
+  background: rgba(255, 255, 255, .14); color: #FFFFFF; -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+}
+.intro-looks-label { padding: 0 8px 0 10px; font-size: .6875rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; opacity: .8; }
+.intro-looks button {
+  width: 32px; height: 32px; border: 0; border-radius: 50%; background: transparent; color: inherit; cursor: pointer;
+  font: 700 .875rem/1 var(--font); font-variant-numeric: tabular-nums; transition: background-color .15s ease, color .15s ease;
+}
+.intro-looks button:hover { background: rgba(255, 255, 255, .18); }
+.intro-looks button[aria-pressed="true"] { background: #FFFFFF; color: var(--text); }
+.intro-looks button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.intro.is-light .intro-looks { background: rgba(28, 23, 20, .06); color: var(--text); }
+.intro.is-light .intro-looks button:hover { background: rgba(28, 23, 20, .08); }
+.intro.is-light .intro-looks button[aria-pressed="true"] { background: var(--text); color: #FFFFFF; }
+
+/* Options 1 and 2 are light: dark text, a white cover and scrim, and a dark header over them. */
+.intro.is-light { background: #FFFFFF; color: var(--text); }
+.intro.is-light .intro-black { background: #FFFFFF; }
+.intro.is-light .intro-dim { background: rgba(255, 255, 255, .6); }
+.intro.is-light .intro-titles p { color: var(--text); }
+.intro.is-light .intro-titles p strong { color: var(--accent-ink); }
+.intro.is-light .intro-counter { text-shadow: 0 2px 24px rgba(255, 255, 255, .9); }
+.intro.is-light .intro-counter .label { color: var(--text); }
+.intro.is-light .intro-counter .label.is-done { color: #FFFFFF; background: var(--accent-ink); }
+.intro.is-light .intro-next { color: var(--text); }
+.intro.is-light .intro-next:hover { color: var(--accent-ink); }
+html:is([data-hero-look="1"], [data-hero-look="2"]) .site-header:not(.is-stuck) .site-nav > a:not(.btn) { color: var(--text); }
+html:is([data-hero-look="1"], [data-hero-look="2"]) .site-header:not(.is-stuck) .site-nav > a:not(.btn):hover { color: var(--accent-ink); }
+
+/* Lighter scrims over the scene. */
+.intro[data-look="1"] .intro-dim { background: rgba(255, 255, 255, .7); }
+.intro[data-look="2"] .intro-dim { background: rgba(255, 255, 255, .5); }
+
+/* Option 1: a line drawing in the brand orange on white, like a vector illustration. No sky, glow or
+   sea; the headline and text stay dark. (--hero-ink is the drawing's one colour; it was black before.) */
+.intro[data-look="1"] { --hero-ink: var(--accent); }
+.intro[data-look="1"] :is(.intro-sky, .intro-glow, .intro-vignette) { display: none; }
+/* The hills, faintly, so the bridge has something behind it. */
+.intro[data-look="1"] .intro-hills path:nth-of-type(-n+2) { fill: color-mix(in srgb, var(--hero-ink) 5%, transparent); }
+.intro[data-look="1"] .intro-hills path:nth-of-type(n+3) { fill: color-mix(in srgb, var(--hero-ink) 9%, transparent); }
+.intro[data-look="1"] .intro-hills rect { display: none; }
+.intro[data-look="1"] .br-sign { background: #FFFFFF; color: var(--hero-ink); box-shadow: inset 0 0 0 4px var(--hero-ink); }
+.intro[data-look="1"] .br-band { background: var(--hero-ink) !important; color: #FFFFFF; }
+.intro[data-look="1"] .br-tab { border-color: var(--hero-ink); }
+.intro[data-look="1"] .br-ar path { stroke: var(--hero-ink); }
+/* Trial: the time-saved sign outlined and lettered in the live green instead of the drawing's orange. */
+.intro[data-look="1"] .saved-box { --sign-green: #FFFFFF; color: var(--live); box-shadow: inset 0 0 0 4px var(--live); }
+
+/* The bridge in outline. A white deck with inked lane lines; towers, struts and saddles drawn as
+   outlines; girders as rules; posts, beams, cables and suspenders solid ink. */
+.intro[data-look="1"] .br-deck { background: #FFFFFF !important; }
+.intro[data-look="1"] .br-dash { background-image: repeating-linear-gradient(180deg, var(--hero-ink) 0 200px, transparent 200px 600px); }
+.intro[data-look="1"] .br-girder { background: linear-gradient(180deg, var(--hero-ink) 0 4px, #FFFFFF 4px 30px, var(--hero-ink) 30px 34px, #FFFFFF 34px 54px, var(--hero-ink) 54px 58px); }
+.intro[data-look="1"] .br-leg { background: var(--hero-ink); }
+.intro[data-look="1"] .br-leg::after { content: ''; position: absolute; inset: 6px 6px 0; background: #FFFFFF; clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); }
+.intro[data-look="1"] :is(.br-strut, .br-saddle) { box-sizing: border-box; background: #FFFFFF; border: 5px solid var(--hero-ink); }
+.intro[data-look="1"] :is(.br-post, .br-beam) { background: var(--hero-ink); }
+.intro[data-look="1"] .br-run-tint { background: color-mix(in srgb, var(--hero-ink) 5%, transparent) !important; }
+.intro[data-look="1"] .br-run-line { background: linear-gradient(90deg, var(--hero-ink) 0 5px, transparent 5px 9px, var(--hero-ink) 9px 14px); }
+
+/* Option 2: the bridge in the site's palette, flat. A white sky, a sea from cream at the horizon to white, hills in the
+   chart's warm greys, a cream road with grey lines, orange steel, and signs in the site's live green. */
+.intro[data-look="2"] .intro-sky { background: linear-gradient(180deg, #FFFFFF 42%, #F5F5E9 42.1%, #FBFBF5 56%, #FFFFFF 100%); }
+.intro[data-look="2"] :is(.intro-glow, .intro-vignette) { display: none; }
+.intro[data-look="2"] .intro-hills path:nth-of-type(-n+2) { fill: #E3DFD0; }
+.intro[data-look="2"] .intro-hills path:nth-of-type(n+3) { fill: #CFC9BD; }
+.intro[data-look="2"] .intro-hills rect { display: none; }
+.intro[data-look="2"] .br-deck { background: #F5F5E9 !important; }
+.intro[data-look="2"] .br-dash { background-image: repeating-linear-gradient(180deg, #CFC9BD 0 200px, transparent 200px 600px); }
+.intro[data-look="2"] .br-girder { background: linear-gradient(180deg, #F05F36 0 30px, #E5532A 30px 58px); }
+.intro[data-look="2"] .br-leg { background: #F05F36; }
+.intro[data-look="2"] :is(.br-strut, .br-saddle) { background: #E5532A; }
+.intro[data-look="2"] :is(.br-post, .br-beam) { background: #6B645B; }
+.intro[data-look="2"] .br-sign { background: var(--live); box-shadow: inset 0 0 0 3px var(--live), inset 0 0 0 5px #FFFFFF; }
+.intro[data-look="2"] .br-band { background: #CFC9BD !important; color: var(--text); }
+.intro[data-look="2"] .br-run-tint { background: rgba(240, 95, 54, .35) !important; }
+.intro[data-look="2"] .br-run-line { background: linear-gradient(90deg, #CFC9BD 0 5px, transparent 5px 9px, #CFC9BD 9px 14px); }
+/* The counter in ink, with no glow behind it. */
+.intro[data-look="2"] .intro-counter { text-shadow: none; }
+html[data-hero-look="2"] .saved-box { --sign-green: var(--live); }
+
+/* Phones: above the "See what changes for you" link, not beside it. */
+@media (max-width: 640px) { .intro-looks { bottom: calc(max(16px, env(safe-area-inset-bottom, 0px)) + 72px); } }
+@media (prefers-reduced-motion: reduce) { .intro-looks button { transition: none; } }

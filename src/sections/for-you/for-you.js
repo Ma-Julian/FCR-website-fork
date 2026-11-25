@@ -2,10 +2,9 @@
 // protocol or asset; the card below answers with their own numbers.
 import { roles, lists, site, waits, ready, sourcedWait, waitK, measuredFor, stackFor, venueFor, bridgeFor, timeSaved } from '@src/lib/data.js'
 import { savedHours } from '@src/sections/saved/saved.js'
+import { icon } from '@src/lib/icons.js'
 import { STATUSES } from '@src/lib/partners.js'
 import { result, speedup, headlineFor, issuerPlan, appPlan, solverPlan, fmt, REORG_RATE_URL } from './results.js'
-import '@fontsource/overpass-mono/latin-500.css'
-import '@fontsource/overpass-mono/latin-600.css'
 import './for-you.css'
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
@@ -18,7 +17,9 @@ const slug = (name) => String(name).toLowerCase().replace(/[^a-z0-9]+/g, '-').re
 // A docs page under site.docsUrl, whether or not that ends in a slash.
 const guideUrl = (path) => site.docsUrl.replace(/\/?$/, '/') + path
 
-const DOWNLOAD_ICON = '<svg class="fy-cta-icon" width="20" height="20" viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3v9.5M5.5 8.5 10 13l4.5-4.5M4 16.5h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+// The current choice in the picker: a check in the text's colour.
+const PICKED = icon('checkmark', { size: 16, cls: 'fy-picked' })
+const DOWNLOAD_ICON = icon('download', { size: 20, cls: 'fy-cta-icon' })
 
 // Builds and downloads the PDF; pdf-lib loads on first use.
 async function getBrief(btn, brief) {
@@ -60,17 +61,19 @@ export function mountForYou(root) {
     <div class="fy-head">
       <h2 class="fy-title" id="fy-title">Why should you use FCR?</h2>
     </div>
-    <p class="fy-sentence">I <button type="button" class="fy-slot fy-role" aria-expanded="false" aria-controls="fy-picker"><span data-role-phrase></span><svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M5 8l6 6 6-6" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></button> <span data-connector></span> <input class="fy-slot fy-input" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="fy-picker" autocomplete="off" spellcheck="false">.</p>
-    <p class="fy-sub">Tell us what you work on and see what FCR changes for you.</p>
+    <p class="fy-sentence">I <button type="button" class="fy-slot fy-role" aria-expanded="false" aria-controls="fy-picker"><span data-role-phrase></span>${icon('chevron-down', { size: 22 })}</button> <span class="fy-tail"><span data-connector></span> <input class="fy-slot fy-input" type="text" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="fy-picker" autocomplete="off" spellcheck="false"></span></p>
     <div id="fy-picker" class="fy-picker" hidden>
       <div class="fy-plates" role="group" data-plates></div>
       <div class="fy-picker-hint" data-picker-hint></div>
     </div>
     <div class="fy-card" data-card hidden>
-      <p class="fy-example" data-example hidden></p>
-      <div class="fy-new" data-new hidden><span class="fy-chip">NOT LISTED</span><span data-new-text></span></div>
-      <h3 class="fy-headline" aria-live="polite" data-headline></h3>
-      <section class="fy-grp fy-do" aria-labelledby="fy-sec-do" data-sec-do hidden>
+      <div class="fy-card-head">
+        <p class="fy-example" data-example hidden></p>
+        <div class="fy-new" data-new hidden><span class="fy-chip">NOT LISTED</span><span data-new-text></span></div>
+        <h3 class="fy-headline" aria-live="polite" data-headline></h3>
+        <p class="fy-live" data-live hidden></p>
+      </div>
+      <section class="fy-grp fy-tile fy-do" aria-labelledby="fy-sec-do" data-sec-do hidden>
         <h4 class="fy-grp-title" id="fy-sec-do">What you can do</h4>
         <p class="fy-num-lede" data-do-lede></p>
         <ol class="fy-do-steps" data-do-steps></ol>
@@ -78,50 +81,50 @@ export function mountForYou(root) {
         <p class="fy-do-note" data-do-note hidden></p>
         <p class="fy-do-docs" data-do-docs hidden></p>
       </section>
-      <div class="fy-cmp" data-cmp>
-        <p class="fy-live" data-live hidden></p>
-        <div class="fy-cmp-cols" aria-hidden="true"><span data-col-today>Today</span><span class="is-fcr">With FCR</span></div>
-        <section class="fy-grp" aria-labelledby="fy-sec-speed">
-          <h4 class="fy-grp-title" id="fy-sec-speed">Speed</h4>
-          <p class="fy-race" data-race hidden></p>
-          <div class="fy-k" role="group" data-k hidden><span class="fy-k-q" data-k-q></span><span class="fy-k-chips" data-k-chips></span></div>
-          <div class="fy-pairs" data-speed></div>
-          <div class="fy-ledger fy-tiers" data-tiers hidden></div>
-          <p class="fy-src" data-speed-src hidden></p>
-        </section>
-        <section class="fy-grp" aria-labelledby="fy-sec-security" data-sec-security>
-          <h4 class="fy-grp-title" id="fy-sec-security" data-security-title>Security</h4>
-          <div class="fy-pairs" data-security></div>
-          <p class="fy-src" data-security-src hidden></p>
+      <!-- Speed, security and numbers side by side: whichever of them this reader's card shows. -->
+      <div class="fy-panels">
+        <div class="fy-cmp" data-cmp>
+          <section class="fy-grp fy-tile fy-panel fy-speed" aria-labelledby="fy-sec-speed">
+            <h4 class="fy-grp-title" id="fy-sec-speed">Speed</h4>
+            <p class="fy-race" data-race hidden></p>
+            <div class="fy-k" role="group" data-k hidden><span class="fy-k-q" data-k-q></span><span class="fy-k-chips" data-k-chips></span></div>
+            <div data-speed></div>
+            <div class="fy-ledger fy-tiers" data-tiers hidden></div>
+            <p class="fy-src" data-speed-src hidden></p>
+          </section>
+          <section class="fy-grp fy-tile fy-panel fy-security" aria-labelledby="fy-sec-security" data-sec-security>
+            <h4 class="fy-grp-title" id="fy-sec-security" data-security-title>Security</h4>
+            <div class="fy-srows" data-security></div>
+            <p class="fy-src" data-security-src hidden></p>
+          </section>
+        </div>
+        <section class="fy-grp fy-tile fy-panel fy-numbers" aria-labelledby="fy-sec-numbers" data-sec-numbers hidden>
+          <h4 class="fy-grp-title" id="fy-sec-numbers">Numbers <span class="fy-period" data-numbers-period></span></h4>
+          <p class="fy-num-lede" data-numbers-lede></p>
+          <div class="fy-split-bar" data-split></div>
+          <div class="fy-stats" data-numbers></div>
         </section>
       </div>
-      <section class="fy-grp fy-num" aria-labelledby="fy-sec-demand" data-sec-demand hidden>
+      <section class="fy-grp fy-tile fy-num" aria-labelledby="fy-sec-demand" data-sec-demand hidden>
         <h4 class="fy-grp-title" id="fy-sec-demand">Who wants it</h4>
         <p class="fy-num-lede" data-demand-lede></p>
         <div class="fy-ledger" data-demand></div>
         <p class="fy-more" data-demand-more></p>
       </section>
-      <section class="fy-grp fy-num" aria-labelledby="fy-sec-enable" data-sec-enable hidden>
+      <section class="fy-grp fy-tile fy-num" aria-labelledby="fy-sec-enable" data-sec-enable hidden>
         <h4 class="fy-grp-title" id="fy-sec-enable">How to turn it on</h4>
         <p class="fy-num-lede" data-enable-lede></p>
         <ol class="fy-steps" data-steps></ol>
         <p class="fy-more" data-enable-note></p>
       </section>
-      <section class="fy-grp fy-num" aria-labelledby="fy-sec-integrated" data-sec-integrated hidden>
+      <section class="fy-grp fy-tile fy-num" aria-labelledby="fy-sec-integrated" data-sec-integrated hidden>
         <h4 class="fy-grp-title" id="fy-sec-integrated">Already integrated</h4>
         <p class="fy-num-lede" data-integrated-lede></p>
         <div class="fy-ledger" data-integrated></div>
       </section>
-      <section class="fy-grp fy-num fy-do" aria-labelledby="fy-sec-fill" data-sec-fill hidden>
+      <section class="fy-grp fy-tile fy-num fy-do" aria-labelledby="fy-sec-fill" data-sec-fill hidden>
         <h4 class="fy-grp-title" id="fy-sec-fill">How to integrate</h4>
         <ul class="fy-steps fy-options" data-fill-steps></ul>
-      </section>
-      <section class="fy-grp fy-num" aria-labelledby="fy-sec-numbers" data-sec-numbers hidden>
-        <h4 class="fy-grp-title" id="fy-sec-numbers">Numbers</h4>
-        <p class="fy-grp-sub fy-period" data-numbers-period></p>
-        <p class="fy-num-lede" data-numbers-lede></p>
-        <div class="fy-split-bar" data-split></div>
-        <div class="fy-ledger" data-numbers></div>
       </section>
       <div class="fy-foot"><p class="fy-stack" data-stack hidden></p><a class="fy-cta" data-cta href="${esc(site.contactUrl)}"></a></div>
     </div>`
@@ -172,7 +175,9 @@ export function mountForYou(root) {
     document.dispatchEvent(new CustomEvent('fcr:chain', { detail: { role: r.id, name: hit || null } }))
   }
 
-  function open(which) { state.open = which; state.hi = 0; renderPicker() }
+  // Nothing is highlighted until the reader types or uses the arrow keys: a highlight on the first
+  // name looked like a second selection next to the real one.
+  function open(which) { state.open = which; state.hi = -1; renderPicker() }
   function close() { state.open = null; renderPicker() }
 
   // ---------- rendering ----------
@@ -199,24 +204,41 @@ export function mountForYou(root) {
       b.setAttribute('aria-selected', active ? 'true' : 'false')
       b.tabIndex = -1
     } else b.setAttribute('aria-pressed', on ? 'true' : 'false')
-    b.innerHTML = `<span class="fy-plate-label">${esc(label)}</span>`
+    b.innerHTML = `<span class="fy-plate-label">${esc(label)}</span>${on ? PICKED : ''}`
     b.addEventListener('mousedown', (ev) => ev.preventDefault()) // keep focus in the input
     b.addEventListener('click', pick)
     return b
   }
 
+  // The picker is a popover over the card, under whichever slot opened it, kept inside the section.
+  function place() {
+    if (state.open === null) return
+    const anchor = state.open === 'role' ? roleBtn : input
+    const box = root.getBoundingClientRect(), a = anchor.getBoundingClientRect()
+    const cs = getComputedStyle(root)
+    const padL = parseFloat(cs.paddingLeft) || 0, padR = parseFloat(cs.paddingRight) || 0
+    const w = picker.offsetWidth
+    const left = Math.max(padL, Math.min(box.width - padR - w, a.left - box.left))
+    picker.style.left = `${Math.round(left)}px`
+    picker.style.top = `${Math.round(a.bottom - box.top + 10)}px`
+    // It grows from the slot it belongs to.
+    picker.style.transformOrigin = `${Math.round(a.left - box.left - left + Math.min(a.width, w) / 2)}px 0`
+  }
+
   function renderPicker() {
     const r = role()
     picker.hidden = state.open === null
+    picker.classList.toggle('is-role', state.open === 'role')
+    picker.classList.toggle('is-entity', state.open === 'entity')
     roleBtn.setAttribute('aria-expanded', String(state.open === 'role'))
     input.setAttribute('aria-expanded', String(state.open === 'entity'))
     input.removeAttribute('aria-activedescendant')
     if (state.open === null) return
-    const q = state.query.trim()
+    const typed = state.query !== state.entity && state.query.trim()
     plates.setAttribute('aria-label', state.open === 'role' ? 'What do you do?' : r.title)
     plates.setAttribute('role', state.open === 'role' ? 'group' : 'listbox')
     root.querySelector('[data-picker-hint]').textContent = state.open === 'role'
-      ? '' : q ? 'Not listed? Pick “Use” and we’ll note it.' : 'Not listed? Type its name and press Enter.'
+      ? '' : typed ? 'Not listed? Pick “Use” and we’ll note it.' : 'Not listed? Start typing, pick “Use” and we’ll note it.'
     plates.replaceChildren()
     if (state.open === 'role') {
       for (const x of roles) {
@@ -241,7 +263,16 @@ export function mountForYou(root) {
         }))
       })
       if (plates.children[state.hi]) input.setAttribute('aria-activedescendant', `fy-opt-${state.hi}`)
+      // The list scrolls inside the popover; keep the highlighted name in view (without scrolling the page).
+      const el = plates.children[state.hi]
+      if (el) {
+        const t = el.offsetTop, b = t + el.offsetHeight
+        if (t < plates.scrollTop) plates.scrollTop = t
+        else if (b > plates.scrollTop + plates.clientHeight) plates.scrollTop = b - plates.clientHeight
+      }
     }
+    place()
+    fadeList()
   }
 
   function renderResult(grow) {
@@ -285,11 +316,11 @@ export function mountForYou(root) {
     root.querySelector('[data-headline]').textContent = live ? (r.id === 'app' ? `How FCR is helping your app on ${ent}` : `How FCR is helping ${ent}`) : ask ? `${plan.provider} hasn’t enabled FCR yet.` : sp?.kind === 'single-chain' ? `FCR and ${ent}` : headlineFor(ent, r.id)
     const liveEl = root.querySelector('[data-live]')
     liveEl.hidden = !live && !ask
-    // Live chains use best-case figures, like the rest of the site: the old rule's wait, and FCR's minimum.
-    if (live) liveEl.innerHTML = esc(live.note) + (live.why ? `<span class="fy-live-why">${esc(live.why)}</span>` : '')
+    liveEl.classList.toggle('is-status', !!live)
+    // Chains already on FCR: one short status line; the cards below show the before and after.
+    if (live) liveEl.innerHTML = `<span class="fy-live-tag">Live</span><span><span class="visually-hidden">: </span>${esc(ent)} has used FCR for Ethereum deposits since ${esc(live.sinceText)}.</span>`
     // The ask, then why it's worth asking: faster distribution, on Ethereum's own security.
     else if (ask) liveEl.innerHTML = `Ask your contact at ${esc(plan.provider)} to do so!<span class="fy-live-why">Holders can then move your asset to other chains in seconds, backed by Ethereum’s validator set instead of a block count.</span>`
-    root.querySelector('[data-col-today]').textContent = live ? 'Before FCR' : 'Today'
 
     const kBox = root.querySelector('[data-k]')
     kBox.hidden = r.id === 'rpc' || r.id === 'solver' || !!w || !!wb || !st.entity || (issuer && issuer.kind !== 'provider') || (sp && (sp.kind === 'single-chain' || !!(venue?.blocks || venue?.tiers || venue?.seconds)))
@@ -307,17 +338,27 @@ export function mountForYou(root) {
       return b
     }))
 
-    // Two columns, as on Apple's compare pages: each pair is today on the left, FCR on the right,
-    // a value with a short caption under it. No row labels; the caption says what the value is.
-    // The column name is read out by screen readers everywhere and shown as a tag on phones, where each pair stacks.
-    const cell = (col, html, cls = '') => `<div class="fy-cell ${cls}"><span class="fy-cell-col">${col}<span class="visually-hidden">: </span></span>${html}</div>`
-    const pair = (today, fcr) => cell(live ? 'Before FCR' : 'Today', today) + cell('With FCR', fcr, 'is-fcr')
-    // The small line above a figure ("at minimum"); the other column keeps an empty one so the figures line up.
-    const fig = (v, pre = '') => `<div class="fy-pre${pre ? '' : ' is-empty'}"${pre ? '' : ' aria-hidden="true"'}>${pre ? esc(pre) : '&nbsp;'}</div><div class="fy-fig">${esc(v)}</div>`
-    // One value, or several on their own lines (no bullets).
-    const txt = (v) => `<div class="fy-txt">${[].concat(v).map((l) => `<span>${esc(l)}</span>`).join('')}</div>`
-    const lab = (v) => `<div class="fy-lab">${esc(v)}</div>`
-    const cap = (v) => `<div class="fy-cap">${esc(v)}</div>`
+    // Panels side by side: Speed leads with the race, today's wait against FCR's, and the speed-up;
+    // Security leads with what FCR adds, today's answer under it; Numbers ends on the measured figures.
+    const colToday = live ? 'Before FCR' : 'Today'
+    const tag = (t, cls = '') => `<span class="fy-cell-col ${cls}">${esc(t)}<span class="visually-hidden">: </span></span>`
+    // FCR's side of a security row: each line with a check, so what it adds reads at a glance.
+    const CHECK = icon('checkmark', { size: 16, cls: 'fy-check' })
+    const gains = (v) => `<ul class="fy-adds">${[].concat(v).map((l) => `<li>${CHECK}<span>${esc(l)}</span></li>`).join('')}</ul>`
+    // Today's side: its label on one line, then its points as sentences ("… chains. No known reorgs").
+    const srow = (label, today, fcr, badge = '') => `<div class="fy-srow"><div class="fy-lab">${esc(label)}</div>` +
+      `<div class="fy-s-fcr">${tag('With FCR', 'visually-hidden')}${gains(fcr)}</div>` +
+      `<div class="fy-s-today">${tag(colToday)}<p class="fy-s-today-txt">${esc([].concat(today).join('. '))}${badge}</p></div></div>`
+    // The race: today's wait, then FCR's; the caption once under both; the speed-up (pinned to the
+    // card's top right in for-you.css); then how each rule decides.
+    const race = ({ from, to, pre = 'at minimum', caption, gain = '', hint = '', howFrom, howTo }) =>
+      `<div class="fy-race-row">` +
+        (from !== null ? `<div class="fy-from">${tag(colToday)}<div class="fy-fig">${esc(from)}</div>${hint ? `<div class="fy-hint">${esc(hint)}</div>` : ''}</div>` : '') +
+        `<div class="fy-to">${tag(`With FCR${pre ? `, ${pre}` : ''}`)}<div class="fy-fig">${esc(to)}</div></div>` +
+      `</div>` +
+      `<p class="fy-cap">${esc(caption)}</p>` +
+      (gain ? `<p class="fy-gain${gain.final ? ' is-final' : ''}">${esc(gain.text)}</p>` : '') +
+      (howFrom || howTo ? `<dl class="fy-how">${howFrom ? `<div><dt>${esc(colToday)}</dt><dd>${esc(howFrom)}</dd></div>` : ''}<div><dt>With FCR</dt><dd>${esc(howTo)}</dd></div></dl>` : '')
     const fmtN = (n) => n.toLocaleString('en-US')
 
     // Speed: how long it waits, and what it waits for.
@@ -339,16 +380,14 @@ export function mountForYou(root) {
     }
     // Solvers: one figure, FCR's confirmation, then the reorg risk below it.
     root.querySelector('[data-speed]').innerHTML = sp && sp.kind !== 'single-chain'
-      ? `<div class="fy-cell fy-solo">${fig(`${FCR} s`, 'at minimum')}${cap('before you fill against a deposit on Ethereum')}<span class="fy-gain">Very strong guarantee</span></div>`
-      : variable ? [
-        pair(fig('Variable') + cap(what), fig(fcrFig, fcrPre) + cap(what)),
-        pair(txt(wb.how || 'Each filler picks its wait'), txt('Counts attestations')),
-      ].join('')
-      : [
-        pair(known ? fig(todayFig) + cap(what) : fig('?') + cap('pick the wait above'),
-          fig(fcrFig, fcrPre) + cap(what) + (x ? `<span class="fy-gain">${esc(x)} faster</span>` : '')),
-        pair(txt(res.todayHow && r.id === 'rpc' ? res.todayHow : todayHow), txt(res.fcrHow || 'Counts attestations')),
-      ].join('')
+      ? race({ from: null, to: `${FCR} s`, caption: 'before you fill against a deposit on Ethereum', gain: { text: 'Very strong guarantee' } })
+      : variable
+        ? race({ from: 'Variable', to: fcrFig, pre: fcrPre, caption: what, howFrom: wb.how || 'Each filler picks its wait', howTo: 'Counts attestations' })
+        : race({
+          from: known ? todayFig : '?', hint: known ? '' : 'pick the wait above', to: fcrFig, pre: fcrPre, caption: what,
+          gain: x ? { text: `${x} faster` } : '',
+          howFrom: res.todayHow && r.id === 'rpc' ? res.todayHow : todayHow, howTo: res.fcrHow || 'Counts attestations',
+        })
     // No race, size tiers or source lines: the card leads with one figure (Julian, 3 Nov 2026).
     for (const sel of ['[data-race]', '[data-tiers]', '[data-speed-src]']) root.querySelector(sel).hidden = true
 
@@ -378,11 +417,12 @@ export function mountForYou(root) {
     if (!intSec.hidden) {
       const isCcip = /chainlink|ccip/i.test(ent)
       // Same status words as "Using FCR" and Readiness (src/lib/partners.js): CCIP is testing, live on testnet.
+      // The tags are Readiness's own (.rd-pill in ready.css), so they look the same in both places.
       root.querySelector('[data-integrated-lede]').innerHTML = isCcip
         ? '<strong>CCIP 2.0 has FCR built in.</strong> It is live on testnet; mainnet lanes come next.'
         : '<strong>Chainlink CCIP is testing FCR.</strong> It is built into CCIP 2.0 and live on testnet; mainnet lanes come next.'
       root.querySelector('[data-integrated]').innerHTML = ready.users.map((u) =>
-        `<div class="fy-line"><span class="fy-line-label"><b>${esc(u.name)}</b> <span class="fy-dim">${esc(u.detail)}</span></span><span class="fy-badge is-${esc(u.status)}">${esc(STATUSES[u.status] || u.status)}</span></div>`).join('')
+        `<div class="fy-line"><span class="fy-line-label"><b>${esc(u.name)}</b> <span class="fy-dim">${esc(u.detail)}</span></span><span class="rd-pill is-${esc(u.status)}">${esc(STATUSES[u.status] || u.status)}</span></div>`).join('')
     }
 
     // Security: what each rule checks, and what backs it. Chains that wait for an Ethereum
@@ -405,12 +445,12 @@ export function mountForYou(root) {
       secSrc.hidden = !sp
       secSrc.innerHTML = sp ? `Reorg rate: <a href="${esc(REORG_RATE_URL)}" target="_blank" rel="noopener">Decipher, post-Pectra reorg analysis</a>. FCR record: EthPandaOps replay of client code on a year of mainnet.` : ''
       if (sp?.risk) {
-        root.querySelector('[data-security]').innerHTML = sp.risk.map((x) => pair(lab(x.label) + txt(x.today), lab(x.label) + txt(x.fcr))).join('')
+        root.querySelector('[data-security]').innerHTML = sp.risk.map((x) => srow(x.label, x.today, x.fcr)).join('')
       } else root.querySelector('[data-security]').innerHTML = [
-        // Finality is the strongest guarantee Ethereum gives, more than most projects need; badged like the speed-up.
-        pair(lab('what it checks') + txt(checks), lab('what it checks') + txt(FCR_SEC.checks)),
-        pair(lab('theoretical backing') + txt(theory) + (k === 'fin' ? '<span class="fy-gain is-final">Ethereum’s maximum security</span>' : ''), lab('theoretical backing') + txt(FCR_SEC.theory)),
-        pair(lab('empirical backing') + txt(practice), lab('empirical backing') + txt(FCR_SEC.practice)),
+        // Finality is the strongest guarantee Ethereum gives, more than most projects need; badged on today's side.
+        srow('what it checks', checks, FCR_SEC.checks),
+        srow('theoretical backing', theory, FCR_SEC.theory, k === 'fin' ? '<span class="fy-final">Ethereum’s maximum security</span>' : ''),
+        srow('empirical backing', practice, FCR_SEC.practice),
       ].join('')
     }
 
@@ -455,8 +495,6 @@ export function mountForYou(root) {
         split.setAttribute('aria-label', `${nb.label}: ${nativePct}% of deposits; ${intent.name}: ${skipPct}%`)
         split.innerHTML = `<div class="fy-split-seg is-native" style="flex-grow:${nb.deposits}"></div><div class="fy-split-seg is-intent" style="flex-grow:${intent.deposits}"></div>`
       }
-      const line = (label, value, key = '') =>
-        `<div class="fy-line">${key ? `<span class="fy-key ${key}" aria-hidden="true"></span>` : ''}<span class="fy-line-label">${label}</span><span class="fy-line-value">${value}</span></div>`
       const eth = nb.eth >= 1e6 ? `${(nb.eth / 1e6).toFixed(2)}M` : nb.eth >= 1e4 ? `${Math.round(nb.eth / 1e3)}k` : fmtN(Math.round(nb.eth || 0))
       const day = (d) => new Date(`${d}T00:00:00Z`).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
       brief.numbers = {
@@ -469,14 +507,17 @@ export function mountForYou(root) {
         ].filter(Boolean),
         source: ts ? 'Measured on chain by the FCR team; method in the docs under Reference, Time saved by FCR.' : `Measured on Ethereum mainnet by the FCR team, ${day(m.from)} to ${day(m.to)}.`,
       }
+      // Each figure large, its label under it.
+      const stat = (label, value, key = '') =>
+        `<div class="fy-stat${key ? ' is-split' : ''}"><span class="fy-stat-v">${key ? `<span class="fy-key ${key}" aria-hidden="true"></span>` : ''}${value}</span><span class="fy-stat-l">${label}</span></div>`
       root.querySelector('[data-numbers]').innerHTML = ts ? [
-        line('Waiting saved with FCR', `≥ ${fmtN(savedH)} hours`),
-        line('Deposits from Ethereum with FCR', fmtN(ts.transfers)),
+        stat('Waiting saved with FCR', `≥ ${fmtN(savedH)} <small>hours</small>`),
+        stat('Deposits from Ethereum with FCR', fmtN(ts.transfers)),
       ].join('') : [
-        intent ? line(`Deposits through ${esc(intent.name)}`, `${fmtN(intent.deposits)} <span class="fy-pct">${skipPct}%</span>`, 'is-intent') : '',
-        line(`Deposits through ${esc(nb.label)}`, intent ? `${fmtN(nb.deposits)} <span class="fy-pct">${nativePct}%</span>` : fmtN(nb.deposits), intent ? 'is-native' : ''),
-        nb.eth >= 1 ? line(`ETH that waited on ${esc(nb.label)}`, `${eth} ETH`) : '',
-        hoursSaved ? line('User time FCR would have saved in the last year', `${fmtN(hoursSaved)} hours`) : '',
+        intent ? stat(`Deposits through ${esc(intent.name)}`, `${fmtN(intent.deposits)} <span class="fy-pct">${skipPct}%</span>`, 'is-intent') : '',
+        stat(`Deposits through ${esc(nb.label)}`, intent ? `${fmtN(nb.deposits)} <span class="fy-pct">${nativePct}%</span>` : fmtN(nb.deposits), intent ? 'is-native' : ''),
+        nb.eth >= 1 ? stat(`ETH that waited on ${esc(nb.label)}`, `${eth} <small>ETH</small>`) : '',
+        hoursSaved ? stat('User time FCR would have saved in the last year', `${fmtN(hoursSaved)} <small>hours</small>`) : '',
       ].join('')
     }
 
@@ -491,10 +532,9 @@ export function mountForYou(root) {
     fillSec.hidden = !sp || sp.kind === 'single-chain'
     if (!fillSec.hidden) {
       const quick = esc(guideUrl('integrate/quick-start'))
-      // Line icons in the style of the Readiness cards (28 px, 2 px stroke, accent colour).
-      const line = (d) => `<svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${d}</svg>`
-      const PLUG = line('<path d="M10.5 3.5v5M17.5 3.5v5"/><path d="M7.5 8.5h13v4.5a6.5 6.5 0 0 1-13 0z"/><path d="M14 19.5v5"/>')
-      const HORN = line('<path d="M4.5 11.5v5h4l10 5.5V6l-10 5.5z"/><path d="M8.5 16.5l1.5 6h3l-1.3-5.4"/><path d="M22 11.2a3.6 3.6 0 0 1 0 5.6"/>')
+      // Icons from the same Carbon set as the Readiness cards (src/lib/icons.js).
+      const PLUG = icon('plug', { size: 28 })
+      const HORN = icon('bullhorn', { size: 28 })
       root.querySelector('[data-fill-steps]').innerHTML = [
         [PLUG, 'Read <code>safe</code> from a node with FCR', `Turn FCR on in your Ethereum node or use an RPC provider that serves it (<a href="${quick}">quick start</a>), and fill once the deposit’s block is at or below <code>safe</code>, instead of counting blocks.`],
         [HORN, 'Ask the chains you fill on to adopt it', 'When a chain’s bridge credits deposits from Ethereum with FCR, you are repaid and can rebalance in seconds instead of minutes.'],
@@ -585,11 +625,110 @@ export function mountForYou(root) {
       cta.href = guideUrl(stack.guide)
       stackEl.hidden = true
     }
+    if (grow) animateCard()
+  }
+
+  // ---------- motion ----------
+  // The "× faster" tag counts up and the split bar grows in, each when it is well inside the screen
+  // (between 10% and 70% of its height), not when the card first edges into view. Where the tiles sit
+  // side by side, the two start together: once both are in that band. Stacked, each goes on its own.
+  // A new choice arms them again: they wait in their starting state and play as soon as they are in
+  // that band (at once, if they already are). Neither plays with reduced motion.
+  const still = () => matchMedia('(prefers-reduced-motion: reduce)').matches
+  const EASE_OUT = 'cubic-bezier(.23, 1, .32, 1)'
+  const ZONE = { rootMargin: '-10% 0px -30% 0px' }
+  // Without IntersectionObserver they play straight away.
+  const canWatch = 'IntersectionObserver' in window
+  const gainState = { zone: !canWatch, armed: false }, barState = { zone: !canWatch, armed: false }
+  // Same breakpoint as .fy-panels in for-you.css.
+  const sideBySide = matchMedia('(min-width: 961px)')
+  const barShown = () => !!bar && !bar.hidden && bar.children.length === 2
+  const gainReady = () => gainState.zone && (!sideBySide.matches || !barShown() || barState.zone)
+  const barReady = () => barState.zone && (!sideBySide.matches || gainState.zone)
+  let countRaf = 0
+  const gainEl = () => root.querySelector('[data-speed] .fy-gain')
+  const GAIN = /^([\d.]+)×(.*)$/
+
+  // "33× faster": shows 1× until it plays, then counts up over 1.8 seconds, easing out.
+  function armGain() {
+    cancelAnimationFrame(countRaf)
+    const el = gainEl(), m = el?.textContent.match(GAIN)
+    gainState.armed = !!m && parseFloat(m[1]) > 1 && !still()
+    if (!gainState.armed) return
+    el.dataset.final = m[0]
+    el.textContent = `${m[1].includes('.') ? '1.0' : '1'}×${m[2]}`
+    if (gainReady()) playGain()
+  }
+  function playGain() {
+    gainState.armed = false
+    const el = gainEl(), m = el?.dataset.final?.match(GAIN)
+    if (!m) return
+    const target = parseFloat(m[1]), dec = m[1].includes('.') ? 1 : 0, rest = m[2]
+    const t0 = performance.now(), dur = 1800
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / dur), e = 1 - (1 - k) ** 3
+      el.textContent = k < 1 ? `${(1 + (target - 1) * e).toFixed(dec)}×${rest}` : m[0]
+      if (k < 1) countRaf = requestAnimationFrame(step)
+    }
+    countRaf = requestAnimationFrame(step)
+  }
+
+  // The split bar: the bigger side grows out from the dividing point, 1500 ms ease-out. When the two
+  // sides are near even, the dividing point moves out from the middle instead.
+  const bar = root.querySelector('[data-split]')
+  const barPlan = () => {
+    if (!bar || bar.hidden || bar.children.length !== 2 || still() || !bar.animate) return null
+    const [a, b] = bar.children
+    const na = parseFloat(a.style.flexGrow), nb = parseFloat(b.style.flexGrow)
+    if (!(na + nb > 0)) return null
+    if (Math.abs(na / (na + nb) - 0.5) < 0.1) {
+      const mid = (na + nb) / 2
+      return [[a, [{ flexGrow: mid }, { flexGrow: na }]], [b, [{ flexGrow: mid }, { flexGrow: nb }]]]
+    }
+    return na > nb ? [[a, [{ clipPath: 'inset(0 0 0 100%)' }, { clipPath: 'inset(0 0 0 0)' }]]]
+      : [[b, [{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }]]]
+  }
+  let barHold = []
+  function armBar() {
+    barHold.forEach((an) => an.cancel())
+    const plan = barPlan()
+    barState.armed = !!plan
+    if (!plan) { barHold = []; return }
+    // Hold the starting frame until it plays.
+    barHold = plan.map(([el, frames]) => el.animate([frames[0], frames[0]], { duration: 1, fill: 'forwards' }))
+    if (barReady()) playBar()
+  }
+  function playBar() {
+    barState.armed = false
+    const plan = barPlan()
+    barHold.forEach((an) => an.cancel())
+    barHold = []
+    plan?.forEach(([el, frames]) => el.animate(frames, { duration: 1500, easing: EASE_OUT }))
+  }
+  function animateCard() { armGain(); armBar() }
+
+  if (canWatch) {
+    // Either one coming into the band may release both.
+    const check = () => {
+      if (gainState.armed && gainReady()) playGain()
+      if (barState.armed && barReady()) playBar()
+    }
+    const watch = (el, st) => el && new IntersectionObserver(([e]) => { st.zone = e.isIntersecting; check() }, ZONE).observe(el)
+    // The tag sits on the Speed card's title row; the title is the element that stays put.
+    watch(root.querySelector('#fy-sec-speed'), gainState)
+    watch(bar, barState)
   }
 
   // ---------- events ----------
   roleBtn.addEventListener('click', () => (state.open === 'role' ? close() : open('role')))
-  input.addEventListener('focus', () => { input.select(); open('entity') })
+  // A mouse or keyboard focus selects the name, so typing replaces it. On touch it doesn't: a
+  // selection there opens the system's copy and paste menu over the picker.
+  let pointer = ''
+  root.addEventListener('pointerdown', (ev) => { pointer = ev.pointerType })
+  input.addEventListener('focus', () => { if (pointer !== 'touch') input.select(); pointer = ''; open('entity') })
+  // The list fades out at the bottom while there is more to scroll to.
+  function fadeList() { plates.classList.toggle('has-more', plates.scrollTop + plates.clientHeight < plates.scrollHeight - 2) }
+  plates.addEventListener('scroll', fadeList, { passive: true })
   input.addEventListener('input', () => { state.query = input.value; state.open = 'entity'; state.hi = 0; renderSentence(); renderPicker() })
   let blurTimer
   input.addEventListener('blur', () => {
@@ -598,19 +737,22 @@ export function mountForYou(root) {
       if (state.open !== 'entity') return
       const cur = state.query.trim()
       // Leaving the field (Tab, a click elsewhere) picks what Enter would: the highlighted option.
-      if (cur && cur !== state.entity) { const opts = options(); const o = opts[state.hi] || opts[0]; commit(o ? o.name : cur) }
+      if (cur && cur !== state.entity) { const opts = options(); const o = opts[Math.max(state.hi, 0)]; commit(o ? o.name : cur) }
       else { state.query = state.entity; close(); renderSentence() }
     }, 120)
   })
   input.addEventListener('keydown', (ev) => {
     const opts = options(), n = opts.length
     if (ev.key === 'ArrowDown') { ev.preventDefault(); state.open = 'entity'; state.hi = n ? (state.hi + 1) % n : 0; renderPicker() }
-    else if (ev.key === 'ArrowUp') { ev.preventDefault(); state.hi = n ? (state.hi - 1 + n) % n : 0; renderPicker() }
-    else if (ev.key === 'Enter') { ev.preventDefault(); const o = opts[state.hi] || opts[0]; commit(o ? o.name : state.query) }
+    else if (ev.key === 'ArrowUp') { ev.preventDefault(); state.hi = !n ? 0 : state.hi < 0 ? n - 1 : (state.hi - 1 + n) % n; renderPicker() }
+    // Enter picks the highlighted name; with none highlighted, it keeps what is typed (or the current choice).
+    else if (ev.key === 'Enter') { ev.preventDefault(); const o = state.hi >= 0 ? opts[state.hi] : null; commit(o ? o.name : state.query) }
     else if (ev.key === 'Escape') { state.query = state.entity; close(); input.blur(); renderSentence() }
   })
   document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape' && state.open === 'role') { close(); roleBtn.focus() } })
-  document.addEventListener('click', (ev) => { if (state.open === 'role' && !root.contains(ev.target)) close() })
+  // The popover sits over the card, so a click anywhere outside it (or its slot) closes it.
+  document.addEventListener('click', (ev) => { if (state.open === 'role' && !picker.contains(ev.target) && !roleBtn.contains(ev.target)) close() })
+  window.addEventListener('resize', place)
 
   // Opened from a shared link (?chain=base): show that chain's card straight away.
   const fromLink = new URLSearchParams(window.location.search).get('chain')
@@ -618,6 +760,8 @@ export function mountForYou(root) {
   if (linked) Object.assign(state, { role: 'rollup', entity: linked, query: linked, isNew: false })
   renderSentence()
   renderResult(false)
+  // The first card (the example, or a shared link's chain) plays when it is reached.
+  animateCard()
   if (linked) {
     document.dispatchEvent(new CustomEvent('fcr:chain', { detail: { role: 'rollup', name: linked } }))
     requestAnimationFrame(() => root.scrollIntoView({ block: 'start' }))
