@@ -37,6 +37,22 @@ function siteData() {
   }
 }
 
+// Pages load their scripts as ../src/..., which the build resolves against the HTML file on disk.
+// In dev the browser can't climb above the site root, so it asks for /src/..., which the dev
+// server would look for under pages/. Point those at the repo's src/ instead.
+function srcInDev() {
+  return {
+    name: 'src-in-dev',
+    apply: 'serve',
+    enforce: 'pre',
+    resolveId(id) {
+      if (!id.startsWith('/src/')) return null
+      const [path, query] = id.split('?')
+      return resolve(here, path.slice(1)) + (query ? `?${query}` : '')
+    },
+  }
+}
+
 // Draft partners (data/integrations.json, "draft": true) appear in local dev, in `npm run build:drafts`
 // and in Netlify deploy previews and branch deploys or Cloudflare Pages preview builds (any branch but
 // main), never on the production site.
@@ -62,7 +78,7 @@ function sitemap() {
 
 export default defineConfig(({ command }) => ({
   root: pagesDir,
-  plugins: [siteData(), sitemap()],
+  plugins: [siteData(), sitemap(), srcInDev()],
   // Lets page scripts show draft partners where the production site hides them.
   define: { __SHOW_DRAFTS__: JSON.stringify(showDrafts(command)) },
   publicDir: resolve(here, 'public'),
