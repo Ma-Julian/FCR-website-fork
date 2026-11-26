@@ -36,6 +36,7 @@ export function mountIntro(section) {
   const worldEl = sceneHost.querySelector('.br-world')
   const hills = sceneHost.querySelector('.intro-hills')
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)')
+  const phone = window.matchMedia('(max-width: 600px)')
 
   let world, start = null, raf = 0, visible = true, shownCount = -1, pausedAt = null
   const fit = () => { fitScene(sceneHost, hills, section.clientWidth, section.clientHeight); world?.redraw() }
@@ -63,7 +64,9 @@ export function mountIntro(section) {
   function play() {
     // A new world each time it plays, with a fresh canvas for its cables.
     sceneHost.querySelector('.br-cables')?.remove()
-    world = createWorld(worldEl, { destinations, routes: bridgeRoutes })
+    // Phones get a lighter bridge: two spans drawn ahead in place of three (a third less to hold in
+    // memory and move each frame). They see a narrow slice of the scene, where the far end is small.
+    world = createWorld(worldEl, { destinations, routes: bridgeRoutes, spans: phone.matches ? 2 : 3 })
     shownCount = -1
     section.classList.remove('is-playing', 'is-still')
     if (reduce.matches) {

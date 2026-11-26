@@ -8,19 +8,20 @@
 export const SPAN = 2550 // tower to tower
 const N = 16 // suspenders per span
 const STEP = SPAN / N
-const POOL = 3 * SPAN // pooled structure repeats every 3 spans
 const NEAR = -520 // how far behind the camera an object stays drawn (world px)
-const FAR = 7130 // draw distance
+const FAR = 7130 // draw distance: three spans from NEAR (a world can ask for a shorter one)
 const FOG_FROM = 4200 // beyond this distance things fade into the haze, gone at FAR
 const TAPER = 900 // a project lane fades in and out over this length, like a lane opening or merging
 
 const smooth = (x) => { const t = Math.min(1, Math.max(0, x)); return t * t * (3 - 2 * t) }
-// 1 up close, easing to 0 at the draw distance, so nothing pops in at the horizon.
-export const fog = (r) => 1 - smooth((r - FOG_FROM) / (FAR - FOG_FROM))
+// 1 up close, easing to 0 at the draw distance, so nothing pops in at the horizon. With a shorter
+// draw distance the haze starts sooner, in proportion.
+const fogFor = (far) => { const from = (FOG_FROM * far) / FAR; return (r) => 1 - smooth((r - from) / (far - from)) }
+export const fog = fogFor(FAR)
 // Fade is set as a CSS variable on the moving carrier and applied as opacity on its flat
 // leaves; opacity on the 3D carrier itself would flatten (and clip) its children.
-function setFog(el, r) {
-  const f = Math.round(fog(r) * 100) / 100
+function setFog(el, r, fogAt) {
+  const f = Math.round(fogAt(r) * 100) / 100
   if (el._fog !== f) { el._fog = f; el.style.setProperty('--fog', f) }
 }
 const PLANE_X = 325 // cable / suspender / girder plane
@@ -60,30 +61,35 @@ function exitSign(dest, exitNo) {
     ${dest.signLine ? `<div class="br-line">${esc(dest.signLine)}</div>` : ''}${ARROW_EXIT}</div>`
 }
 
-function plane(cls, x, w, y, bg, near) {
-  return `<div class="br-plane ${cls}" style="width:${w}px;height:${7350 + near}px;transform:translate3d(${x}px,${y}px,${near}px) rotateX(-90deg);background:${bg}"></div>`
+function plane(cls, x, w, y, bg, near, far) {
+  return `<div class="br-plane ${cls}" style="width:${w}px;height:${far + 220 + near}px;transform:translate3d(${x}px,${y}px,${near}px) rotateX(-90deg);background:${bg}"></div>`
 }
 
 // `near` is how far toward the camera the deck reaches; the game's high camera sees further back.
 // `nearDrawn` is the nearest distance the cables and suspenders are drawn at. Both the intro and
 // the game draw them as near as the deck reaches, so they run off the screen's edges with it.
-export function createWorld(container, { destinations, routes, rng = Math.random, near = 650, nearDrawn = NEAR }) {
+// `spans` is how many spans ahead are drawn: 3 by default, or 2 for a lighter scene (phones), where
+// the deck, girders, lanes and cables are a third shorter and one tower fewer is on screen.
+export function createWorld(container, { destinations, routes, rng = Math.random, near = 650, nearDrawn = NEAR, spans = 3 }) {
+  const far = spans * SPAN + NEAR, poolLen = spans * SPAN // the towers repeat every `spans` spans
+  const fogAt = fogFor(far)
   // ---- static deck ----
-  let html = plane('br-deck', -325, 650, 100, '#F5F5E9', near)
+  let html = plane('br-deck', -325, 650, 100, '#F5F5E9', near, far)
   // Lane dashes are one DASH longer than the deck at the near end and slide by transform,
   // so they never need repainting.
-  for (let e = 1; e < EDGES.length - 1; e++) html += plane('br-dash', EDGES[e] - 3, 6, 99, '', near + DASH)
-  for (const x of [-PLANE_X, PLANE_X]) html += `<div class="br-girder" style="width:${7350 + near}px;transform:translate3d(${x}px,70px,${near}px) rotateY(90deg)"></div>`
+  for (let e = 1; e < EDGES.length - 1; e++) html += plane('br-dash', EDGES[e] - 3, 6, 99, '', near + DASH, far)
+  for (const x of [-PLANE_X, PLANE_X]) html += `<div class="br-girder" style="width:${far + 220 + near}px;transform:translate3d(${x}px,70px,${near}px) rotateY(90deg)"></div>`
 
   // ---- pooled towers ----
   const pool = [] // { el, base }
-  for (let j = 0; j < 3; j++) html += `<div class="br-carrier" data-base="${j * SPAN}">${TOWER}</div>`
+  for (let j = 0; j < spans; j++) html += `<div class="br-carrier" data-base="${j * SPAN}">${TOWER}</div>`
   html += '<div class="br-features"></div>'
   container.innerHTML = html
   container.querySelectorAll('.br-carrier').forEach((el) => pool.push({ el, base: Number(el.dataset.base) }))
   const dashes = [...container.querySelectorAll('.br-dash')].map((el) => ({ el, base: el.style.transform }))
   const layer = container.querySelector('.br-features')
-  const cables = createCables(container, Math.max(NEAR, nearDrawn), { cable: CABLE, susp: SUSP })
+  const cables = createCables(container, Math.max(NEAR, nearDrawn), { cable: CABLE, susp: SUSP, far, fogAt })
+  const fogMask = fogMaskFor(far, fogAt)
 
   // ---- random schedule of lanes and signs, on mid-span gantry slots ----
   const slotW = (n) => (n + 0.5) * SPAN
@@ -136,7 +142,7 @@ export function createWorld(container, { destinations, routes, rng = Math.random
     const el = document.createElement('div')
     el.className = 'br-run'
     const l = EDGES[lane], r = EDGES[lane + 1], len = w1 - w0
-    el.innerHTML = `<div class="br-run-fog" style="width:${r - l}px;height:${FAR - NEAR}px;transform:translate3d(${l}px,99.5px,${-NEAR}px) rotateX(-90deg);${FOG_MASK}">
+    el.innerHTML = `<div class="br-run-fog" style="width:${r - l}px;height:${far - NEAR}px;transform:translate3d(${l}px,99.5px,${-NEAR}px) rotateX(-90deg);${fogMask}">
       <div class="br-run-strip" style="height:${len}px;${taperMask(len)}">
         <div class="br-run-tint" style="width:${r - l - 4}px"></div><div class="br-run-line" style="left:${r - l - 7}px"></div></div></div>`
     const strip = el.querySelector('.br-run-strip')
@@ -149,24 +155,24 @@ export function createWorld(container, { destinations, routes, rng = Math.random
     lastD = d
     // pooled towers
     for (const { el, base } of pool) {
-      const r = ((((base - d) % POOL) + POOL) % POOL) + NEAR
+      const r = ((((base - d) % poolLen) + poolLen) % poolLen) + NEAR
       el.style.transform = `translateZ(${(-r).toFixed(1)}px)`
-      setFog(el, r)
+      setFog(el, r, fogAt)
     }
     const shift = ` translateY(${((DASH - (d % DASH)) % DASH).toFixed(1)}px)`
     for (const { el, base } of dashes) el.style.transform = base + shift
     // features: plan ahead, place, and drop what has passed
-    plan(Math.floor((d + FAR) / SPAN) + 1)
+    plan(Math.floor((d + far) / SPAN) + 1)
     for (let i = features.length - 1; i >= 0; i--) {
       const f = features[i]
       if (f.w1 - d < NEAR) { f.el.remove(); features.splice(i, 1); continue }
       if (f.kind === 'gantry') {
         const r = f.w0 - d
-        f.el.style.visibility = r > FAR ? 'hidden' : 'visible'
+        f.el.style.visibility = r > far ? 'hidden' : 'visible'
         f.el.style.transform = `translateZ(${(-r).toFixed(1)}px)`
-        setFog(f.el, r)
+        setFog(f.el, r, fogAt)
       } else {
-        const shown = f.w1 - d > NEAR && f.w0 - d < FAR
+        const shown = f.w1 - d > NEAR && f.w0 - d < far
         if (shown !== f.shown) { f.shown = shown; f.el.style.visibility = shown ? 'visible' : 'hidden' }
         if (shown) f.strip.style.transform = `translateY(${(f.w0 - d - NEAR).toFixed(1)}px)`
       }
@@ -180,9 +186,9 @@ export function createWorld(container, { destinations, routes, rng = Math.random
 
 // Distance haze along a camera-fixed lane window, and the taper at both ends of a lane strip.
 const maskCss = (stops) => { const g = `linear-gradient(to bottom, ${stops.join(', ')})`; return `-webkit-mask-image:${g};mask-image:${g}` }
-const FOG_MASK = maskCss(Array.from({ length: 13 }, (_, i) => {
-  const y = ((FAR - NEAR) * i) / 12
-  return `rgba(0,0,0,${fog(NEAR + y).toFixed(3)}) ${y.toFixed(1)}px`
+const fogMaskFor = (far, fogAt) => maskCss(Array.from({ length: 13 }, (_, i) => {
+  const y = ((far - NEAR) * i) / 12
+  return `rgba(0,0,0,${fogAt(NEAR + y).toFixed(3)}) ${y.toFixed(1)}px`
 }))
 function taperMask(len) {
   const t = Math.min(TAPER, len / 2)
@@ -194,7 +200,7 @@ function taperMask(len) {
 // Points are projected with the same math the browser uses for the page elements: the camera
 // (.br-cam) has perspective PERSPECTIVE with its origin at (50%, 42%) of the scene, where the
 // world element also sits, and the world is offset by the translate3d in its inline transform.
-function createCables(worldEl, rMin, { cable, susp }) {
+function createCables(worldEl, rMin, { cable, susp, far, fogAt }) {
   const cam = worldEl.parentElement
   const host = cam.parentElement
   let canvas = host.querySelector(':scope > .br-cables')
@@ -231,8 +237,8 @@ function createCables(worldEl, rMin, { cable, susp }) {
     // Scale at distance r ahead (world z = -r), 0 at or behind the eye.
     const sAt = (r) => { const q = PERSPECTIVE - (tz - r); return q > 1 ? PERSPECTIVE / q : 0 }
     // Along the bridge we count u = d + r - NEAR, so towers sit at whole spans of u, exactly
-    // where the pooled tower carriers put them; u runs from d (r = NEAR) to d + FAR - NEAR.
-    const u0 = d, u1 = d + FAR - NEAR
+    // where the pooled tower carriers put them; u runs from d (r = NEAR) to d + far - NEAR.
+    const u0 = d, u1 = d + far - NEAR
     const at = (u) => cy((((u % SPAN) + SPAN) % SPAN) / SPAN)
 
     for (const side of [-PLANE_X, PLANE_X]) {
@@ -243,7 +249,7 @@ function createCables(worldEl, rMin, { cable, susp }) {
         const u = (i + 0.5) * STEP, r = u - d + NEAR, s = sAt(r)
         if (!s || r < rMin) continue
         const top = at(u)
-        ctx.globalAlpha = fog(r)
+        ctx.globalAlpha = fogAt(r)
         ctx.fillRect(ox + (X - SUSP_W / 2) * s, oy + (top + ty) * s, SUSP_W * s, (DECK_TOP - top) * s)
       }
       // main cable: short flat ribbons in the cable's vertical plane, CABLE_W wide across the
@@ -263,7 +269,7 @@ function createCables(worldEl, rMin, { cable, susp }) {
         const ny = ((rb - ra) / len) * CABLE_W / 2, nr = (-(yb - ya) / len) * CABLE_W / 2
         const c = [pt(ya - ny, ra - nr), pt(yb - ny, rb - nr), pt(yb + ny, rb + nr), pt(ya + ny, ra + nr)]
         if (c.every(Boolean)) {
-          ctx.globalAlpha = fog((ra + rb) / 2)
+          ctx.globalAlpha = fogAt((ra + rb) / 2)
           ctx.beginPath()
           ctx.moveTo(c[0][0], c[0][1]); ctx.lineTo(c[1][0], c[1][1]); ctx.lineTo(c[2][0], c[2][1]); ctx.lineTo(c[3][0], c[3][1])
           ctx.fill()
