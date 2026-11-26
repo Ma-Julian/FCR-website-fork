@@ -1,8 +1,8 @@
 /* "User time saved with FCR": a road sign centred above the tagline, in one line: the figure, then
    "saved with FCR". Same green, white inset border and sign typeface as the exit signs on the bridge
-   (src/sections/intro/intro.css .br-sign). Each hero option recolours it there. */
+   (src/sections/intro/intro.css .br-sign). */
 .saved-box {
-  --sign-green: #00673E;
+  --sign-green: var(--live);
   /* The figure and the label share a baseline; their line is centred in the sign (align-content
      needs the wrap to apply to a single line). */
   display: flex; flex-wrap: wrap; align-items: baseline; align-content: center; justify-content: center; gap: 5px;

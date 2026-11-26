@@ -67,7 +67,9 @@
 .fy-example[hidden] { display: none; }
 .fy-example { display: flex; justify-content: center; margin: 0 0 .75rem; }
 .fy-chip { font-size: .6875rem; font-weight: 800; letter-spacing: .12em; line-height: 1; padding: 5px 10px; border-radius: 999px; background: var(--surface); border: 1px solid var(--accent-line); color: var(--accent-ink); }
-.fy-new { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .5rem .75rem; margin: 0 auto 1rem; max-width: 44rem; padding: .75rem 1rem; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--accent-line); font-size: 1rem; line-height: 1.4; color: var(--text); }
+/* A chain we have no numbers for: a pill like the "Live" callout below it, with the tag at its left end. */
+.fy-new { display: flex; align-items: center; gap: .6rem; width: fit-content; max-width: 100%; margin: 0 auto 1rem; padding: 5px 14px 5px 5px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-size: .9375rem; font-weight: 500; line-height: 1.35; text-align: left; color: var(--text); }
+.fy-new .fy-chip { flex: none; }
 .fy-headline { margin: 0; font-size: clamp(1.5rem, 2.8vw, 2.125rem); font-weight: 900; line-height: 1.15; letter-spacing: -.025em; color: var(--text); text-wrap: balance; overflow-wrap: anywhere; }
 .fy-live { margin: .6rem auto 0; max-width: 62ch; font-size: 1rem; line-height: 1.5; color: var(--text); font-weight: 600; text-wrap: balance; }
 /* Chains already on FCR: a small status callout, a "Live" tag and one line. */
@@ -77,20 +79,33 @@
 .fy-live-tag { flex: none; display: inline-flex; align-items: center; padding: 5px 10px; border-radius: 999px; background: var(--live); color: #FFFFFF;
   font-size: .6875rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; line-height: 1; }
 /* Phones: the tag above the line. */
-@media (max-width: 640px) { .fy-live.is-status { flex-direction: column; align-items: flex-start; gap: .5rem; border-radius: var(--r-md); padding: 10px 14px; } }
+@media (max-width: 640px) { .fy-live.is-status, .fy-new { flex-direction: column; align-items: flex-start; gap: .5rem; border-radius: var(--r-md); padding: 10px 14px; } }
 .fy-live-why { display: block; margin-top: .25rem; font-weight: 400; color: var(--muted); }
 
 /* Every block of the card is a white tile, as the original site's cards. */
 .fy-tile { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); padding: clamp(20px, 2.4vw, 28px); }
-.fy-grp-title { margin: 0 0 1rem; font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+/* Each tile's title: ink and sentence case, set like the card's headline but smaller, so it stands
+   apart from the small capital labels under it. */
+.fy-grp-title { margin: 0 0 1rem; font-size: 1.25rem; font-weight: 900; line-height: 1.2; letter-spacing: -.02em; color: var(--text); }
 /* Numbers: the period sits at the end of the title row. */
 .fy-numbers .fy-grp-title { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
-.fy-period { font-weight: 600; letter-spacing: .02em; text-transform: none; font-size: .8125rem; }
+.fy-period { font-weight: 600; letter-spacing: 0; font-size: .8125rem; color: var(--muted); }
 
 /* Speed, Security and Numbers: one row, as many columns as the card shows. */
 .fy-panels { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 16px; align-items: stretch; }
 .fy-cmp { display: contents; }
 @media (max-width: 960px) { .fy-panels { grid-auto-flow: row; grid-template-columns: minmax(0, 1fr); } }
+/* Solvers (for-you.js sets .is-stacked): Speed on a row of its own, then Reorg risk on its own row
+   with its three parts side by side, a rule between them. On narrow screens the parts stack again. */
+.fy-panels.is-stacked { grid-auto-flow: row; grid-template-columns: minmax(0, 1fr); }
+/* The source line runs the row's full width, so it stays on one line where there is room. */
+.fy-panels.is-stacked .fy-src { max-width: none; margin-top: calc(1rem + 8px); text-wrap: wrap; }
+@media (min-width: 761px) {
+  .fy-panels.is-stacked .fy-srows { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fy-panels.is-stacked .fy-srow { padding: 0 clamp(16px, 2.2vw, 28px); border-top: 0; border-left: 1px solid var(--line); }
+  .fy-panels.is-stacked .fy-srow:first-child { padding-left: 0; border-left: 0; }
+  .fy-panels.is-stacked .fy-srow:last-child { padding-right: 0; }
+}
 
 /* ---------- Speed ---------- */
 .fy-cell-col { display: block; font-size: .6875rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: .3rem; }
@@ -116,7 +131,7 @@
 .fy-k { margin: 0 0 1.25rem; display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
 .fy-k-q { flex-basis: 100%; font-size: .95rem; font-weight: 600; color: var(--text); }
 .fy-k-chips { display: flex; flex-wrap: wrap; gap: .4rem; }
-.fy-kchip { font: inherit; font-size: .95rem; font-weight: 700; min-width: 48px; min-height: 40px; padding: 0 12px; border-radius: 999px; cursor: pointer; border: 1.5px solid var(--line-strong); background: transparent; color: var(--text); transition: border-color .12s ease, background-color .12s ease, color .12s ease; }
+.fy-kchip { font: inherit; font-size: .95rem; font-weight: 700; min-width: 48px; min-height: 40px; padding: 0 12px; border-radius: 999px; cursor: pointer; border: 1px solid var(--line-strong); background: transparent; color: var(--text); transition: border-color .12s ease, background-color .12s ease, color .12s ease; }
 .fy-kchip:hover { border-color: var(--accent); }
 .fy-kchip.is-on { background: var(--accent-ink); color: #FFFFFF; border-color: var(--accent-ink); }
 
@@ -188,6 +203,8 @@
 .fy-do-steps code, .fy-cards code, .fy-step-body code { font-family: var(--mono); font-size: .88em; background: var(--accent-tint); padding: .05em .3em; border-radius: 4px; overflow-wrap: anywhere; }
 .fy-do-note { margin: 0 auto .75rem; max-width: 62ch; color: var(--accent-ink); font-weight: 700; line-height: 1.45; text-wrap: balance; }
 .fy-do-note.is-plain { color: var(--text); font-weight: 400; font-size: 1.05rem; }
+/* Under the step cards the note needs air: the cards, unlike the plain steps, have no margin below. */
+.fy-cards:not([hidden]) + .fy-do-note { margin-top: 1.75rem; }
 .fy-do-docs { margin: 0; }
 .fy-steps { list-style: none; counter-reset: fy-step; margin: 1rem auto 0; padding: 0; max-width: 62ch; display: grid; gap: 1.25rem; justify-items: center; }
 .fy-step { counter-increment: fy-step; position: relative; text-align: center; }
@@ -199,6 +216,12 @@
 /* Solvers' two ways in, side by side, each with an icon instead of a number. */
 .fy-options { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(1.5rem, 4vw, 3rem); max-width: 56rem; align-items: start; }
 .fy-options .fy-step::before { content: none; }
+/* Solvers' "How to integrate": set left, like the Speed and Reorg risk tiles above it. The two ways
+   in share the tile's full width, each with its icon, title and text on one left edge. */
+[data-sec-fill], [data-sec-fill] .fy-grp-title, [data-sec-fill] .fy-step { text-align: left; }
+[data-sec-fill] .fy-options { max-width: none; margin-inline: 0; justify-items: start; }
+[data-sec-fill] .fy-step-icon { margin-inline: 0; }
+[data-sec-fill] .fy-step-body { margin-inline: 0; max-width: 46ch; text-wrap: pretty; }
 /* Chainlink issuers: the three steps as cards side by side. */
 .fy-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; max-width: 60rem; justify-items: stretch; align-items: stretch; }
 .fy-cards .fy-step { height: 100%; padding: 1.25rem 1rem; background: var(--bg-alt); border-radius: var(--r-md); }

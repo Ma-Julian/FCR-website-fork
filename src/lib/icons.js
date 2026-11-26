@@ -8,6 +8,7 @@ import bullhorn from '@carbon/icons/es/bullhorn/32.js'
 import chartLine from '@carbon/icons/es/chart--line/32.js'
 import checkmark from '@carbon/icons/es/checkmark/16.js'
 import chevronDown from '@carbon/icons/es/chevron--down/20.js'
+import close from '@carbon/icons/es/close/20.js'
 import debug from '@carbon/icons/es/debug/32.js'
 import document from '@carbon/icons/es/document/32.js'
 import download from '@carbon/icons/es/download/20.js'
@@ -17,7 +18,7 @@ import security from '@carbon/icons/es/security/32.js'
 
 const ICONS = {
   'arrow-down': arrowDown, 'arrow-right': arrowRight, 'arrow-up-right': arrowUpRight, bullhorn,
-  'chart-line': chartLine, checkmark, 'chevron-down': chevronDown, debug, document, download, email, plug, security,
+  'chart-line': chartLine, checkmark, 'chevron-down': chevronDown, close, debug, document, download, email, plug, security,
 }
 
 const escAttr = (v) => String(v).replace(/&/g, '&amp;').replace(/"/g, '&quot;')

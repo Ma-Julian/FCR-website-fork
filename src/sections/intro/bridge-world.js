@@ -26,14 +26,13 @@ function setFog(el, r) {
 const PLANE_X = 325 // cable / suspender / girder plane
 const DECK_TOP = 70
 const CABLE_W = 10, SUSP_W = 3 // thickness in world px
-const CABLE = '#A02C23', SUSP = '#B5362B'
+const CABLE = '#F05F36', SUSP = '#F05F36' // drawn on a canvas, so not from CSS: the site's orange
 const PERSPECTIVE = 700, ORIGIN_Y = 0.42 // .br-cam's perspective and perspective-origin
 const DASH = 600 // lane-dash pattern repeat (see .br-dash)
 export const EDGES = [-325, -217, -108, 0, 108, 217, 325] // lane edges, left to right
 
 const cy = (p) => -150 - 990 * Math.pow(2 * p - 1, 2) // main cable height at span fraction p
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
-const rgba = (hex, a) => { const n = parseInt(hex.slice(1), 16); return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${a})` }
 
 const TOWER = `<div class="br-tower">
   <div class="br-leg br-leg-l"></div><div class="br-leg br-leg-r"></div>
@@ -52,7 +51,7 @@ const GANTRY = `<div class="br-post" style="left:-312px"></div><div class="br-po
 function laneSign(route, lane, ends) {
   const c = (EDGES[lane] + EDGES[lane + 1]) / 2
   return `<div class="br-sign br-lane-sign" style="left:${c - 54}px">
-    <div class="br-band" style="background:${route.laneColor}">${esc(route.name)}</div>
+    <div class="br-band">${esc(route.name)}</div>
     <div class="br-line">${ends ? 'Lane ends' : esc(route.signLine || '')}</div>${ends ? ARROW_MERGE : ARROW_DOWN}</div>`
 }
 function exitSign(dest, exitNo) {
@@ -68,10 +67,9 @@ function plane(cls, x, w, y, bg, near) {
 // `near` is how far toward the camera the deck reaches; the game's high camera sees further back.
 // `nearDrawn` is the nearest distance the cables and suspenders are drawn at. Both the intro and
 // the game draw them as near as the deck reaches, so they run off the screen's edges with it.
-// `colors` sets the canvas-drawn cable and suspenders ({ cable, susp }); the rest takes its colours from CSS.
-export function createWorld(container, { destinations, routes, rng = Math.random, near = 650, nearDrawn = NEAR, colors = {} }) {
+export function createWorld(container, { destinations, routes, rng = Math.random, near = 650, nearDrawn = NEAR }) {
   // ---- static deck ----
-  let html = plane('br-deck', -325, 650, 100, 'linear-gradient(90deg,#262B38 0%,#2E3442 50%,#262B38 100%)', near)
+  let html = plane('br-deck', -325, 650, 100, '#F5F5E9', near)
   // Lane dashes are one DASH longer than the deck at the near end and slide by transform,
   // so they never need repainting.
   for (let e = 1; e < EDGES.length - 1; e++) html += plane('br-dash', EDGES[e] - 3, 6, 99, '', near + DASH)
@@ -85,7 +83,7 @@ export function createWorld(container, { destinations, routes, rng = Math.random
   container.querySelectorAll('.br-carrier').forEach((el) => pool.push({ el, base: Number(el.dataset.base) }))
   const dashes = [...container.querySelectorAll('.br-dash')].map((el) => ({ el, base: el.style.transform }))
   const layer = container.querySelector('.br-features')
-  const cables = createCables(container, Math.max(NEAR, nearDrawn), { cable: colors.cable || CABLE, susp: colors.susp || SUSP })
+  const cables = createCables(container, Math.max(NEAR, nearDrawn), { cable: CABLE, susp: SUSP })
 
   // ---- random schedule of lanes and signs, on mid-span gantry slots ----
   const slotW = (n) => (n + 0.5) * SPAN
@@ -140,7 +138,7 @@ export function createWorld(container, { destinations, routes, rng = Math.random
     const l = EDGES[lane], r = EDGES[lane + 1], len = w1 - w0
     el.innerHTML = `<div class="br-run-fog" style="width:${r - l}px;height:${FAR - NEAR}px;transform:translate3d(${l}px,99.5px,${-NEAR}px) rotateX(-90deg);${FOG_MASK}">
       <div class="br-run-strip" style="height:${len}px;${taperMask(len)}">
-        <div class="br-run-tint" style="width:${r - l - 4}px;background:${rgba(route.laneColor, 0.42)}"></div><div class="br-run-line" style="left:${r - l - 7}px"></div></div></div>`
+        <div class="br-run-tint" style="width:${r - l - 4}px"></div><div class="br-run-line" style="left:${r - l - 7}px"></div></div></div>`
     const strip = el.querySelector('.br-run-strip')
     layer.appendChild(el)
     return { kind: 'run', w0, w1, el, strip, shown: null }

@@ -40,6 +40,7 @@ const store = {
 }
 
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c])
+const attestations = (n) => `${n} attestation${n === 1 ? '' : 's'}`
 const fmtShare = (x) => `${(Math.floor(x * 1000) / 10).toFixed(1)}%`
 const eth = (n) => `${n >= 10 ? Math.round(n).toLocaleString('en-US') : Number(n.toPrecision(3)).toLocaleString('en-US')} ETH`
 const dateLabel = (iso) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
@@ -54,12 +55,13 @@ function mulberry32(seed) {
 }
 
 const ETH_DIAMOND = (fill, shade) => `<path d="M0 -9 L5.6 0.4 L0 3.6 L-5.6 0.4Z" fill="${fill}"/><path d="M0 -9 L0 3.6 L5.6 0.4Z" fill="${shade}"/><path d="M0 4.8 L5.6 1.6 L0 9.4 L-5.6 1.6Z" fill="${fill}"/><path d="M0 4.8 L0 9.4 L5.6 1.6Z" fill="${shade}"/>`
-// Seen from above: a sealed envelope with a wax seal stamped with the Ethereum diamond.
+// Seen from above: a sealed envelope with a wax seal stamped with the Ethereum diamond. An honest
+// vote is white with a green seal; the adversary's is red throughout (the colours in game.css).
 const ENVELOPE = (red) => `<svg viewBox="0 0 60 42" width="72" height="50" aria-hidden="true">
-<rect x="1.5" y="1.5" width="57" height="39" rx="3" fill="${red ? '#F7C9C2' : '#FFF8EC'}" stroke="${red ? '#C93A2F' : '#E9C79E'}" stroke-width="2"/>
-<path d="M2.5 3 L30 24 L57.5 3" fill="none" stroke="${red ? '#D9786C' : '#D8BFA0'}" stroke-width="2" stroke-linejoin="round"/>
-<g transform="translate(30 24)"><circle r="13" fill="${red ? '#3A0F0B' : '#8C2A22'}"/><circle r="13" fill="none" stroke="${red ? '#7A1C16' : '#B4453A'}" stroke-width="2" stroke-dasharray="3 2"/>
-<g transform="scale(1.15)">${ETH_DIAMOND(red ? '#E2483D' : '#F6D3A8', red ? '#9C2A22' : '#D9A877')}</g></g></svg>`
+<rect x="1.5" y="1.5" width="57" height="39" rx="3" fill="${red ? '#FBE3E0' : '#FFFFFF'}" stroke="${red ? '#C62828' : '#1C1714'}" stroke-width="2"/>
+<path d="M2.5 3 L30 24 L57.5 3" fill="none" stroke="${red ? '#E59A94' : '#CFC9BD'}" stroke-width="2" stroke-linejoin="round"/>
+<g transform="translate(30 24)"><circle r="13" fill="${red ? '#8E1B1B' : '#1A7F43'}"/><circle r="13" fill="none" stroke="${red ? '#C62828' : '#0F5C2E'}" stroke-width="2" stroke-dasharray="3 2"/>
+<g transform="scale(1.15)">${ETH_DIAMOND('#FFFFFF', red ? '#F3B8B3' : '#CFE8D8')}</g></g></svg>`
 
 // The truck as a box: roof and back face the camera, sides show a little. The FCR mark is on both.
 const truckFaces = () => `
@@ -70,9 +72,9 @@ const truckFaces = () => `
   <div class="gm-face gm-side" style="width:${TRUCK.len}px;height:${TRUCK.h}px;transform:translate3d(${-TRUCK.w / 2}px,${100 - TRUCK.h - 8}px,${TRUCK.z}px) rotateY(90deg)"></div>
   <div class="gm-face gm-side" style="width:${TRUCK.len}px;height:${TRUCK.h}px;transform:translate3d(${TRUCK.w / 2}px,${100 - TRUCK.h - 8}px,${TRUCK.z}px) rotateY(90deg)"></div>
   <div class="gm-face gm-roof" style="width:${TRUCK.w}px;height:${TRUCK.len}px;transform:translate3d(${-TRUCK.w / 2}px,${100 - TRUCK.h - 8}px,${TRUCK.z}px) rotateX(-90deg)">
-    <div class="gm-roof-art">${markSvg('#F6D3A8', '#9AA8BE', 76)}<i></i></div></div>
+    <div class="gm-roof-art">${markSvg('#F5F5E9', '#F05F36', 76)}<i></i></div></div>
   <div class="gm-face gm-back" style="width:${TRUCK.w}px;height:${TRUCK.h}px;transform:translate3d(${-TRUCK.w / 2}px,${100 - TRUCK.h - 8}px,${TRUCK.z}px)">
-    <div class="gm-door"></div><div class="gm-door"></div>${markSvg('#F6D3A8', '#9AA8BE', 34)}<span class="gm-tail"></span><span class="gm-tail"></span></div>`
+    <div class="gm-door"></div><div class="gm-door"></div>${markSvg('#F5F5E9', '#F05F36', 34)}<span class="gm-tail"></span><span class="gm-tail"></span></div>`
 
 const MARKUP = `
   <div class="gm-stage"><div class="intro-scene gm-scene" data-scene></div></div>
@@ -112,6 +114,8 @@ function createGame() {
   el.setAttribute('role', 'dialog')
   el.setAttribute('aria-modal', 'true')
   el.setAttribute('aria-label', 'FCR bridge game')
+  // With touch controls on screen, banners sit just above them instead of over the road (game.css).
+  el.classList.toggle('is-touch', touch)
   el.innerHTML = MARKUP
   const $ = (s) => el.querySelector(s)
   const host = $('[data-scene]')
@@ -276,7 +280,7 @@ function createGame() {
           s.lost += lost
           el.classList.remove('is-bump'); void el.offsetWidth; el.classList.add('is-bump')
           spill(lost)
-          banner(`Pothole! −${POTHOLE_LOSS} attestations`, 'red', 1400)
+          banner(`Pothole! −${attestations(POTHOLE_LOSS)}`, 'red', 1400)
         }
       }
     }
@@ -387,12 +391,12 @@ function createGame() {
       <ul class="gm-rules">
         <li><span class="gm-ico gm-ico-steer"></span>${touch ? 'Steer by tapping the ‹ and › buttons at the bottom of the screen.' : 'Steer with the ← and → arrow keys (or A and D).'}</li>
         <li><span class="gm-ico gm-ico-ok"></span>Hoover up attestations as they pop up just in time. At the 24 s check you need over ${Math.round(neededShare(1) * 100)}% of them; fall short and you wait another slot.</li>
-        <li><span class="gm-ico gm-ico-hole"></span>Potholes resemble an asynchronous network. Each one knocks ${POTHOLE_LOSS} attestations out of your truck.</li>
+        <li><span class="gm-ico gm-ico-hole"></span>Potholes resemble an asynchronous network. Each one knocks ${attestations(POTHOLE_LOSS)} out of your truck.</li>
         <li><span class="gm-ico gm-ico-red"></span>In an eclipse attack, weave through the gap in the red attestations. Count more than ${Math.round(BYZANTINE * 100)}% red and you're out.</li>
       </ul>
       ${reduce ? '<p class="gm-note">This game is full of motion.</p>' : ''}
       <div class="gm-actions"><button type="button" class="btn btn-accent" data-go>Start${touch ? '' : ' <kbd>Space</kbd>'}</button>
-      <button type="button" class="btn btn-ghost" data-leave>Back to the site</button></div>`
+      <button type="button" class="btn btn-ghost" data-leave>Back</button></div>`
     ui.card.querySelector('[data-go]').addEventListener('click', countdown)
     ui.card.querySelector('[data-leave]').addEventListener('click', close)
     // Focus after the first frame is on screen: focusing forces a full style and layout pass.
@@ -464,7 +468,7 @@ function createGame() {
     }
     const stats = [
       ['Attestations', `${s.taken} / ${W} <small>needed ${neededCount(W, committees())}</small>`],
-      ['Potholes', `${s.potholes} <small>${s.potholes ? `−${s.lost} attestations` : 'none hit'}</small>`],
+      ['Potholes', `${s.potholes} <small>${s.potholes ? `−${attestations(s.lost)}` : 'none hit'}</small>`],
       ['Adversary', `${s.red} <small>limit ${redLimit(W)}</small>`],
     ]
     const bestNow = readBest()
@@ -475,7 +479,7 @@ function createGame() {
       ${learnMore(kind)}
       <p class="gm-mine">${bestNow ? `Your best: <b>${fmtTime(bestNow.t)}</b> with ${fmtShare(bestNow.share)}` : 'No fast confirmation yet'}${escorted ? `&nbsp;&nbsp;·&nbsp;&nbsp;Escorted in total: <b>${eth(escorted)}</b>` : ''}</p>
       <div class="gm-actions"><button type="button" class="btn btn-accent" data-again>Drive again${touch ? '' : ' <kbd>Enter</kbd>'}</button>
-      <button type="button" class="btn btn-ghost" data-leave>Back to the site</button></div>`
+      <button type="button" class="btn btn-ghost" data-leave>Back</button></div>`
     ui.card.querySelector('[data-again]').addEventListener('click', () => newRun())
     ui.card.querySelector('[data-leave]').addEventListener('click', close)
     ui.card.querySelector('[data-again]').focus({ preventScroll: true })
@@ -494,6 +498,9 @@ function createGame() {
     if (s.phase === 'start' && e.key === ' ') { e.preventDefault(); return countdown() }
     if (s.phase === 'over' && e.key === 'Enter' && !e.target.closest?.('a, button')) { e.preventDefault(); return newRun() }
     if (e.key === 'Tab') { // keep focus inside the game
+      // The cards put focus on their main button themselves, so Space or Enter works at once; the
+      // focus ring only shows once someone moves focus with Tab (game.css).
+      el.classList.add('is-tabbing')
       const f = [...el.querySelectorAll('button:not([hidden]), a[href]')].filter((b) => b.offsetParent)
       if (!f.length) return e.preventDefault()
       const i = f.indexOf(document.activeElement)

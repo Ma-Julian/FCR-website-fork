@@ -21,23 +21,23 @@ export function mountAdopt(root) {
   const base = site.docsUrl.replace(/\/?$/, '/')
   const nav = root.querySelector('[data-adopt-guides]')
   // One column per group: chains on the left, infrastructure on the right.
-  nav.innerHTML = GROUPS.map(([group, items]) => `<div class="ad-col"><p class="ad-group">${group}</p>` + items.map(([label, path, note]) =>
-    `<a class="ad-guide" href="${base}${path}" data-guide="${path}"><b>${label} <span class="ad-arrow">${icon('arrow-right', { size: 18 })}</span></b>` +
-    `<span class="ad-note" data-note="${note}">${note}</span></a>`).join('') + '</div>').join('')
+  nav.innerHTML = GROUPS.map(([group, items]) => `<div class="adopt-col"><p class="adopt-group">${group}</p>` + items.map(([label, path, note]) =>
+    `<a class="adopt-guide" href="${base}${path}" data-guide="${path}"><b>${label} <span class="adopt-arrow">${icon('arrow-right', { size: 18 })}</span></b>` +
+    `<span class="adopt-note" data-note="${note}">${note}</span></a>`).join('') + '</div>').join('')
 
   // The heading, the line under it, the code and its two points rise in one after another; the guides
   // only fade in, column by column.
   reveal(root.querySelector('.sec-head'), [root.querySelector('.sec-title'), root.querySelector('.sec-sub'),
-    root.querySelector('.ad-diff'), ...root.querySelectorAll('.ad-points li')])
+    root.querySelector('.adopt-diff'), ...root.querySelectorAll('.adopt-points li')])
   reveal(nav, nav.children, { kind: 'fade', step: 120 })
 
   // Once a chain is picked in the card, mark its guide.
   document.addEventListener('fcr:chain', ({ detail }) => {
     const path = detail.role === 'rollup' && detail.name ? (stackFor(detail.name)?.guide || 'integrate/rollups') : null
-    for (const a of nav.querySelectorAll('.ad-guide')) {
+    for (const a of nav.querySelectorAll('.adopt-guide')) {
       const on = a.dataset.guide === path
       a.classList.toggle('is-yours', on)
-      const note = a.querySelector('.ad-note')
+      const note = a.querySelector('.adopt-note')
       note.textContent = on ? `Your guide for ${detail.name}` : note.dataset.note
     }
   })

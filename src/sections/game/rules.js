@@ -25,8 +25,9 @@ export const MAX_SLOTS = 4 // after this the run falls back to finality
 export const BYZANTINE = 0.25 // spec: CONFIRMATION_BYZANTINE_THRESHOLD = 25 (%)
 export const PROPOSER_BOOST = 0.4 // spec (fork choice): PROPOSER_SCORE_BOOST = 40 (% of one committee)
 // A pothole knocks this many collected attestations out of the truck. (Less faithful than
-// delaying them to the next slot, but clearer as a game; chosen by Julian, 21 Oct 2026.)
-export const POTHOLE_LOSS = 2
+// delaying them to the next slot, but clearer as a game; chosen by Julian, 21 Oct 2026. It was 2
+// until 26 Nov 2026, when the game was made easier to win.)
+export const POTHOLE_LOSS = 1
 // A course must allow a 24 s confirmation even if the driver hits this many potholes.
 export const POTHOLES_ALLOWED = 3
 

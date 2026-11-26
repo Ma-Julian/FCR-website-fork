@@ -1,6 +1,6 @@
 /* Site-wide tokens and base styles. The page follows the original fastconfirm.it: its system type,
-   orange on white and cream, inside an orange frame. The intro keeps its own dusk scene (intro.css),
-   and the F+C+R game keeps the dark palette below. */
+   orange on white and cream, inside an orange frame. The intro's bridge (intro.css) and the F+C+R
+   game (game.css) are drawn in the same colours. */
 /* Overpass is kept only for the road signs (the bridge and the "saved" sign): it descends from
    Highway Gothic, the US road-sign face. Only the weights the signs use. */
 @import '@fontsource/overpass/latin-600.css';
@@ -39,19 +39,6 @@
   --accent-line: rgba(240, 95, 54, .40);
   --accent-tint: rgba(240, 95, 54, .08);
   --live: #1A7F43;                /* the live status green, as light as --accent-ink (white text 5:1) */
-
-  /* The dusk palette, kept for the F+C+R game (game.css) and the bridge's overlays. */
-  --night: #0E1B2C;
-  --deep: #0A1424;
-  --card: #15263C;
-  --slate: #4A5D7A;
-  --mist: #9AA8BE;
-  --paper: #FFFFFF;
-  --paper-2: #E7ECF5;
-  --paper-3: #C9D3E3;
-  --ink: #0B1630;
-  --rule: #24394F;
-  --accent-hi: #FF7A50;
 
   /* The orange frame around the page, as on the original site: 24 px on wide screens, less on phones.
      It runs along the top and sides; its bottom edge is the end of the page. */
@@ -95,8 +82,12 @@ body { margin: 0; padding: var(--frame) var(--frame-x); color: var(--text); font
 main { background: var(--bg); }
 /* The top and sides of the frame stay put while the page scrolls inside them: a window cut out of
    orange, rounded at the top and open at the bottom. The bottom edge arrives with the end of the page
-   (body's bottom padding, under the footer's rounded corners). */
-body::after { content: ''; position: fixed; inset: var(--frame) var(--frame-x) calc(-1 * var(--frame)); z-index: 30; border-radius: var(--frame-r) var(--frame-r) 0 0; box-shadow: 0 0 0 100vmax var(--accent); pointer-events: none;
+   (body's bottom padding, under the footer's rounded corners).
+   The orange is the window's shadow, spread only as far as the screen's edges: the side frame, plus the
+   top frame and the corner radius so the rounded corners are filled out to the screen's corners. A
+   spread of a whole screen (100vmax) made a layer several screens in size; sliding that on scroll is
+   the likely reason iOS closed the page on phones. (100vw here, as a shadow takes no percentages.) */
+body::after { content: ''; position: fixed; inset: var(--frame) var(--frame-x) calc(-1 * var(--frame)); z-index: 30; border-radius: var(--frame-r) var(--frame-r) 0 0; box-shadow: 0 0 0 calc(max(var(--frame), (100vw - 1880px) / 2) + var(--frame) + var(--frame-r)) var(--accent); pointer-events: none;
   transition: transform .4s var(--ease-frame); }
 /* Once the page scrolls, the frame's top edge slides up out of view and the page meets the top of the
    screen; the header moves with it. Both slide back at the top (src/lib/header.js sets .is-scrolled).
@@ -148,12 +139,12 @@ a:hover { color: var(--accent-ink-hi); }
 .site-header .btn { min-height: 44px; padding: 0 20px; font-size: .95rem; white-space: nowrap; }
 @media (max-width: 380px) { .site-header .wordmark-sub { display: none; } }
 
-/* Main navigation: white over the intro, ink once the header is stuck. */
+/* Main navigation: ink, over the intro and once the header is stuck. Hovered, it is the brand orange on
+   the stuck white bar and the deeper orange over the intro's scene, where the brand orange is too faint. */
 .site-nav { display: flex; align-items: center; gap: clamp(12px, 2.4vw, 28px); }
-.site-nav > a:not(.btn) { color: #FFFFFF; font-weight: 600; text-decoration: none; padding: 10px 2px; white-space: nowrap; transition: color .15s ease; }
-.site-header.is-stuck .site-nav > a:not(.btn) { color: var(--text); }
-.site-nav > a:not(.btn):hover, .site-nav > a[aria-current="page"],
-.site-header.is-stuck .site-nav > a:not(.btn):hover { color: var(--accent); }
+.site-nav > a:not(.btn) { color: var(--text); font-weight: 600; text-decoration: none; padding: 10px 2px; white-space: nowrap; transition: color .15s ease; }
+.site-nav > a:not(.btn):hover, .site-nav > a[aria-current="page"] { color: var(--accent); }
+.site-header:not(.is-stuck) .site-nav > a:not(.btn):hover { color: var(--accent-ink); }
 /* Phones: the Integrate FCR button already leads to the docs; contact stays in the footer. */
 @media (max-width: 600px) { .site-nav .nav-docs { display: none; } }
 @media (max-width: 560px) { .site-nav .nav-contact { display: none; } }

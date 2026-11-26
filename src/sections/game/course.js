@@ -23,18 +23,26 @@ export const HEAD_R = -(TRUCK.z - TRUCK.len - 18) // attestations are hoovered w
 export const BODY_R = -(TRUCK.z - TRUCK.len / 2) // potholes hit under the middle of the truck
 export const FIRST_CHECK_D = RUN_SLOTS * SLOT_S * V
 
-// Waves are full (2 or 3 attestations) and frequent so a committee is ~170 attestations: at 95%
-// that leaves the 6+ spare that three potholes (3 × POTHOLE_LOSS) can cost.
+// Waves are full (2 or 3 attestations) and frequent so a committee is ~150 attestations: at 95%
+// that leaves the spare that three potholes (3 × POTHOLE_LOSS) can cost.
+//
+// How hard a run is comes from the numbers below, not from the thresholds in rules.js, which are the
+// spec's. They were eased on 26 Nov 2026 (the game was too hard to win): attestations show up sooner
+// (DROP_S 0.7 → 1), waves change lane less often (DRIFT, from two in three waves), potholes are rarer
+// (POTHOLE_CHANCE 0.45 → 0.3, and 0.12 after the first check) and cost less (POTHOLE_LOSS in rules.js).
 const WAVE_S = 0.33 // honest attestations arrive in a wave every 0.33 s
 const RED_S = 0.125 // the adversary's waves during an eclipse
 const RED_WAVES = 54 // enough to pass 25% of the largest committee a course produces (checked)
 const BURST_S = 0.22 // the held-back honest waves after it
 const COVER_LEAD = 0.25 // the covers close this long (s) before the first red wave
 const GAP_MOVES = 0.4 // share of red waves on which the two-lane gap in the red wall shifts a lane
-const POTHOLE_CHANCE = 0.45 // per calm wave
+const DRIFT = 0.4 // share of waves that move a lane from the one before
+const LATER_DRIFT = 0.25 // the same after the first check, where waves come twice as often
+const POTHOLE_CHANCE = 0.3 // per calm wave before the first check
+const LATER_POTHOLE_CHANCE = 0.12 // per wave after it, where waves come twice as often
 // Asynchrony: every attestation, honest or red, only shows up this long (s) before it reaches you.
 export const LATER_WAVES = 72 // waves per slot after the first check (every 1/6 s), carrying one committee
-export const DROP_S = 0.7
+export const DROP_S = 1
 
 // Where the head line is at a check, and which lanes a truck in lane T collects from:
 // its own and both neighbours, or only its own while two vacuums are covered.
@@ -64,8 +72,9 @@ export function createCourse(rng) {
     if (!red) c.honestWs.push(w)
   }
 
-  function honestWave(w, potholeChance, count = rng() < 0.75 ? 3 : 2) {
-    const start = clamp(c.prevStart + Math.floor(rng() * 3) - 1, 0, 3)
+  function honestWave(w, potholeChance, count = rng() < 0.75 ? 3 : 2, drift = DRIFT) {
+    // The wave sits where the last one did, or one lane to either side.
+    const start = clamp(c.prevStart + (rng() < drift ? (rng() < 0.5 ? -1 : 1) : 0), 0, 3)
     c.prevStart = start
     const lanes = [start, start + 1, start + 2].sort(() => rng() - 0.5).slice(0, count)
     for (const l of lanes) envelope(w, l, false)
@@ -107,7 +116,7 @@ export function createCourse(rng) {
       quota = Array.from({ length: LATER_WAVES }, (_, j) => Math.floor(n1 / LATER_WAVES) + (j < n1 % LATER_WAVES ? 1 : 0))
       quota.sort(() => rng() - 0.5)
     }
-    honestWave(w, POTHOLE_CHANCE, quota[i])
+    honestWave(w, LATER_POTHOLE_CHANCE, quota[i], LATER_DRIFT)
   }
 
   c.plan = (untilW) => {

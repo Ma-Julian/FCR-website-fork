@@ -25,12 +25,12 @@
   <meta property="og:image" content="https://fastconfirm.it/og-fcr.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="FCR, Fast Confirmation Rule, over a suspension bridge at dusk">
+  <meta property="og:image:alt" content="FCR, Fast Confirmation Rule: the security you trust, the speed you need. Beside an orange suspension bridge.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="FCR: the security you trust, the speed you need">
   <meta name="twitter:description" content="Accept deposits and messages from Ethereum in as little as {{site.timing.fcrMinimumSeconds}} seconds, backed by its validator set.">
   <meta name="twitter:image" content="https://fastconfirm.it/og-fcr.png">
-  <meta name="twitter:image:alt" content="FCR, Fast Confirmation Rule, over a suspension bridge at dusk">
+  <meta name="twitter:image:alt" content="FCR, Fast Confirmation Rule: the security you trust, the speed you need. Beside an orange suspension bridge.">
   <link rel="alternate" type="text/plain" href="/llms.txt" title="Summary for AI assistants">
   <!-- Structured data for search and answer engines: what FCR is, who builds it, where the docs are. Not executed, so the CSP allows it. -->
   <script type="application/ld+json">
@@ -90,7 +90,7 @@
 
   <main>
     <section class="intro" data-intro aria-labelledby="intro-title">
-      <div class="intro-scene" data-intro-scene role="img" aria-label="Driving fast across a red suspension bridge at dusk, with highway signs for projects that use FCR."></div>
+      <div class="intro-scene" data-intro-scene role="img" aria-label="Driving across an orange suspension bridge, with highway signs for projects that use FCR."></div>
       <div class="intro-layer">
         <div class="intro-dim"></div>
         <div class="intro-counter" aria-hidden="true">
@@ -174,17 +174,17 @@
           <h2 class="sec-title" id="adopt-title">Easy to adopt</h2>
           <p class="sec-sub">No hard fork, no new contracts. FCR runs in the consensus client you already have. The core change is the block you read:</p>
         </div>
-        <div class="ad-main">
-          <div class="ad-diff" aria-label="Read the safe block instead of the finalized block">
-            <div class="ad-rm"><span aria-hidden="true">−</span> eth_getBlockByNumber("finalized")</div>
-            <div class="ad-add"><span aria-hidden="true">+</span> eth_getBlockByNumber("safe")</div>
+        <div class="adopt-main">
+          <div class="adopt-diff" aria-label="Read the safe block instead of the finalized block">
+            <div class="adopt-rm"><span aria-hidden="true">−</span> eth_getBlockByNumber("finalized")</div>
+            <div class="adopt-add"><span aria-hidden="true">+</span> eth_getBlockByNumber("safe")</div>
           </div>
-          <ul class="ad-points">
+          <ul class="adopt-points">
             <li><strong>Turn it on.</strong> Enable FCR in Lighthouse, Prysm, Lodestar or Nimbus, or use an RPC provider that serves it.</li>
             <li><strong>Handle the rare reorg.</strong> Re-check deposits once they are finalized.</li>
           </ul>
         </div>
-        <nav class="ad-guides" aria-label="Integration guides" data-adopt-guides></nav>
+        <nav class="adopt-guides" aria-label="Integration guides" data-adopt-guides></nav>
       </div>
     </section>
 
@@ -207,7 +207,7 @@
       <nav aria-label="Footer">
         <a href="{{site.docsUrl}}">Docs</a>
         <a href="https://arxiv.org/abs/2405.00549">Research paper</a>
-        <a href="{{site.contactUrl}}">Contact</a>
+        <a href="{{site.contactUrl}}">Talk to us</a>
       </nav>
     </div>
     <div class="footer-mark-wrap">

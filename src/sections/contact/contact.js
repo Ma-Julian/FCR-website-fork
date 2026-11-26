@@ -25,7 +25,7 @@ export function mountContact() {
   dlg.setAttribute('aria-labelledby', 'bc-name')
   dlg.innerHTML = `
     <div class="bc-card" tabindex="-1" autofocus>
-      <button type="button" class="bc-close" aria-label="Close">×</button>
+      <button type="button" class="bc-close" aria-label="Close">${icon('close', { size: 20 })}</button>
       <div class="bc-top">
         <img class="bc-photo" src="${photo}" alt="" width="96" height="96">
         <div>
@@ -33,7 +33,7 @@ export function mountContact() {
           <p class="bc-role">${[].concat(c.role).map(esc).join('<br>')}</p>
         </div>
       </div>
-      <a class="bc-primary" href="${esc(tg)}" target="_blank" rel="noopener">${ICON.telegram}<span>Message me on Telegram</span></a>
+      <a class="btn btn-accent bc-primary" href="${esc(tg)}" target="_blank" rel="noopener">${ICON.telegram}<span>Message me on Telegram</span></a>
       <ul class="bc-links">
         <li><a href="${esc(tg)}" target="_blank" rel="noopener">${ICON.telegram}<span>@${esc(c.telegram)}</span></a></li>
         <li><a href="https://x.com/${esc(c.x)}" target="_blank" rel="noopener">${ICON.x}<span>@${esc(c.x)}</span></a></li>

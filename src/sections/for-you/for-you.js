@@ -441,6 +441,8 @@ export function mountForYou(root) {
         { label: 'empirical backing', today: practice, fcr: FCR_SEC.practice },
       ]
       root.querySelector('[data-security-title]').textContent = sp ? 'Reorg risk' : 'Security'
+      // Solvers: Speed and Reorg risk each on a row of their own (.is-stacked in for-you.css).
+      root.querySelector('.fy-panels').classList.toggle('is-stacked', !!sp)
       const secSrc = root.querySelector('[data-security-src]')
       secSrc.hidden = !sp
       secSrc.innerHTML = sp ? `Reorg rate: <a href="${esc(REORG_RATE_URL)}" target="_blank" rel="noopener">Decipher, post-Pectra reorg analysis</a>. FCR record: EthPandaOps replay of client code on a year of mainnet.` : ''
@@ -581,7 +583,7 @@ export function mountForYou(root) {
     cta.onclick = isBrief ? (ev) => { ev.preventDefault(); getBrief(cta, brief) } : null
     // The example card's action is to make it your own: back up to the sentence.
     if (example) {
-      cta.innerHTML = '<span>See what FCR changes for your chain</span>'
+      cta.innerHTML = '<span>See FCR changes for your chain</span>'
       cta.href = '#for-you'
       cta.onclick = (ev) => { ev.preventDefault(); root.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); input.focus({ preventScroll: true }) }
     }
