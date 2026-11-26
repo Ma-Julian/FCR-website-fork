@@ -7,8 +7,8 @@ import site from '../../data/site.json' with { type: 'json' }
 
 // No "Edit this page" link: the repository is private (issue #19). Add editLink back when it's public.
 
-// VitePress writes two tiny inline scripts into every page (dark class, Mac shortcut hint).
-// The site's Content-Security-Policy only allows scripts from files, so they move into one.
+// VitePress writes a tiny inline script into every page (the Mac shortcut hint).
+// The site's Content-Security-Policy only allows scripts from files, so it moves into one.
 const INLINE = /<script(?: id="[^"]*")?>([\s\S]*?)<\/script>/g
 const inline = new Set<string>()
 const MPA = process.env.DOCS_MPA === '1'
@@ -26,15 +26,19 @@ export default defineConfig({
   sitemap: { hostname: `${site.url}/docs/` },
   // Links to the site's own pages outside the docs (home, status) start with /../ and can't be checked here.
   ignoreDeadLinks: [/^\/\.\.\//],
-  // The site is dark only; this also keeps VitePress from adding an inline script,
-  // which the site's Content-Security-Policy (script-src 'self') would block.
-  appearance: 'force-dark',
+  // The docs have their own light, dark and system switch (docs/public/vp-theme.js and
+  // theme/ThemePicker.vue), so VitePress's is off. Its switch has no "system" choice, and it sets the
+  // theme with an inline script, which the site's Content-Security-Policy (script-src 'self') blocks.
+  appearance: false,
   metaChunk: true,
   // DOCS_MPA=1 builds plain pages with no client-side router, for hosts that can't serve the docs at /docs/.
   mpa: MPA,
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
-    ['meta', { name: 'theme-color', content: '#0E1B2C' }],
+    // The light theme's colour; vp-theme.js changes it for dark.
+    ['meta', { name: 'theme-color', content: '#FFFFFF' }],
+    // Light, dark or the system's theme (docs/public/vp-theme.js): not deferred, so it is set before the first paint.
+    ['script', { src: '/docs/vp-theme.js' }],
     // The docs offline cache (see scripts/perf/postbuild.mjs); a file, so the CSP's script-src 'self' allows it.
     ['script', { src: '/sw-register.js', defer: '' }],
     ['link', { rel: 'icon', href: '/favicon.ico', sizes: '48x48' }],
@@ -63,9 +67,6 @@ export default defineConfig({
       inline.add(js)
       return ''
     }).replace('</head>', '<script src="/docs/vp-inline.js" defer></script>' + (MPA ? '<script src="/docs/vp-mpa.js" defer></script>' : '') + '</head>')
-      // The docs are always dark, so the class is in the HTML: the inline script no longer has to run
-      // before the first paint (it only adds the Mac shortcut hint now) and can wait until after.
-      .replace(/<html([^>]*?)(?: class="([^"]*)")?>/, (_m, attrs, cls) => `<html${attrs} class="${cls ? cls + ' ' : ''}dark">`)
       // Paint first, start the app after (docs/public/vp-boot.js). The modulepreload links stay, so the
       // files still download right away; only running them waits one frame. (Not in the plain-page build.)
       .replace(/<head>([\s\S]*?)<\/head>/, (head) => {
@@ -151,6 +152,8 @@ export default defineConfig({
     outline: { level: [2, 3], label: 'On this page' },
     search: { provider: 'local' },
     docFooter: { prev: 'Previous', next: 'Next' },
+    // The page for unknown addresses, on the whole site (public/_redirects); styled in theme/custom.css.
+    notFound: { title: 'Page not found', quote: 'This page doesn’t exist, or it has moved.', linkText: 'Go to the docs', linkLabel: 'Go to the docs' },
     lastUpdated: { text: 'Updated', formatOptions: { dateStyle: 'medium' } },
     footer: { message: 'Fast Confirmation Rule. Developed by <a href="https://ethlabs.org">Ethlabs</a>, the <a href="https://ethereum.foundation">Ethereum Foundation</a> and Ethereum’s consensus-client teams.' },
   },

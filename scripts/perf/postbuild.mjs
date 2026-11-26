@@ -26,7 +26,9 @@ const walk = (dir) => readdirSync(dir).flatMap((n) => {
 const url = (file) => '/' + relative(dist, file).split(sep).join('/')
 
 // 0. Critical CSS per docs page (before the cache list, which hashes the pages).
-const beasties = new Beasties({ path: dist, publicPath: '/', preload: 'body', pruneSource: false, inlineFonts: false, preloadFonts: false, compress: true, logLevel: 'warn' })
+// The pages are built without the dark class (docs/public/vp-theme.js adds it before the first paint), so
+// the dark theme's rules are kept by name: otherwise a dark page would first paint light.
+const beasties = new Beasties({ path: dist, publicPath: '/', preload: 'body', allowRules: [/\.dark\b/], pruneSource: false, inlineFonts: false, preloadFonts: false, compress: true, logLevel: 'warn' })
 let inlined = 0
 for (const f of walk(docs).filter((f) => f.endsWith('.html'))) {
   const html = readFileSync(f, 'utf8')

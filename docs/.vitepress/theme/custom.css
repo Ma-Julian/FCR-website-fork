@@ -1,61 +1,252 @@
-/* The site's palette (src/styles/base.css) mapped onto VitePress's theme variables. Dark only. */
-:root, .dark {
-  --vp-font-family-base: 'Overpass', 'Helvetica Neue', Arial, sans-serif;
-  --vp-font-family-mono: 'Overpass Mono', ui-monospace, Menlo, monospace;
+/* The docs in the home page's look (src/styles/base.css): white and cream, orange, warm ink, the system
+   type. Two themes: light (:root) and dark (.dark on <html>, set by docs/public/vp-theme.js from the
+   reader's choice or the system's setting). Dark is light with the lightness turned over: the same roles.
+   Each theme sets VitePress's variables and a few of its own (--look-*); the rules after them serve both. */
 
-  --vp-c-bg: #0E1B2C;          /* night */
-  --vp-c-bg-alt: #0A1424;      /* deep: sidebar, code */
-  --vp-c-bg-elv: #15263C;      /* card */
-  --vp-c-bg-soft: #15263C;
-  --vp-c-divider: #24394F;
-  --vp-c-border: #24394F;
-  --vp-c-gutter: #0A1424;
+/* ---------- light ---------- */
+:root {
+  --vp-font-family-base: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --vp-font-family-mono: ui-monospace, 'SF Mono', Monaco, Inconsolata, 'Fira Code', monospace;
 
-  --vp-c-text-1: #FFFFFF;
-  --vp-c-text-2: #C3CDDB;
-  --vp-c-text-3: #9AA8BE;      /* mist */
+  --vp-c-bg: #FFFFFF;
+  --vp-c-bg-alt: #F5F5E9;                  /* the home page's cream: sidebar, search field */
+  --vp-c-bg-elv: #FFFFFF;
+  --vp-c-bg-soft: #F5F5E9;
+  --vp-c-divider: rgba(28, 23, 20, .10);
+  --vp-c-border: rgba(28, 23, 20, .18);
+  --vp-c-gutter: rgba(28, 23, 20, .10);
 
-  --vp-c-brand-1: #F05F36;     /* accent: the original site's orange */
-  --vp-c-brand-2: #FF7A50;
-  --vp-c-brand-3: #F05F36;
-  --vp-c-brand-soft: rgba(240, 95, 54, .14);
+  --vp-c-text-1: #1C1714;                  /* 17.8:1 on white, 16.2:1 on cream */
+  --vp-c-text-2: #6B645B;                  /* 5.8:1 on white, 5.3:1 on cream */
+  --vp-c-text-3: #766F65;                  /* 5:1 on white, 4.5:1 on cream */
 
-  --vp-button-brand-bg: #F05F36;
-  --vp-button-brand-text: #0B1630;
-  --vp-button-brand-hover-bg: #FF7A50;
-  --vp-button-brand-hover-text: #0B1630;
+  /* Warm greys, in place of VitePress's blue-greys. */
+  --vp-c-gray-1: #D9D6CC;
+  --vp-c-gray-2: #E5E3D8;
+  --vp-c-gray-3: #EEEDE2;
+  --vp-c-gray-soft: rgba(28, 23, 20, .06);
 
-  --vp-code-bg: #0A1424;
-  --vp-code-color: #FF9A78;
-  --vp-code-block-bg: #0A1424;
+  --vp-c-brand-1: #C93F18;                 /* --accent-ink: orange text, 5:1 on white, 4.5:1 on cream */
+  --vp-c-brand-2: #AE3412;                 /* its hover */
+  --vp-c-brand-3: #C93F18;                 /* button fill, under white text */
+  --vp-c-brand-soft: rgba(240, 95, 54, .10);
+
+  --vp-button-brand-bg: #C93F18;
+  --vp-button-brand-text: #FFFFFF;
+  --vp-button-brand-hover-bg: #AE3412;
+  --vp-button-brand-hover-text: #FFFFFF;
+
+  --vp-code-bg: rgba(240, 95, 54, .08);
+  --vp-code-color: #AE3412;
+  /* Code blocks are ink with cream text, as on the home page's "Easy to adopt" block. */
+  --vp-code-block-bg: #1C1714;
+  --vp-code-block-color: #F5F5E9;
+  --vp-code-block-divider-color: rgba(255, 255, 255, .12);
+  --vp-code-lang-color: #9C948A;           /* 5.9:1 on ink */
+  --vp-code-line-number-color: #9C948A;
+  --vp-code-copy-code-bg: #2A2420;
+  --vp-code-copy-code-border-color: rgba(255, 255, 255, .14);
+  --vp-code-copy-code-hover-bg: #342D28;
+  --vp-code-copy-code-hover-border-color: rgba(255, 255, 255, .22);
+  --vp-code-copy-code-active-text: #F5F5E9;
+  --vp-code-tab-text-color: #BBB7AF;
+  --vp-code-tab-hover-text-color: #F5F5E9;
+  --vp-code-tab-active-text-color: #F5F5E9;
+  --vp-code-tab-active-bar-color: #F05F36;
 
   --vp-custom-block-tip-bg: rgba(240, 95, 54, .08);
-  --vp-custom-block-tip-border: rgba(240, 95, 54, .35);
-  --vp-custom-block-info-bg: #15263C;
+  --vp-custom-block-tip-border: rgba(240, 95, 54, .40);
+  --vp-custom-block-info-bg: #F5F5E9;
 
-  --vp-nav-bg-color: #0E1B2C;
-  --vp-sidebar-bg-color: #0A1424;
-  --vp-local-nav-bg-color: #0E1B2C;
+  --vp-nav-bg-color: #FFFFFF;
+  --vp-sidebar-bg-color: #F5F5E9;
+  --vp-local-nav-bg-color: #FFFFFF;
+
+  --look-accent: #F05F36;                  /* the brand orange: the wordmark, bars, focus rings */
+  --look-on-accent: #FFFFFF;               /* a label on an orange fill (the fill is --vp-c-brand-3) */
+  --look-link-line: rgba(201, 63, 24, .40);
+  --look-live: #1A7F43;                    /* the home page's live green, under white text (5:1) */
+  --look-on-live: #FFFFFF;
+  --look-selection: rgba(240, 95, 54, .22);
 }
 
-.VPNavBarTitle .title { font-weight: 900; letter-spacing: -.01em; color: #F05F36; }
+/* ---------- dark ---------- */
+/* New colours are in oklch: L is how light a colour looks, so the steps between surfaces and text can
+   be set directly. One warm hue (60 to 100, as the ink and cream have) at very low chroma, so the greys
+   sit with the orange. Surfaces are L .17 to .245; text is L .68 and up. Contrast, WCAG: text-1 16:1,
+   text-2 9:1, text-3 6.3:1 and orange links 5.5:1 on the page, and each at least 5.6:1 on raised surfaces. */
+.dark {
+  --vp-c-bg: oklch(0.2 0.006 60);          /* the page: the home page's ink, a step lighter than black */
+  --vp-c-bg-alt: oklch(0.17 0.006 60);     /* sidebar, search field: set back */
+  --vp-c-bg-elv: oklch(0.245 0.007 60);    /* menus, dialogs: raised */
+  --vp-c-bg-soft: oklch(0.245 0.007 60);
+  /* Lines are translucent white, so one value sits right on every surface. */
+  --vp-c-divider: rgb(255 255 255 / .10);
+  --vp-c-border: rgb(255 255 255 / .18);
+  --vp-c-gutter: rgb(255 255 255 / .10);
+
+  --vp-c-text-1: oklch(0.96 0.012 100);    /* the home page's cream, not pure white */
+  --vp-c-text-2: oklch(0.78 0.012 80);
+  --vp-c-text-3: oklch(0.68 0.012 80);
+
+  --vp-c-gray-1: oklch(0.42 0.008 60);
+  --vp-c-gray-2: oklch(0.36 0.008 60);
+  --vp-c-gray-3: oklch(0.3 0.008 60);
+  --vp-c-gray-soft: rgb(255 255 255 / .07);
+
+  --vp-c-brand-1: #F05F36;                 /* the brand orange itself reads on dark: 5.5:1 */
+  --vp-c-brand-2: oklch(0.74 0.16 42);     /* its hover: the same hue, lighter (7.4:1) */
+  --vp-c-brand-3: #F05F36;                 /* button fill, under ink text (5.5:1) */
+  --vp-c-brand-soft: rgb(240 95 54 / .16);
+
+  --vp-button-brand-bg: #F05F36;
+  --vp-button-brand-text: oklch(0.2 0.006 60);
+  --vp-button-brand-hover-bg: oklch(0.74 0.16 42);
+  --vp-button-brand-hover-text: oklch(0.2 0.006 60);
+
+  --vp-code-bg: rgb(240 95 54 / .12);
+  --vp-code-color: oklch(0.82 0.11 50);    /* 10:1 on the page */
+  --vp-code-block-bg: oklch(0.15 0.006 60);
+  --vp-code-block-color: oklch(0.96 0.012 100);
+  --vp-code-block-divider-color: rgb(255 255 255 / .10);
+  --vp-code-lang-color: oklch(0.68 0.012 80);
+  --vp-code-line-number-color: oklch(0.68 0.012 80);
+  --vp-code-copy-code-bg: oklch(0.245 0.007 60);
+  --vp-code-copy-code-border-color: rgb(255 255 255 / .14);
+  --vp-code-copy-code-hover-bg: oklch(0.29 0.007 60);
+  --vp-code-copy-code-hover-border-color: rgb(255 255 255 / .22);
+  --vp-code-copy-code-active-text: oklch(0.96 0.012 100);
+  --vp-code-tab-text-color: oklch(0.78 0.012 80);
+  --vp-code-tab-hover-text-color: oklch(0.96 0.012 100);
+  --vp-code-tab-active-text-color: oklch(0.96 0.012 100);
+  --vp-code-tab-active-bar-color: #F05F36;
+
+  --vp-custom-block-tip-bg: rgb(240 95 54 / .10);
+  --vp-custom-block-tip-border: rgb(240 95 54 / .40);
+  --vp-custom-block-info-bg: oklch(0.245 0.007 60);
+
+  --vp-nav-bg-color: oklch(0.2 0.006 60);
+  --vp-sidebar-bg-color: oklch(0.17 0.006 60);
+  --vp-local-nav-bg-color: oklch(0.2 0.006 60);
+
+  /* Shadows can't be seen on dark surfaces: each becomes one faint white ring. */
+  --vp-shadow-1: 0 0 0 1px rgb(255 255 255 / .09);
+  --vp-shadow-2: 0 0 0 1px rgb(255 255 255 / .09);
+  --vp-shadow-3: 0 0 0 1px rgb(255 255 255 / .10);
+  --vp-shadow-4: 0 0 0 1px rgb(255 255 255 / .10);
+  --vp-shadow-5: 0 0 0 1px rgb(255 255 255 / .12);
+
+  --look-accent: #F05F36;
+  --look-on-accent: oklch(0.2 0.006 60);
+  --look-link-line: rgb(240 95 54 / .50);
+  --look-live: oklch(0.74 0.16 150);       /* the live green, lightened for dark: 8.4:1 on the page */
+  --look-on-live: oklch(0.2 0.006 60);
+  --look-selection: rgb(240 95 54 / .32);
+}
+
+/* ---------- both themes ---------- */
+:root ::selection { background: var(--look-selection); }
+:root :focus-visible { outline: 3px solid var(--look-accent); outline-offset: 3px; }
+/* The search dialog's field: its bar already turns orange while the field has focus, so no ring on the
+   field itself. And one way to clear it, the dialog's own button at the right, not the browser's small cross. */
+:root .VPLocalSearchBox .search-input:focus-visible { outline: none; }
+:root .VPLocalSearchBox .search-input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; display: none; }
+
+/* Type: the home page's heavy, tight headings. */
+:root .VPNavBarTitle .title { color: var(--vp-c-text-1); }
+:root .vp-doc h1 { font-weight: 800; letter-spacing: -.025em; text-wrap: balance; }
+:root .vp-doc h2 { font-weight: 800; letter-spacing: -.02em; border-top-color: var(--vp-c-divider); text-wrap: balance; }
+:root .vp-doc h3 { font-weight: 800; letter-spacing: -.01em; }
+:root .vp-doc :is(p, li) { text-wrap: pretty; }
+:root .vp-doc strong { font-weight: 700; }
+
+/* Links in the text keep an underline, faint until hovered: colour alone doesn't mark a link. */
+:root .vp-doc a:not(.header-anchor) { font-weight: 600; text-decoration-color: var(--look-link-line); text-decoration-thickness: 2px; text-underline-offset: 3px;
+  transition: color 125ms ease-out, text-decoration-color 125ms ease-out; }
+:root .vp-doc a:not(.header-anchor):hover { text-decoration-color: currentColor; }
+
+/* Links that stand alone (the top bar, the footer) have no underline at rest; on hover one draws in
+   from the left, as on the home page (drawn as a background, so it can animate). */
+:root .VPNavBarMenuLink { font-weight: 600; }
+:root :is(.VPNavBarMenuLink span, .VPFooter a) { padding-bottom: 3px; text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 2px; transition: background-size 125ms ease-out; }
+:root :is(.VPNavBarMenuLink:hover span, .VPNavBarMenuLink:focus-visible span, .VPFooter a:hover, .VPFooter a:focus-visible) { background-size: 100% 2px; }
+:root .VPFooter a { color: var(--vp-c-brand-1); font-weight: 600; }
+:root .VPFooter a:hover { color: var(--vp-c-brand-2); }
+
+/* Sidebar: small capital labels over the groups, as on the home page's cards; the current page in orange. */
+:root .VPSidebarItem.level-0 > .item .text { color: var(--vp-c-text-2); }
+:root .VPSidebarItem:not(.level-0):not(.is-active).is-link > .item > .link:hover .text { color: var(--vp-c-text-1); }
+:root .VPSidebarItem:not(.level-0).is-active > .item .link > .text { color: var(--vp-c-brand-1); font-weight: 700; }
+:root .VPDocAsideOutline .outline-link.active { color: var(--vp-c-brand-1); font-weight: 600; }
+
+/* Surfaces: the home page's rounder corners. */
+:root .vp-doc .custom-block { border-radius: 16px; }
+:root .VPDocFooter .pager-link { border-radius: 16px; padding: 14px 20px 16px; transition: border-color 125ms ease-out; }
+:root .VPDocFooter .pager-link .title { font-weight: 700; }
+@media (min-width: 640px) {
+  :root .vp-doc div[class*='language-'] { border-radius: 16px; }
+  /* Tabbed code: the tabs take the top corners, the code under them the bottom ones. */
+  :root .vp-code-group .tabs { border-radius: 16px 16px 0 0; }
+  :root .vp-doc .vp-code-group div[class*='language-'] { border-radius: 0 0 16px 16px !important; }
+}
+@media (min-width: 768px) { :root .DocSearch-Button { border-radius: 999px; } }
+
+/* Status pills: outlined, and "Live" in the home page's green. */
+:root .pill { border-color: var(--vp-c-border); color: var(--vp-c-text-2); }
+:root .pill.dev { border-color: var(--vp-c-text-3); }
+:root .pill.live { background: var(--look-live); border-color: var(--look-live); color: var(--look-on-live); }
+
+/* Narrow screens: the "Menu" pill and the button for the site links. */
+:root .VPLocalNav .menu { border-color: var(--vp-c-brand-1); color: var(--vp-c-brand-1); }
+:root .VPLocalNav .menu:hover, :root .VPLocalNav .menu:focus-visible { background: var(--vp-c-brand-3); color: var(--look-on-accent); }
+:root .VPNavBarHamburger .container > span { background-color: var(--look-accent); }
+
+/* Scrollbars, on the page, the sidebar and the search results: a slim rounded orange thumb, and no track of its own,
+   so whatever is behind shows through. Firefox takes the standard properties instead. */
+:root::-webkit-scrollbar, :root .VPSidebar::-webkit-scrollbar, :root .VPLocalSearchBox .results::-webkit-scrollbar { width: 10px; }
+:root::-webkit-scrollbar-track, :root .VPSidebar::-webkit-scrollbar-track, :root .VPLocalSearchBox .results::-webkit-scrollbar-track { background: transparent; }
+/* The clear border, with the fill kept inside it, leaves a 2px gap around the thumb. */
+:root::-webkit-scrollbar-thumb, :root .VPSidebar::-webkit-scrollbar-thumb, :root .VPLocalSearchBox .results::-webkit-scrollbar-thumb { background: var(--look-accent) padding-box; border: 2px solid transparent; border-radius: 999px; }
+:root::-webkit-scrollbar-thumb:hover, :root .VPSidebar::-webkit-scrollbar-thumb:hover, :root .VPLocalSearchBox .results::-webkit-scrollbar-thumb:hover { background-color: var(--vp-c-brand-2); }
+@supports not selector(::-webkit-scrollbar) {
+  :root, :root .VPSidebar, :root .VPLocalSearchBox .results { scrollbar-width: thin; scrollbar-color: var(--look-accent) transparent; }
+}
+
+/* The page for unknown addresses, set like the home page: a large orange figure, a heavy ink headline,
+   one plain line, and the site's pill button. */
+:root .NotFound { padding-block: clamp(72px, 14vh, 144px) 96px; }
+:root .NotFound .code { font-size: clamp(6rem, 22vw, 11rem); line-height: .9; font-weight: 900; letter-spacing: -.04em; color: var(--look-accent); }
+:root .NotFound .title { padding-top: 20px; font-size: clamp(1.75rem, 4.2vw, 2.5rem); line-height: 1.08; font-weight: 800; letter-spacing: -.025em; color: var(--vp-c-text-1); }
+:root .NotFound .divider { display: none; }
+:root .NotFound .quote { margin-top: 14px; max-width: 30rem; font-size: 1.0625rem; line-height: 1.5; font-weight: 400; color: var(--vp-c-text-2); }
+:root .NotFound .action { padding-top: 28px; }
+:root .NotFound .link { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 24px; border: 0; border-radius: 999px; background: var(--vp-c-brand-3); color: var(--look-on-accent); font-size: 1rem; font-weight: 700; line-height: 1;
+  transition: background-color .15s ease, scale .15s ease-out; }
+:root .NotFound .link:hover, :root .NotFound .link:focus-visible { background: var(--vp-c-brand-2); color: var(--look-on-accent); }
+:root .NotFound .link:active { scale: .97; }
+@media (hover: hover) and (pointer: fine) { :root .NotFound .link:hover { scale: 1.03; } :root .NotFound .link:hover:active { scale: .97; } }
+@media (prefers-reduced-motion: reduce) { :root .NotFound .link { transition: none; scale: 1 !important; } }
+
+/* ---------- light only ---------- */
+/* Code blocks are dark on a light page, so they take the dark set of code colours. */
+:root:not(.dark) .vp-doc .vp-code span { color: var(--shiki-dark, inherit); }
+/* A white diagram on a white page needs an edge: a line just inside it, black at 10%. */
+:root:not(.dark) .vp-doc img.diagram { outline: 1px solid rgb(0 0 0 / .1); outline-offset: -1px; }
+
+/* ---------- kept from the first docs theme ---------- */
+:root .VPNavBarTitle .title { font-weight: 900; letter-spacing: -.01em; }
 .VPNavBarTitle .logo { height: 30px; }
-.vp-doc h1 { font-weight: 800; letter-spacing: -.02em; }
-.vp-doc h2 { font-weight: 800; letter-spacing: -.01em; border-top-color: #24394F; }
-.vp-doc h3 { font-weight: 800; }
-.vp-doc a { text-underline-offset: 3px; }
-.VPSidebarItem.level-0 > .item .text { font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; color: #9AA8BE; }
+:root .VPSidebarItem.level-0 > .item .text { font-weight: 800; letter-spacing: .08em; text-transform: uppercase; font-size: 12px; }
 .vp-doc table { font-variant-numeric: tabular-nums; }
 
 /* Status pills used in tables: <span class="pill live">Live</span> */
-.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .02em; border: 1px solid #4A5D7A; color: #C3CDDB; white-space: nowrap; }
-.pill.live { background: #F05F36; border-color: #F05F36; color: #0B1630; }
-.pill.dev { border-color: #9AA8BE; }
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .02em; border: 1px solid var(--vp-c-border); color: var(--vp-c-text-2); white-space: nowrap; }
 
 /* Plain-page build (DOCS_MPA=1): these need the app, so they're hidden there. */
-.vp-mpa .VPLocalNavOutlineDropdown, .vp-mpa .VPNavBarSearch { display: none; }
+.vp-mpa .VPLocalNavOutlineDropdown, .vp-mpa .VPNavBarSearch, .vp-mpa .theme-picker { display: none; }
 
-/* Hand-drawn diagrams have a white background; show them as light panels on the dark docs. */
+/* Hand-drawn diagrams have a white background; in the dark theme they show as light panels. */
 .vp-doc img.diagram {
   display: block;
   margin: 24px auto 8px;
@@ -69,14 +260,36 @@
    VitePress draws it as small grey text; here it is an orange pill so it reads as the way into the docs. */
 .VPLocalNav .menu {
   margin: 8px 0 8px 24px; padding: 6px 16px 6px 12px; gap: 8px;
-  border: 1.5px solid #F05F36; border-radius: 999px;
-  color: #F05F36; font-size: 15px; font-weight: 800; line-height: 22px;
+  border: 1.5px solid var(--vp-c-brand-1); border-radius: 999px;
+  color: var(--vp-c-brand-1); font-size: 15px; font-weight: 800; line-height: 22px;
   transition: background-color .15s, color .15s;
 }
-.VPLocalNav .menu:hover, .VPLocalNav .menu:focus-visible { background: #F05F36; color: #0B1630; }
 .VPLocalNav .menu .menu-text { color: inherit; }
 .VPLocalNav .menu .menu-icon { margin-right: 0; font-size: 18px; color: inherit; }
 /* Phones: the top-right button that opens the site links. */
-.VPNavBarHamburger .container > span { background-color: #F05F36; }
 .VPNavBarHamburger { width: 48px; }
+/* The menu it opens: its contents run the bar's width, 24px in from each side, where the bar's title
+   starts and its menu icon ends. The links take the wide top bar's weight at 16px, and keep the rules
+   between them; no underline on hover, as this menu is for touch. */
+:root .VPNav .VPNavScreen { padding: 0 24px; }
+:root .VPNavScreen .container { max-width: none; }
+:root .VPNavScreen .VPNavScreenMenuLink { padding-bottom: 12px; font-size: 16px; font-weight: 600; }
 @media (min-width: 768px) { .VPLocalNav .menu { margin-left: 32px; } }
+
+/* ---------- the theme switch (ThemePicker.vue) ---------- */
+/* Three round buttons in a pill: light, dark, system. In the top bar from 768px, where its links show;
+   below that it is a labelled row in the menu, with larger buttons for fingers. The pill's fill is
+   --vp-c-gray-soft: the ink at 6% in the light theme, white at 7% in the dark one. */
+.theme-picker { display: none; align-items: center; margin-left: 12px; }
+@media (min-width: 768px) { .theme-picker:not(.is-screen) { display: flex; } }
+.theme-picker.is-screen { display: flex; justify-content: space-between; gap: 16px; margin: 12px 0 0; }
+.theme-picker-label { font-size: 16px; font-weight: 600; color: var(--vp-c-text-1); }
+.theme-picker-options { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--vp-c-gray-soft); }
+.theme-picker button { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; color: var(--vp-c-text-2); transition: background-color .15s ease, color .15s ease; }
+.theme-picker.is-screen button { width: 44px; height: 44px; }
+.theme-picker button:hover { color: var(--vp-c-text-1); }
+/* The chosen one: a raised chip (a ring in the dark theme, where a shadow can't be seen). */
+.theme-picker button[aria-pressed="true"] { background: var(--vp-c-bg-elv); color: var(--vp-c-text-1); box-shadow: var(--vp-shadow-1); }
+:root .theme-picker button:focus-visible { outline-width: 2px; outline-offset: 2px; }
+@media (prefers-reduced-motion: reduce) { .theme-picker button { transition: none; } }
+@media print { .theme-picker { display: none; } }
