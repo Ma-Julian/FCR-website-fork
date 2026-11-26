@@ -70,14 +70,6 @@
   .intro-titles h1 { font-size: clamp(2.6rem, 14.5vw, 3.75rem); }
   .intro-titles h1 span + span { margin-top: .3em; }
 }
-/* Phones: the headline multiplies with the scene, so the bridge and hills show through its letters as
-   darker strokes. The ink is a little lighter than the page's so the effect shows. A blend mode only
-   reaches as far as the nearest stacking context, so the text layer drops its z-index here: it already
-   paints over the scene, coming after it in the page. */
-@media (max-width: 600px) {
-  .intro-layer { z-index: auto; }
-  .intro-titles h1 { color: #3D3530; mix-blend-mode: multiply; }
-}
 .intro-titles p { margin: .4rem 0 0; max-width: 46rem; font-size: clamp(1.05rem, 1.7vw, 1.4rem); line-height: 1.45; font-weight: 500; color: var(--text); text-wrap: balance; }
 .intro-titles p strong { color: var(--accent-ink); font-weight: 800; font-size: 1.25em; white-space: nowrap; }
 .intro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1rem; }
@@ -105,9 +97,12 @@
 /* ---------- the sequence (classes set by intro.js) ---------- */
 @keyframes intro-black { from { opacity: 1 } to { opacity: 0 } }
 @keyframes intro-in { from { opacity: 0 } to { opacity: 1 } }
-@keyframes intro-reveal { from { opacity: 0; transform: scale(1.12); filter: blur(10px) } to { opacity: 1; transform: none; filter: none } }
+/* The reveals fade and move only (opacity and transform), with no blur or blending: over the moving
+   3D scene those cost phones enough memory, all at the moment the countdown ends, that iOS is thought
+   to have closed the page (26 Nov 2026; the headline also multiplied with the scene on phones). */
+@keyframes intro-reveal { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
 @keyframes intro-count-in { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
-@keyframes intro-count-out { to { opacity: 0; transform: scale(.92); filter: blur(6px) } }
+@keyframes intro-count-out { to { opacity: 0; transform: scale(.92) } }
 @keyframes intro-pop { 0% { transform: scale(1) } 40% { transform: scale(1.08) } 100% { transform: scale(1) } }
 
 /* Starts covered in white so the tagline does not flash before the sequence; a <noscript> rule removes
