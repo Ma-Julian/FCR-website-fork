@@ -5,10 +5,10 @@ import markSvg from '../../../public/brand/fcr-mark-on-light.svg?raw'
 
 const hex = (h) => rgb(parseInt(h.slice(1, 3), 16) / 255, parseInt(h.slice(3, 5), 16) / 255, parseInt(h.slice(5, 7), 16) / 255)
 const INK = hex('#0B1630'), MIST = hex('#5E6B80'), RULE = hex('#D5DBE5'), SAND = hex('#F05F36'), SAND_INK = hex('#B83D1A')
-const NATIVE = hex('#6E7E99'), STREAK = hex('#A3AEBF')
+const NATIVE = hex('#6E7E99')
 const W = 595.28, H = 841.89, M = 42 // A4, points
 
-// The mark's paths, straight from the brand file: two streaks, then the check.
+// The mark's paths, straight from the brand file: the FCR initials.
 const MARK = [...markSvg.matchAll(/<path d="([^"]+)"/g)].map((m) => m[1])
 
 export async function downloadBrief(brief) {
@@ -52,8 +52,8 @@ export async function downloadBrief(brief) {
   }
 
   // ---------- header: mark and name top left, date on the right ----------
-  MARK.forEach((d, i) => page.drawSvgPath(d, { x: M - 3, y: H - M + 6, scale: 30 / 48,
-    color: i < MARK.length - 1 ? STREAK : INK }))
+  MARK.forEach((d) => page.drawSvgPath(d, { x: M - 3, y: H - M + 6, scale: 30 / 48,
+    color: INK }))
   text('Fast Confirmation Rule', M + 30, H - M - 13, bold, 12)
   const dated = `Integration brief, ${brief.date}`
   text(dated, W - M - width(dated, reg, 9), H - M - 13, reg, 9, MIST)
