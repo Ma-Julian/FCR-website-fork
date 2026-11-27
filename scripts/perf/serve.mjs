@@ -45,7 +45,12 @@ export function serve({ port = 4173, latency = 0 } = {}) {
     setTimeout(() => {
       const hit = resolve(u.pathname)
       for (const r of rules) if (r.re.test(u.pathname)) for (const [k, v] of Object.entries(r.headers)) res.setHeader(k, v)
-      if (!hit) { res.writeHead(404, { 'content-type': 'text/plain' }); return res.end('Not found') }
+      if (!hit) {
+        // As the host does (public/_redirects): a not-found page with a 404 status, the docs' own under /docs/.
+        const page = join(dist, u.pathname.startsWith('/docs/') ? 'docs/404.html' : '404.html')
+        res.writeHead(404, { 'content-type': existsSync(page) ? TYPES['.html'] : 'text/plain' })
+        return res.end(existsSync(page) ? readFileSync(page) : 'Not found')
+      }
       if (hit.redirect) { res.writeHead(308, { location: hit.redirect + u.search }); return res.end() }
       res.writeHead(200, { 'content-type': TYPES[extname(hit.file)] || 'application/octet-stream' })
       res.end(req.method === 'HEAD' ? undefined : readFileSync(hit.file))

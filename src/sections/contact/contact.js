@@ -1,6 +1,6 @@
-// "Talk to us": a business card for Julian (data/site.json "contact") instead of a form.
-// Opens from any link to site.contactUrl or to #talk; without JavaScript those links still reach
-// the form. Docs pages link here with /#talk, which opens the card on load.
+// "Talk to us": a business card for Julian (data/site.json "contact") instead of a form, with no link to
+// the form on it (Julian, 27 Nov 2026). Opens from any link to site.contactUrl or to #talk; without
+// JavaScript those links still reach the form. Docs pages link here with /#talk, which opens the card on load.
 import { site } from '@src/lib/data.js'
 import photo from './julian.jpg'
 import ethlabsLogo from './ethlabs.svg?raw'
@@ -41,7 +41,6 @@ export function mountContact() {
       </ul>
       <div class="bc-foot">
         <a class="bc-org" href="${esc(c.orgUrl)}" target="_blank" rel="noopener" aria-label="${esc(c.org)}">${ethlabsLogo}</a>
-        <a class="bc-form" href="${esc(site.contactUrl)}" target="_blank" rel="noopener">Prefer a form?</a>
       </div>
     </div>`
   document.body.append(dlg)

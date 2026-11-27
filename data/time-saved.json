@@ -1,5 +1,5 @@
 {
- "checkedOn": "2026-11-03",
+ "checkedOn": "2026-11-27",
  "method": "Lower bound. For every transfer that relied on FCR: the earliest moment the old rule could have let it through, minus when it actually arrived. See scripts/time-saved/README.md.",
  "integrations": [
   {
@@ -8,10 +8,10 @@
    "attribution": "date",
    "fcrSince": "2026-10-07T16:00:00Z",
    "firstFcrDate": "2026-10-07",
-   "measuredUntil": "2026-11-03T13:21:31Z",
+   "measuredUntil": "2026-11-27T16:23:55Z",
    "script": "scripts/time-saved/integrations/gnosis.mjs",
-   "transfers": 1147,
-   "savedSeconds": 1056078,
+   "transfers": 2696,
+   "savedSeconds": 2494511,
    "routes": [
     {
      "id": "amb",
@@ -24,11 +24,11 @@
       "ethereum": "0x4C36d2919e407f0Cc2Ee3c993ccF8ac26d9CE64e",
       "gnosis": "0x75Df5AF045d91108662D8080fD1FEFAd6aA0bb59"
      },
-     "transfers": 963,
-     "savedSeconds": 889551,
+     "transfers": 2332,
+     "savedSeconds": 2162506,
      "slowerThanFloor": 5,
      "typicalSeconds": 24,
-     "typicalFloorSeconds": 954,
+     "typicalFloorSeconds": 960,
      "pending": 0,
      "check": {
       "from": "2026-09-07T16:00:00Z",
@@ -50,11 +50,11 @@
       "ethereum": "0x4aa42145Aa6Ebf72e164C9bBC74fbD3788045016",
       "gnosis": "0x7301CFA0e1756B71869E93d4e4Dca5c7d0eb0AA6"
      },
-     "transfers": 184,
-     "savedSeconds": 166527,
+     "transfers": 364,
+     "savedSeconds": 332005,
      "slowerThanFloor": 1,
      "typicalSeconds": 24,
-     "typicalFloorSeconds": 918,
+     "typicalFloorSeconds": 930,
      "pending": 0,
      "check": {
       "from": "2026-09-07T16:00:00Z",

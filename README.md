@@ -65,7 +65,7 @@ Edit these files and open a pull request; the build refuses data that doesn't fi
 | `measured.json` | Deposits into each chain over a year, through its own bridge and through intent bridges, counted on-chain (method and contract per row) | for-you, docs Reference → Where our numbers come from |
 | `integrations.json` | Partners that use or are integrating FCR, with type and status | "Using FCR" strip |
 | `ready.json` | Client support, who uses FCR (same statuses as `integrations.json`), RPC providers that serve it (only those that agreed to be named), proof cards | Readiness, docs RPC providers page |
-| `time-saved.json`, `time-saved-daily.json` | How much waiting FCR has saved: totals per integration and route (a lower bound measured on-chain), and the same per day for charts; refreshed daily in GitHub Actions or with `npm run time-saved`; method in `scripts/time-saved/README.md` | "Using FCR" band, docs page Reference → Time saved |
+| `time-saved.json`, `time-saved-daily.json` | How much waiting FCR has saved: totals per integration and route (a lower bound measured on-chain), and the same per day for charts; refreshed every morning by the official repo's GitHub Action (`.github/workflows/time-saved.yml`), which commits them to `main`, so Netlify redeploys; or by hand with `npm run time-saved`; method in `scripts/time-saved/README.md` | Hero sign, the Gnosis example's numbers, docs page Reference → Time saved |
 | `gnosis-deposits.json` | Real ETH deposits from Ethereum to Gnosis via the Omnibridge since the bridge switched to FCR (7 Oct 2026), with how long each took to arrive; refresh with `node scripts/game/gnosis-deposits.mjs` | the F+C+R game |
 
 ### Adding a project to the bridge

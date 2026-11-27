@@ -72,8 +72,13 @@ function summarizeDay(list, inCheck) {
   return d
 }
 
-async function measure(integration, prevDays) {
+async function measure(integration, prevDays, prevSummary) {
   const attribution = integration.attribution || 'date'
+  // Days still open at the last good run are measured again: with daily runs that is the last
+  // OPEN_DAYS, as always; after missed or failed runs it reaches back to them, so no day is left out
+  // (the daily job didn't run from 3 to 27 Nov 2026).
+  const lastRun = prevSummary?.measuredUntil ? Date.parse(prevSummary.measuredUntil) / 1000 : now
+  const reopen = Math.min(midnight(now) - OPEN_DAYS * DAY, midnight(lastRun) - (OPEN_DAYS - 1) * DAY)
   if (!['date', 'flag'].includes(attribution)) throw new Error('"attribution" must be "date" or "flag"')
   const since = integration.fcrSince ? Date.parse(integration.fcrSince) / 1000 : null
   if (integration.fcrSince && !Number.isFinite(since)) throw new Error('"fcrSince" must be an ISO date or null')
@@ -86,7 +91,7 @@ async function measure(integration, prevDays) {
   for (const route of integration.routes) {
     const base = baselineOf(route.baseline)
     const prev = full ? {} : { ...(prevDays?.[route.id] ? Object.fromEntries(prevDays[route.id].map((d) => [d.date, d])) : {}) }
-    const from = Object.keys(prev).length ? Math.max(firstFetch, midnight(now) - OPEN_DAYS * DAY) : firstFetch
+    const from = Object.keys(prev).length ? Math.max(firstFetch, reopen) : firstFetch
     const { transfers, pending } = await route.fetch({ from })
     const byDay = {}
     for (const t of transfers) {
@@ -170,7 +175,7 @@ for (const f of files) {
   if (only.length && !only.includes(integration.id)) continue
   console.log(integration.name)
   try {
-    const m = await measure(integration, keptDaily.get(integration.id))
+    const m = await measure(integration, keptDaily.get(integration.id), kept.get(integration.id))
     kept.set(integration.id, m.summary)
     keptDaily.set(integration.id, m.daily)
   } catch (e) {
