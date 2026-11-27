@@ -1,0 +1,541 @@
+[
+  {
+    "name": "Base",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Base’s own bridge",
+      "deposits": 181873,
+      "eth": 1490000,
+      "method": "every TransactionDeposited event on Base’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761; ETH = sum of mint, rounded",
+      "contract": "0x49048044D57e1C92A77f79988d21Fa8fAF74E97e"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 572770,
+        "volumeUsd": 719000000,
+        "feesUsd": 82000,
+        "method": "every FundsDeposited event to chain 8453 on the Across SpokePool, same blocks; includes solver and bot flows; volume and fees rounded",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Arbitrum One",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Arbitrum’s own bridge",
+      "deposits": 115760,
+      "eth": 1540000,
+      "method": "MessageDelivered events on Arbitrum One’s Bridge from its Inbox (retryables, ETH deposits, L2 messages), Ethereum blocks 23,611,840–26,226,761; ETH rounded",
+      "contract": "0x8315177aB297bA92A06054cE80a67Ed4DBd7ed3a"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 205008,
+        "volumeUsd": 915000000,
+        "feesUsd": 89000,
+        "method": "every FundsDeposited event to chain 42161 on the Across SpokePool, same blocks; includes solver and bot flows; volume and fees rounded",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "OP Mainnet",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "OP Mainnet’s own bridge",
+      "deposits": 80110,
+      "method": "every TransactionDeposited event on OP Mainnet’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761; ETH = sum of mint, rounded",
+      "contract": "0xbEb5Fc579115071764c7423A4f12eDde41f106Ed",
+      "eth": 321000
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 17531,
+        "method": "every FundsDeposited event to chain 10 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "World Chain",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "World Chain’s own bridge",
+      "deposits": 52037,
+      "method": "every TransactionDeposited event on World Chain’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xd5ec14a83B7d95BE1E2AC12523e2dEE12Cbeea6C"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 4032,
+        "method": "every FundsDeposited event to chain 480 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Ink",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Ink’s own bridge",
+      "deposits": 20243,
+      "method": "every TransactionDeposited event on Ink’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761; ETH = sum of mint, rounded",
+      "contract": "0x5d66C1782664115999C47c9fA5cd031f495D3e4F",
+      "eth": 131000
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 9505,
+        "method": "every FundsDeposited event to chain 57073 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Unichain",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Unichain’s own bridge",
+      "deposits": 17993,
+      "method": "every TransactionDeposited event on Unichain’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761; ETH = sum of mint, rounded",
+      "contract": "0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2",
+      "eth": 57000
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 11806,
+        "method": "every FundsDeposited event to chain 130 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Soneium",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Soneium’s own bridge",
+      "deposits": 16844,
+      "method": "every TransactionDeposited event on Soneium’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x88e529A6ccd302c948689Cd5156C83D4614FAE92"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 5777,
+        "method": "every FundsDeposited event to chain 1868 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Linea",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Linea’s own bridge",
+      "deposits": 20827,
+      "method": "transactions with a MessageSent event on the LineaRollup contract (ETH and token bridge messages), Ethereum blocks 23,611,840–26,226,761; ETH = sum of _value",
+      "contract": "0xd19d4B5d358258f05D7B411E21A1460D11B0876F",
+      "eth": 170975
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 17277,
+        "method": "every FundsDeposited event to chain 59144 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Scroll",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Scroll’s own bridge",
+      "deposits": 32578,
+      "method": "transactions with a SentMessage event on the L1ScrollMessenger (ETH and token deposits), Ethereum blocks 23,611,840–26,226,761; ETH = sum of value",
+      "contract": "0x6774Bcbd5ceCeF1336b5300fb5186a12DDD8b367",
+      "eth": 34304
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 1006,
+        "method": "every FundsDeposited event to chain 534352 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "ZKsync Era",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "ZKsync Era’s own bridge",
+      "deposits": 27408,
+      "method": "transactions with a NewPriorityRequestId event on the ZKsync Era diamond (all L1→L2 transactions), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x32400084C286CF3E17e7B677ea9583e60a000324"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 2831,
+        "method": "every FundsDeposited event to chain 324 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Starknet",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Starknet’s own bridge",
+      "deposits": 18477,
+      "method": "transactions with a LogMessageToL2 event on the Starknet core contract (StarkGate deposits and messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xc662c410C0ECf747543f5bA90660f6ABeBD9C8c4"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Paradex",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Paradex’s own bridge",
+      "deposits": 16024,
+      "method": "transactions with a LogMessageToL2 event on the Paradex core contract, Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xF338cad020D506e8e3d9B4854986E0EcE6C23640"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Taiko",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Taiko’s own bridge",
+      "deposits": 2596,
+      "method": "transactions with a MessageSent event on the Taiko Bridge on Ethereum, Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xd60247c6848B7Ca29eDdF63AA924E53dB6Ddd8EC"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Mantle",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Mantle’s own bridge",
+      "deposits": 3296,
+      "method": "every TransactionDeposited event on Mantle’s OptimismPortal (all deposit types, incl. contract messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xc54cb22944F2bE476E02dECfCD7e3E7d3e15A8Fb"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Zora",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Zora’s own bridge",
+      "deposits": 5850,
+      "method": "transactions with a TransactionDeposited event on Zora’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x1a0ad011913A150f69f6A19DF447A0CfD9551054"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 759,
+        "method": "every FundsDeposited event to chain 7777777 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Mode",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Mode’s own bridge",
+      "deposits": 7033,
+      "method": "transactions with a TransactionDeposited event on Mode’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x8B34b14c7c7123459Cf3076b8Cb929BE097d0C07"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 244,
+        "method": "every FundsDeposited event to chain 34443 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Metal",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Metal’s own bridge",
+      "deposits": 688,
+      "method": "transactions with a TransactionDeposited event on Metal’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x3F37aBdE2C6b5B2ed6F8045787Df1ED1E3753956"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Hemi",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Hemi’s own bridge",
+      "deposits": 1040,
+      "method": "transactions with a TransactionDeposited event on Hemi’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x39a0005415256B9863aFE2d55Edcf75ECc3A4D7e"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Robinhood Chain",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Robinhood Chain’s own bridge",
+      "deposits": 47162,
+      "method": "transactions with a MessageDelivered event from the Inbox on Robinhood Chain’s Bridge (all L1→L2 messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xDf8755334ce7A73cCF6b581C02eA649AE3E864b3"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 468181,
+        "method": "every FundsDeposited event to chain 4663 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "Arbitrum Nova",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Arbitrum Nova’s own bridge",
+      "deposits": 628,
+      "method": "transactions with a MessageDelivered event from the Inbox on Arbitrum Nova’s Bridge (all L1→L2 messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xC1Ebd02f738644983b6C4B2d440b8e77DdE276Bd"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Morph",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Morph’s own bridge",
+      "deposits": 2336,
+      "method": "transactions with a QueueTransaction event on Morph’s L1MessageQueue (all L1→L2 messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x3931Ade842F5BB8763164bDd81E5361DcE6cC1EF"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "ADI Chain",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "ADI Chain’s own bridge",
+      "deposits": 498,
+      "method": "transactions with a NewPriorityRequestId event on ADI Chain’s diamond (all L1→L2 transactions), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x0583Ef2B6416cb7B287406438B940E4d99680C5B"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Lighter",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Lighter’s own bridge",
+      "deposits": 209891,
+      "method": "transactions with a Deposit event on the Lighter contract on Ethereum, Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x3B4D794a66304F130a4Db8F2551B0070dfCf5ca7"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Aztec",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Aztec’s own bridge",
+      "deposits": 2382,
+      "method": "transactions with a MessageSent event on Aztec’s Inbox (all L1→L2 messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x7d4Ef0676c2032bbCC09227501D34d86641ab8cA"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Katana",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Katana’s own bridge",
+      "deposits": 18197,
+      "method": "BridgeEvent logs to network 20 (Katana) on the Agglayer bridge, Katana’s canonical bridge, Ethereum blocks 23,611,840–26,226,761; ETH = native ETH bridged",
+      "contract": "0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe",
+      "eth": 76767
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "X Layer",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "X Layer’s own bridge",
+      "deposits": 1413,
+      "method": "BridgeEvent logs to network 3 (X Layer) on the Agglayer bridge, which carries its deposits, Ethereum blocks 23,611,840–26,226,761; ETH = native ETH bridged",
+      "contract": "0x2a3DD3EB832aF982ec71669E178424b10Dca2EDe",
+      "eth": 3582
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Celo",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Celo’s own bridge",
+      "deposits": 1203,
+      "method": "transactions with a TransactionDeposited event on Celo’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0xc5c5D157928BDBD2ACf6d0777626b6C75a9EAEDC"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Polygon PoS",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "the Polygon PoS bridge",
+      "deposits": 96745,
+      "method": "transactions with a StateSynced event on Polygon’s StateSender (all PoS bridge deposits and messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x28e4F3a7f651294B9564800b2D01f35189A5bFbE"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 95202,
+        "method": "every FundsDeposited event to chain 137 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "MegaETH",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "MegaETH’s own bridge",
+      "deposits": 55871,
+      "eth": 21383,
+      "method": "transactions with a TransactionDeposited event on MegaETH’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761; ETH = sum of mint",
+      "contract": "0x7f82f57F0Dd546519324392e408b01fcC7D709e8"
+    },
+    "intentBridges": [
+      {
+        "name": "Across",
+        "deposits": 7196,
+        "method": "every FundsDeposited event to chain 4326 on the Across SpokePool, same blocks; includes solver and bot flows",
+        "contract": "0x5c7BCd6E7De5423a257D81B442095A1a6ced35C5"
+      }
+    ]
+  },
+  {
+    "name": "BOB",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "BOB’s own bridge",
+      "deposits": 1826,
+      "method": "transactions with a TransactionDeposited event on BOB’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Fraxtal",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Fraxtal’s own bridge",
+      "deposits": 3090,
+      "method": "transactions with a TransactionDeposited event on Fraxtal’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x36cb65c1967A0Fb0EEE11569C51C2f2aA1Ca6f6D"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Manta Pacific",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Manta Pacific’s own bridge",
+      "deposits": 1868,
+      "method": "transactions with a TransactionDeposited event on Manta Pacific’s OptimismPortal (all deposit types), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x9168765EE952de7C6f8fC6FaD5Ec209B960b7622"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Metis",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Metis’s own bridge",
+      "deposits": 961,
+      "method": "transactions with a TransactionEnqueued event for chain 1088 on Metis’s CanonicalTransactionChain, Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x56a76bcC92361f6DF8D75476feD8843EdC70e1C9"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Plume",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Plume’s own bridge",
+      "deposits": 1065,
+      "method": "transactions with a MessageDelivered event from the Inbox on Plume’s Bridge (all L1→L2 messages), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x35381f63091926750F43b2A7401B083263aDEF83"
+    },
+    "intentBridges": []
+  },
+  {
+    "name": "Gnosis Chain",
+    "from": "2025-10-19",
+    "to": "2026-10-19",
+    "nativeBridge": {
+      "label": "Gnosis’s bridges",
+      "deposits": 19564,
+      "method": "transactions with UserRequestForAffirmation on the AMB (Omnibridge and messages, 14,906) and the xDAI bridge (4,658), Ethereum blocks 23,611,840–26,226,761",
+      "contract": "0x4C36d2919e407f0Cc2Ee3c993ccF8ac26d9CE64e"
+    },
+    "intentBridges": []
+  }
+]

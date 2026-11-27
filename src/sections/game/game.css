@@ -1,0 +1,230 @@
+/* The F+C+R bridge game: a full-screen layer over the page. */
+html.gm-active { overflow: hidden; }
+html.gm-active body > :not(.gm) { opacity: 0; transition: opacity .2s ease; }
+html.gm-hidden body > :not(.gm) { display: none; }
+
+/* The game is drawn like the intro's bridge and the page: white and cream, orange steel, ink text.
+   Green (the site's live green) is what helps you: attestations, the check, a full meter. Red, which
+   the page has no use for, is the adversary and what you lose; it is a blue-leaning red, to stand
+   apart from the bridge's orange. */
+.gm {
+  --gm-good: var(--live);
+  --gm-bad: #C62828;                /* white text on it 5.6:1; as text on white the same */
+  position: fixed; inset: 0; z-index: 1000; overflow: hidden; outline: none;
+  background: #FFFFFF; color: var(--text); font-family: var(--font);
+  opacity: 0; transition: opacity .2s ease;
+  -webkit-user-select: none; user-select: none; touch-action: manipulation;
+}
+.gm.is-in { opacity: 1; }
+
+/* The bridge settles into place. (No blur: blurring the whole 3D scene was slow to draw.) */
+.gm-stage { position: absolute; inset: 0; overflow: hidden; transform: scale(1.03); transition: transform .35s cubic-bezier(.2, .8, .2, 1); }
+.gm.is-in .gm-stage { transform: none; }
+.gm-stage::after { content: ''; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(ellipse at 50% 55%, transparent 40%, rgba(198, 40, 40, .4) 100%); opacity: 0; transition: opacity .4s ease; }
+.gm.is-eclipse .gm-stage::after { opacity: 1; }
+.gm.is-bump .gm-stage { animation: gm-bump .45s ease-out; }
+.gm.is-flash-red .gm-stage::before { content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: rgba(198, 40, 40, .3); animation: gm-flash .35s ease-out forwards; }
+@keyframes gm-bump { 0% { transform: translate(0, 0) } 20% { transform: translate(-6px, 7px) } 45% { transform: translate(5px, -4px) } 70% { transform: translate(-3px, 2px) } 100% { transform: none } }
+@keyframes gm-flash { to { opacity: 0 } }
+
+/* ---------- things on the deck (placed in 3D by game.js) ---------- */
+.gm-layer > * { position: absolute; left: 0; top: 0; }
+/* Flat things lie on the deck (rotated by game.js); upright things face the camera. */
+.gm-pothole, .gm-zone, .gm-wheel { transform-origin: 50% 0; }
+.gm-envelope { width: 72px; height: 50px; transition: opacity .16s ease; }
+.gm-envelope > div { animation: gm-bob .8s ease-in-out infinite alternate; }
+/* The halo is a soft gradient behind the envelope, which is cheap to redraw as it comes closer
+   (a drop-shadow filter on every envelope was not): green for an honest vote, red for the adversary's. */
+.gm-envelope > div { position: relative; }
+.gm-envelope > div::before { content: ''; position: absolute; inset: -14px -16px; border-radius: 50%; background: radial-gradient(closest-side, rgba(26, 127, 67, .3), rgba(26, 127, 67, 0)); }
+.gm-envelope.is-red > div::before { background: radial-gradient(closest-side, rgba(198, 40, 40, .55), rgba(198, 40, 40, 0)); }
+.gm-envelope svg { position: relative; display: block; }
+@keyframes gm-bob { from { transform: translateY(0) } to { transform: translateY(-8px) } }
+/* A late attestation drops in from above with a flicker, like a vote arriving out of the blue. */
+.gm-envelope.is-late svg { animation: gm-late .35s ease-out; }
+.gm-hazard.is-late .gm-hazard-sign { animation: gm-late .35s ease-out; }
+.gm-pothole.is-late { animation: gm-hole .3s ease-out; }
+@keyframes gm-hole { from { opacity: 0 } to { opacity: 1 } }
+@keyframes gm-late { 0% { transform: translateY(-90px) scale(.6); opacity: 0 } 40% { opacity: .5 } 60% { opacity: 1 } 75% { opacity: .55 } 100% { transform: none; opacity: 1 } }
+
+/* A pothole: a dark hole with a hazard sign standing at its near edge. */
+.gm-pothole { width: 88px; height: 200px; border-radius: 46% 54% 50% 48%; background: radial-gradient(ellipse 50% 50% at 50% 50%, #1C1714 0 42%, #4A423B 58%, rgba(107, 100, 91, 0) 74%); }
+.gm-hazard { width: 60px; height: 94px; transition: opacity .12s ease; }
+.gm-hazard-sign { position: relative; width: 60px; height: 60px; }
+.gm-hazard-sign::before { content: ''; position: absolute; inset: 7px; transform: rotate(45deg); border-radius: 6px; background: #F2A33A; box-shadow: inset 0 0 0 3px var(--text); }
+.gm-hazard-sign span { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text); font: 900 30px/1 var(--font); }
+.gm-hazard-post { width: 6px; height: 34px; margin: -6px auto 0; background: #6B645B; }
+
+/* Orange strips show which lanes the three vacuums collect from. */
+.gm-zone { width: 325px; height: 2200px; display: flex; -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%); mask-image: linear-gradient(to bottom, #000 0%, #000 30%, transparent 100%); }
+.gm-zone i { flex: 1; margin: 0 8px; border-radius: 12px; background: linear-gradient(90deg, rgba(240, 95, 54, .55) 0 4px, rgba(240, 95, 54, .12) 4px calc(100% - 4px), rgba(240, 95, 54, .55) calc(100% - 4px)); }
+.gm-zone i.is-capped { background: repeating-linear-gradient(0deg, rgba(198, 40, 40, .5) 0 40px, rgba(198, 40, 40, .1) 40px 80px); }
+
+.gm-arch { width: 680px; height: 250px; transform-style: preserve-3d; }
+.gm-arch-in { position: absolute; inset: 0; }
+.gm-arch-post { position: absolute; top: 0; width: 12px; height: 250px; background: #6B645B; }
+.gm-arch-post:first-child { left: 8px; }
+.gm-arch-post:nth-child(2) { right: 8px; }
+.gm-arch-beam { position: absolute; left: 0; right: 0; top: 0; height: 46px; display: flex; align-items: center; justify-content: center; border-radius: 6px; background: #CFC9BD; color: var(--text); font-family: var(--font-sign); font-size: 24px; font-weight: 800; letter-spacing: .08em; }
+/* The check is a green road sign, like the bridge's. */
+.gm-arch-beam.is-check { background: var(--gm-good); color: #FFFFFF; box-shadow: inset 0 0 0 3px var(--gm-good), inset 0 0 0 5px #FFFFFF; }
+
+/* The truck is a box: two sides, roof and back. Ink, with an orange stripe, so it stands out on the cream road. */
+.gm-truck { transform-style: preserve-3d; }
+.gm-face { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.gm-side { background: linear-gradient(180deg, #342D28, #1C1714); box-shadow: inset 0 -8px 0 #F05F36; }
+.gm-roof { background: #342D28; box-shadow: inset 0 0 0 4px #1C1714; }
+.gm-roof-art { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transform: scaleY(-1); }
+.gm-roof-art svg { display: block; }
+.gm-roof-art i { display: block; width: 52px; height: 8px; border-radius: 4px; background: #F05F36; }
+.gm-back { display: flex; align-items: center; justify-content: center; background: #2A2420; border-radius: 6px 6px 0 0; box-shadow: inset 0 -10px 0 #F05F36, inset 0 -16px 0 #1C1714; }
+.gm-back svg { position: relative; z-index: 1; margin-top: -10px; }
+.gm-door { position: absolute; top: 8px; bottom: 18px; width: 38px; border: 2px solid #1C1714; border-radius: 3px; background: #3D3530; }
+.gm-door:first-child { left: 6px; }
+.gm-door:nth-child(2) { right: 6px; }
+.gm-tail { position: absolute; bottom: 18px; width: 7px; height: 12px; border-radius: 2px; background: var(--gm-bad); }
+.gm-tail:nth-last-child(2) { left: 2px; }
+.gm-tail:last-child { right: 2px; }
+.gm-wheel { width: 18px; height: 34px; border-radius: 5px; background: #0D0B09; }
+
+/* The vacuum boom sits just ahead of the truck, one nozzle per lane. */
+.gm-boom { width: 325px; height: 30px; }
+.gm-boom::before { content: ''; position: absolute; left: 40px; right: 40px; top: 6px; height: 6px; border-radius: 3px; background: #6B645B; }
+.gm-head { position: absolute; top: 0; width: 96px; height: 30px; border-radius: 6px 6px 12px 12px; background: linear-gradient(180deg, #CFC9BD, #6B645B); }
+/* The pulse fades an orange halo in and out (opacity), which the browser animates without repainting. */
+.gm-head::after { content: ''; position: absolute; inset: -14px; border-radius: 22px; pointer-events: none; background: radial-gradient(closest-side, rgba(240, 95, 54, .45), rgba(240, 95, 54, 0)); animation: gm-suck .5s ease-in-out infinite alternate; }
+.gm-head.is-capped { background: repeating-linear-gradient(45deg, #C62828 0 7px, #1C1714 7px 14px); }
+.gm-head.is-capped::after { display: none; }
+@keyframes gm-suck { from { opacity: .35 } to { opacity: 1 } }
+
+/* ---------- heads-up display ---------- */
+.gm-hud { position: absolute; left: 0; right: 0; top: 0; display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; padding: max(16px, env(safe-area-inset-top, 0px)) 76px 28px max(20px, env(safe-area-inset-left, 0px)); background: linear-gradient(180deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)); pointer-events: none; }
+.gm-clock { font-variant-numeric: tabular-nums; line-height: .9; }
+.gm-clock [data-clock] { font-size: clamp(3rem, 8vw, 5.5rem); font-weight: 900; letter-spacing: -.04em; }
+.gm-unit { margin-left: .3rem; font-size: clamp(1.2rem, 2.6vw, 1.8rem); font-weight: 700; }
+.gm-slot { margin-top: .5rem; font-size: .95rem; font-weight: 700; color: var(--muted); }
+.gm-meters { display: grid; gap: 12px; width: min(260px, 42vw); }
+.gm-meter-head { position: relative; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: .85rem; font-weight: 800; letter-spacing: .02em; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.gm-bar { position: relative; height: 10px; margin-top: 5px; border-radius: 5px; background: rgba(28, 23, 20, .14); }
+.gm-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: 5px; background: var(--muted); transition: width .15s linear; }
+.gm-bar i.is-ok { background: var(--gm-good); }
+.gm-bar b { position: absolute; top: -4px; width: 3px; height: 18px; margin-left: -1.5px; border-radius: 2px; background: var(--text); }
+.gm-meter-adv .gm-bar i { background: var(--gm-bad); }
+.gm-meter-note { margin-top: 4px; font-size: .75rem; font-weight: 600; color: var(--muted); }
+
+.gm-banner { position: absolute; left: 50%; top: 24%; max-width: calc(100% - 40px); transform: translate(-50%, 8px); padding: .6rem 1.1rem; border-radius: var(--r-md); font-size: clamp(1rem, 2.2vw, 1.35rem); font-weight: 800; text-align: center; opacity: 0; transition: opacity .2s ease, transform .2s ease; pointer-events: none; }
+.gm-banner.is-on { opacity: 1; transform: translate(-50%, 0); }
+/* "is-sand" is the plain banner (the name is from the first, dusk game): ink, with white text. */
+.gm-banner.is-sand { background: var(--text); color: #FFFFFF; }
+.gm-banner.is-red { background: var(--gm-bad); color: #FFFFFF; }
+/* With touch controls: a toast across the bottom, just above the two steering buttons (96px tall), so
+   it never covers the road ahead. The countdown stays in the middle. */
+.gm.is-touch .gm-banner:not(.is-count) { left: max(12px, env(safe-area-inset-left, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); top: auto; bottom: calc(max(16px, env(safe-area-inset-bottom, 0px)) + 96px + 10px); max-width: none; transform: translateY(8px); font-size: 1rem; line-height: 1.35; }
+.gm.is-touch .gm-banner.is-on:not(.is-count) { transform: none; }
+.gm-banner.is-count { top: 30%; background: none; font-size: clamp(5rem, 14vw, 9rem); font-weight: 900; text-shadow: 0 0 30px rgba(255, 255, 255, .9); }
+
+.gm-help { position: absolute; left: 0; right: 0; bottom: max(18px, env(safe-area-inset-bottom, 0px)); text-align: center; font-size: .9rem; font-weight: 700; color: var(--muted); pointer-events: none; }
+.gm-touch { position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; padding: 0 max(12px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-bottom, 0px)); }
+.gm-touch button { width: 42vw; max-width: 200px; height: 96px; border: 1px solid var(--line-strong); border-radius: 18px; background: rgba(255, 255, 255, .8); color: var(--text); font: 900 3rem/1 var(--font); }
+.gm-touch button:active { background: rgba(240, 95, 54, .25); }
+
+.gm-close { position: absolute; right: max(14px, env(safe-area-inset-right, 0px)); top: max(14px, env(safe-area-inset-top, 0px)); width: 44px; height: 44px; border: 1.5px solid var(--line-strong); border-radius: 50%; background: rgba(255, 255, 255, .85); color: var(--text); font: 800 1.1rem/1 var(--font); cursor: pointer; }
+.gm-close:hover { border-color: var(--accent-ink); color: var(--accent-ink); }
+
+/* ---------- start and result cards ---------- */
+.gm-card {
+  position: absolute; left: 50%; top: 50%; width: min(600px, calc(100% - 32px)); max-height: calc(100% - 32px); overflow: auto;
+  transform: translate(-50%, -46%); padding: clamp(20px, 4vw, 32px); border-radius: var(--r-lg);
+  background: #FFFFFF; box-shadow: 0 0 0 1px rgba(28, 23, 20, .08), 0 2px 6px rgba(28, 23, 20, .06), 0 30px 80px -20px rgba(28, 23, 20, .28); -webkit-user-select: text; user-select: text;
+  opacity: 0; visibility: hidden; transition: opacity .3s ease, transform .3s ease, visibility 0s .3s;
+}
+.gm-card.is-on { opacity: 1; visibility: visible; transform: translate(-50%, -50%); transition: opacity .3s ease .1s, transform .3s ease .1s; }
+.gm-card h2 { margin: .2rem 0 .8rem; font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.05; font-weight: 900; letter-spacing: -.02em; text-wrap: balance; }
+.gm-card p { margin: 0 0 .9rem; color: var(--text); line-height: 1.5; }
+.gm-card a { color: var(--accent-ink); }
+.gm-card a:hover { color: var(--accent-ink-hi); }
+.gm-kicker { margin: 0 !important; font-size: .85rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent-ink) !important; }
+.gm-kicker.is-red { color: var(--gm-bad) !important; }
+.gm-score span { color: var(--gm-good); white-space: nowrap; }
+.gm-cargo { padding: .7rem .9rem; border-radius: var(--r-md); background: var(--bg-alt); }
+.gm-rules { margin: 0 0 1rem; padding: 0; list-style: none; display: grid; gap: .6rem; }
+.gm-rules li { display: flex; gap: .7rem; align-items: flex-start; line-height: 1.4; color: var(--text); }
+.gm-ico { flex: none; width: 18px; height: 22px; margin-top: 1px; border-radius: 3px; }
+.gm-ico-ok { height: 15px; margin-top: 4px; background: #FFFFFF; box-shadow: inset 0 0 0 2px var(--gm-good); }
+.gm-ico-red { height: 15px; margin-top: 4px; background: #FBE3E0; box-shadow: inset 0 0 0 2px var(--gm-bad); }
+.gm-ico-steer { position: relative; height: 18px; margin-top: 2px; border-radius: 4px; background: var(--accent-tint); box-shadow: inset 0 0 0 2px var(--accent-line); }
+.gm-ico-steer::before { content: '‹ ›'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--accent-ink); font: 900 11px/1 var(--font); letter-spacing: -.05em; }
+.gm-ico-hole { height: 14px; margin-top: 4px; border-radius: 50%; background: radial-gradient(ellipse, #1C1714 0 50%, #6B645B 75%); }
+.gm-note { font-size: .9rem; color: var(--muted) !important; }
+.gm-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 0 0 1rem; }
+.gm-stats div { padding: .6rem .7rem; border-radius: var(--r-md); background: var(--bg-alt); }
+.gm-stats dt { font-size: .75rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
+.gm-stats dd { margin: .15rem 0 0; font-size: 1.25rem; font-weight: 900; }
+.gm-stats small { display: block; font-size: .75rem; font-weight: 600; color: var(--muted); }
+.gm-mine { font-size: .9rem; }
+.gm-share { margin: -.5rem 0 .8rem !important; color: var(--muted) !important; font-weight: 700; }
+
+/* A pothole: envelopes fly out of the back of the truck, a big −N rises, the meter shakes red. */
+.gm-spill { position: absolute; z-index: 3; width: 44px; height: 31px; pointer-events: none; transform: translate(-50%, -50%); animation: gm-spill .9s cubic-bezier(.2, .7, .3, 1) both; }
+.gm-spill svg { display: block; width: 44px; height: 31px; filter: drop-shadow(0 2px 6px rgba(28, 23, 20, .3)); }
+@keyframes gm-spill {
+  0% { transform: translate(-50%, -50%) scale(.5) rotate(0); opacity: 0 }
+  12% { opacity: 1 }
+  70% { opacity: 1 }
+  100% { transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.1) rotate(var(--rot)); opacity: 0 }
+}
+.gm-loss { position: absolute; z-index: 3; pointer-events: none; color: var(--gm-bad); font: 900 2.6rem/1 var(--font); letter-spacing: -.02em; text-shadow: 0 0 14px rgba(255, 255, 255, .95); transform: translate(-50%, -50%); animation: gm-loss 1.15s ease-out both; }
+@keyframes gm-loss {
+  0% { opacity: 0; transform: translate(-50%, -30%) scale(.6) }
+  18% { opacity: 1; transform: translate(-50%, -70%) scale(1.2) }
+  70% { opacity: 1 }
+  100% { opacity: 0; transform: translate(-50%, -190%) scale(1) }
+}
+.gm-meter.is-loss { animation: gm-shake .45s ease-out; }
+.gm-meter.is-loss .gm-bar i { background: var(--gm-bad) !important; transition: none; }
+.gm-meter.is-loss [data-support-val] { color: var(--gm-bad); }
+.gm-meter-loss { display: inline-block; margin-left: .5rem; color: var(--gm-bad); font-weight: 900; animation: gm-loss-tag 1s ease-out both; }
+@keyframes gm-loss-tag { 0% { opacity: 0; transform: translateY(6px) } 20% { opacity: 1; transform: none } 75% { opacity: 1 } 100% { opacity: 0; transform: translateY(-8px) } }
+@keyframes gm-shake { 0%, 100% { transform: none } 20% { transform: translateX(-7px) } 40% { transform: translateX(6px) } 60% { transform: translateX(-4px) } 80% { transform: translateX(2px) } }
+.gm-learn { display: grid; gap: .25rem; margin: 0 0 1rem; padding: .85rem 1rem; border: 1px solid var(--line-strong); border-radius: var(--r-md); background: var(--bg-alt); color: var(--text) !important; text-decoration: none; transition: background .15s ease, border-color .15s ease; }
+.gm-learn:hover, .gm-learn:focus-visible { background: var(--accent-tint); border-color: var(--accent); }
+.gm-learn-title { font-weight: 800; }
+.gm-learn-text { font-size: .9rem; line-height: 1.45; }
+.gm-learn-cta { margin-top: .2rem; color: var(--accent-ink); font-weight: 800; }
+.gm-links { font-size: .9rem; }
+.gm-oneline { font-size: clamp(1.15rem, 4.3vw, 1.65rem) !important; }
+@media (min-width: 480px) { .gm-oneline { white-space: nowrap; } }
+.gm-tx { text-decoration: none; font-size: .95em; }
+.gm-tx:hover, .gm-tx:focus-visible { filter: brightness(.85); }
+.gm-thanks { font-weight: 700; }
+.gm-actions { display: flex; flex-wrap: wrap; gap: .6rem; }
+.gm-card kbd { margin-left: .5rem; padding: .05rem .4rem; border-radius: 5px; background: rgba(255, 255, 255, .22); font: inherit; font-size: .8rem; }
+/* The second button on a card: outlined, in ink. */
+.gm .btn-ghost { background: transparent; border-color: var(--line-strong); color: var(--text); }
+.gm .btn-ghost:hover, .gm .btn-ghost:focus-visible { border-color: var(--text); }
+
+/* Until someone moves focus with Tab, the cards' buttons show no focus ring (game.js focuses the main
+   button itself, and some browsers would ring it). */
+.gm:not(.is-tabbing) .btn:focus-visible { outline: none; }
+
+@media (max-width: 560px) {
+  .gm-hud { flex-direction: column; padding-right: 20px; }
+  /* The two meters side by side under the clock, across the screen. Attestations gets the wider share,
+     as its label and count are longer; each head stays on one line, so the two bars line up. */
+  .gm-meters { width: 100%; grid-template-columns: 1.25fr 1fr; gap: 12px 16px; }
+  .gm-meter-head { font-size: .8rem; letter-spacing: 0; }
+  /* The three results stay in one row, set smaller. */
+  .gm-stats { gap: 6px; }
+  .gm-stats div { min-width: 0; padding: .5rem; }
+  .gm-stats dt { font-size: .625rem; letter-spacing: 0; }
+  .gm-stats dd { font-size: 1.05rem; }
+  .gm-stats small { font-size: .6875rem; }
+  .gm-banner { top: 34%; }
+  /* The main button on the right, under the thumb, and the two buttons the same width. */
+  .gm-actions { flex-direction: row-reverse; flex-wrap: nowrap; }
+  .gm-actions .btn { flex: 1 1 0; padding-inline: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gm-stage { transition: none; transform: none; }
+  .gm-head::after, .gm-envelope > div, .gm-envelope.is-late svg, .gm-hazard.is-late .gm-hazard-sign, .gm-pothole.is-late, .gm-meter.is-loss { animation: none; }
+}

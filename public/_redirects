@@ -1,0 +1,11 @@
+# Read by Netlify and Cloudflare Pages from dist/.
+# The first fastconfirm.it linked four one-pager PDFs; partners may still have those links.
+# Each now points at the docs page that replaced it.
+/FCR_Interop_One_Pager.pdf                         /docs/integrate/bridges        301
+/Fast%20Confirmation%20Rule%20for%20Exchanges.pdf  /docs/integrate/exchanges      301
+/Fast%20Confirmation%20Rule%20for%20L2s.pdf        /docs/integrate/rollups        301
+/Fast%20Confirmation%20Rule%20for%20RPCs.pdf       /docs/integrate/rpc-providers  301
+
+# Unknown URLs get the docs' 404 page with a 404 status (Netlify only finds a root 404.html on its own).
+# Rules without ! never shadow files that exist, so real pages are unaffected. Keep this last.
+/*  /docs/404.html  404

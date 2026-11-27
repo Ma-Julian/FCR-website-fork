@@ -1,0 +1,28 @@
+[
+  {
+    "id": "gnosis",
+    "name": "Gnosis",
+    "category": "l2",
+    "status": "live",
+    "summary": "Credits deposits from Ethereum through the xDAI bridge and Omnibridge with FCR, since 7 October 2026.",
+    "url": "https://www.gnosis.io/",
+    "announcementUrl": "https://thedefiant.io/news/infrastructure/gnosis-bridges-adopt-fast-confirmation-for-ethereum-deposits",
+    "docsUrl": "https://github.com/gnosischain/bridge-validator/blob/main/FCR_INTEGRATION.md",
+    "since": "2026-10-16",
+    "approvedBy": null,
+    "draft": false
+  },
+  {
+    "id": "chainlink",
+    "name": "Chainlink CCIP",
+    "category": "bridge",
+    "status": "testnet",
+    "summary": "Testing FCR in CCIP 2.0: on testnet, transfers out of Ethereum can wait for its fast-confirmed safe block instead of finality.",
+    "url": "https://chain.link/cross-chain",
+    "announcementUrl": null,
+    "docsUrl": "https://docs.chain.link/ccip/concepts/execution-latency/ftf",
+    "since": "2026-10-16",
+    "approvedBy": null,
+    "draft": false
+  }
+]

@@ -1,0 +1,130 @@
+/* Intro: the bridge in the site's colours (white and cream, orange steel, ink text, green signs), with a
+   responsive text layer on top. The F+C+R game draws the same scene (game.css). */
+.intro {
+  position: relative;
+  height: calc(100svh - var(--frame)); /* the screen under the frame's top edge (it has no bottom edge until the page ends) */
+  min-height: 560px;
+  max-height: 1100px;
+  overflow: hidden;
+  background: #FFFFFF;
+  color: var(--text);
+  isolation: isolate;
+}
+
+/* ---------- scene (scaled to cover by intro.js) ---------- */
+.intro-scene { position: absolute; left: 0; top: 0; width: 1440px; height: 810px; transform-origin: 0 0; overflow: hidden; }
+/* A white sky over a sea that runs from cream at the horizon (42%) to white. */
+.intro-sky { position: absolute; inset: 0; background: linear-gradient(180deg, #FFFFFF 42%, #F5F5E9 42.1%, #FBFBF5 56%, #FFFFFF 100%); }
+/* Always its full 1440 px, centred by scene.js and cropped by the scene: the page's svg { max-width: 100% }
+   would shrink it to the scene's width, which leaves a gap at the right edge on screens narrower than 16:9. */
+.intro-hills { position: absolute; max-width: none; }
+
+.br-cam { position: absolute; inset: 0; perspective: 700px; perspective-origin: 50% 42%; }
+.br-world { position: absolute; left: 50%; top: 42%; transform-style: preserve-3d; }
+.br-world > *, .br-features, .br-carrier, .br-run, .br-gantry { position: absolute; left: 0; top: 0; transform-style: preserve-3d; }
+.br-plane { position: absolute; left: 0; top: 0; height: 8000px; transform-origin: 50% 0; }
+.br-dash { background-image: repeating-linear-gradient(180deg, #CFC9BD 0 200px, transparent 200px 600px); }
+.br-cables { position: absolute; left: 0; top: 0; pointer-events: none; }
+/* A project lane: a camera-fixed window holding the haze, with the lane strip sliding inside it. */
+.br-run-fog { position: absolute; left: 0; top: 0; overflow: hidden; transform-origin: 50% 0; }
+.br-run-strip { position: absolute; left: 0; top: 0; width: 100%; will-change: transform; }
+.br-run-tint { position: absolute; left: 2px; top: 0; height: 100%; background: rgba(240, 95, 54, .35); }
+.br-run-line { position: absolute; top: 0; width: 14px; height: 100%; background: linear-gradient(90deg, #CFC9BD 0 5px, transparent 5px 9px, #CFC9BD 9px 14px); }
+.br-girder { position: absolute; left: 0; top: 0; width: 8000px; height: 58px; transform-origin: 0 0; background: linear-gradient(180deg, #F05F36 0 30px, #E5532A 30px 58px); }
+/* Distance haze: intro's bridge-world.js sets --fog per moving carrier; only flat leaves take it. */
+.br-tower, .br-post, .br-beam, .br-sign { opacity: var(--fog, 1); }
+
+.br-tower { position: absolute; left: -364px; top: -1100px; width: 728px; height: 1500px; }
+.br-leg { position: absolute; top: 0; width: 78px; height: 1500px; clip-path: polygon(14% 0, 86% 0, 100% 100%, 0 100%); background: #F05F36; }
+.br-leg-l { left: 0; }
+.br-leg-r { right: 0; }
+.br-saddle { position: absolute; top: -52px; width: 70px; height: 56px; border-radius: 30px 30px 4px 4px; background: #E5532A; }
+.br-strut { position: absolute; left: 68px; right: 68px; background: #E5532A; }
+
+.br-post { position: absolute; top: -196px; width: 10px; height: 296px; background: #6B645B; }
+.br-beam { position: absolute; left: -318px; width: 636px; background: #6B645B; }
+.br-sign { position: absolute; top: -166px; box-sizing: border-box; display: flex; flex-direction: column; overflow: hidden; background: var(--live); color: #FFFFFF; border-radius: 8px; box-shadow: inset 0 0 0 3px var(--live), inset 0 0 0 5px #FFFFFF; font-family: var(--font-sign); }
+.br-lane-sign { width: 108px; height: 124px; }
+.br-band { background: #CFC9BD; color: var(--text); padding: 8px 6px 5px; font-size: 17px; line-height: 1; font-weight: 800; text-align: center; white-space: nowrap; }
+.br-lane-sign .br-line { padding: 5px 6px 0; text-align: center; font-size: 12px; font-weight: 600; white-space: nowrap; }
+.br-lane-sign .br-ar { align-self: center; margin-top: 2px; }
+.br-exit-sign { left: 112px; width: 206px; height: 118px; }
+.br-tab { align-self: flex-end; margin: 7px 8px 0 0; font-size: 11px; font-weight: 800; letter-spacing: .06em; border: 2px solid #FFFFFF; border-radius: 4px; padding: 1px 6px 0; }
+.br-name { padding: 0 12px; font-size: 30px; line-height: 1; font-weight: 800; letter-spacing: -.01em; white-space: nowrap; }
+.br-exit-sign .br-line { padding: 4px 12px 0; font-size: 13px; font-weight: 600; white-space: nowrap; }
+.br-ar-exit { position: absolute; right: 10px; bottom: 8px; }
+
+/* ---------- text layer ---------- */
+.intro-layer { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.intro-layer > * { pointer-events: auto; }
+.intro-dim { position: absolute; inset: 0; background: rgba(255, 255, 255, .5); opacity: 0; pointer-events: none; }
+.intro-titles {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.1rem;
+  text-align: center; padding-inline: max(20px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-right, 0px));
+}
+.intro-titles h1 { margin: 0; font-size: clamp(2.6rem, 7.2vw, 6rem); line-height: 1; font-weight: 900; letter-spacing: -.03em; text-wrap: balance; }
+.intro-titles h1 span { display: block; }
+/* Phones: each sentence takes two lines anyway, so set them larger and part them with a gap, so the
+   two read as two statements rather than four lines of one. 14.5vw keeps "The security" on one line. */
+@media (max-width: 600px) {
+  .intro-titles h1 { font-size: clamp(2.6rem, 14.5vw, 3.75rem); }
+  .intro-titles h1 span + span { margin-top: .3em; }
+}
+.intro-titles p { margin: .4rem 0 0; max-width: 46rem; font-size: clamp(1.05rem, 1.7vw, 1.4rem); line-height: 1.45; font-weight: 500; color: var(--text); text-wrap: balance; }
+.intro-titles p strong { color: var(--accent-ink); font-weight: 800; font-size: 1.25em; white-space: nowrap; }
+.intro-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: .75rem; margin-top: 1rem; }
+
+.intro-counter {
+  position: absolute; left: 0; right: 0; bottom: clamp(48px, 9vh, 80px); display: flex; flex-direction: column; align-items: center; gap: .4rem;
+  font-variant-numeric: tabular-nums; opacity: 0; pointer-events: none;
+}
+.intro-counter .num-row { display: flex; align-items: baseline; gap: .9rem; }
+.intro-counter .num { font-size: clamp(6rem, 13vw, 10.5rem); line-height: .9; font-weight: 900; letter-spacing: -.04em; min-width: 2ch; text-align: right; }
+.intro-counter .unit { font-size: clamp(1.8rem, 3.4vw, 2.75rem); font-weight: 700; letter-spacing: -.02em; }
+.intro-counter .label { font-size: clamp(1.1rem, 1.8vw, 1.5rem); font-weight: 500; color: var(--text); padding: .35rem 1rem; border-radius: 999px; }
+.intro-counter .label.is-done { font-weight: 700; color: #FFFFFF; background: var(--accent-ink); animation: intro-pop .35s ease-out; }
+
+.intro-foot { position: absolute; left: 0; right: 0; bottom: max(16px, env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; align-items: center; gap: 12px; padding-inline: max(16px, env(safe-area-inset-left, 0px)) max(16px, env(safe-area-inset-right, 0px)); opacity: 0; }
+/* The text, then the arrow centred under it. */
+.intro-next { display: inline-flex; flex-direction: column; align-items: center; gap: .3rem; padding-block: 6px; min-height: 44px; color: var(--text); font-weight: 700; text-decoration: none; }
+.intro-next:hover { color: var(--accent-ink); }
+/* The arrow bobs to show the page goes on: 600ms down and 600ms back up without a rest, each eased
+   out (the timing function applies to each step between keyframes). */
+.intro-next svg { animation: intro-bob 1.2s ease-out infinite; }
+@keyframes intro-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+@media (prefers-reduced-motion: reduce) { .intro-next svg { animation: none; } }
+
+/* ---------- the sequence (classes set by intro.js) ---------- */
+@keyframes intro-black { from { opacity: 1 } to { opacity: 0 } }
+@keyframes intro-in { from { opacity: 0 } to { opacity: 1 } }
+/* The reveals fade and move only (opacity and transform), with no blur or blending: over the moving
+   3D scene those cost phones enough memory, all at the moment the countdown ends, that iOS is thought
+   to have closed the page (26 Nov 2026; the headline also multiplied with the scene on phones). */
+@keyframes intro-reveal { from { opacity: 0; transform: translateY(14px) } to { opacity: 1; transform: none } }
+@keyframes intro-count-in { from { opacity: 0; transform: translateY(12px) } to { opacity: 1; transform: none } }
+@keyframes intro-count-out { to { opacity: 0; transform: scale(.92) } }
+@keyframes intro-pop { 0% { transform: scale(1) } 40% { transform: scale(1.08) } 100% { transform: scale(1) } }
+
+/* Starts covered in white so the tagline does not flash before the sequence; a <noscript> rule removes
+   the cover without JS. */
+.intro-black { position: absolute; inset: 0; z-index: 3; background: #FFFFFF; pointer-events: none; }
+.intro.is-still .intro-black { opacity: 0; }
+.intro.is-playing .intro-black { animation: intro-black .5s ease-out forwards; }
+.intro.is-playing .intro-counter { animation: intro-count-in .3s ease-out .25s both, intro-count-out .35s ease-in 2.35s forwards; }
+.intro.is-playing .intro-dim { animation: intro-in .5s ease-out 2.3s both; }
+/* The time-saved sign above the headline (saved.css) comes in just before it, the same way. */
+.intro.is-playing .reveal-0 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.4s both; }
+.intro.is-playing .reveal-1 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.55s both; }
+.intro.is-playing .reveal-2 { animation: intro-reveal .7s cubic-bezier(.2, .8, .2, 1) 2.8s both; }
+.intro.is-playing .intro-foot { animation: intro-in .6s ease-out 3.4s both; }
+.intro.is-paused * { animation-play-state: paused !important; }
+.intro.is-still .intro-dim, .intro.is-still .intro-foot { opacity: 1; }
+.intro.is-still .intro-counter { display: none; }
+/* Without JS (or before it runs) the tagline is simply there. */
+.intro:not(.is-playing):not(.is-still) .intro-counter { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .intro * { animation: none !important; }
+  .intro-dim, .intro-foot { opacity: 1; }
+  .intro.is-still .intro-black { opacity: 0; }
+}

@@ -1,0 +1,43 @@
+/* The business card behind "Talk to us": white, plain, one clear action. */
+.bc { padding: 0; border: 0; background: transparent; max-width: calc(100% - 32px); width: 400px; color: #14181F; }
+.bc::backdrop { background: rgba(5, 10, 22, .62); }
+.bc[open] { animation: bc-in .18s ease-out; }
+@keyframes bc-in { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .bc[open] { animation: none; } }
+
+.bc-card { position: relative; box-sizing: border-box; padding: 28px 28px 22px; background: #FFFFFF; border-radius: 14px; font-family: var(--font); }
+.bc-card p { margin: 0; }
+.bc-close { position: absolute; top: 10px; right: 12px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: transparent; color: var(--text); cursor: pointer; }
+.bc-close { display: grid; place-items: center; padding: 0; }
+.bc-close:hover { background: #F1F3F6; }
+.bc-close:focus-visible, .bc a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.bc-top { display: flex; align-items: center; gap: 18px; }
+.bc-photo { flex: none; width: 96px; height: 96px; border-radius: 50%; object-fit: cover; background: #E8EAED; }
+.bc-name { font-size: 1.5rem; font-weight: 800; letter-spacing: -.01em; line-height: 1.15; }
+.bc-role { margin-top: 4px !important; font-size: .95rem; line-height: 1.4; color: #4B5361; }
+
+/* The site's button (.btn .btn-accent in base.css), here as wide as the card. */
+.bc .bc-primary { display: flex; gap: 10px; margin-top: 22px; }
+
+.bc-links { list-style: none; margin: 16px 0 0; padding: 0; display: grid; }
+.bc-links a { display: flex; align-items: center; gap: 12px; padding: 10px 2px; border-bottom: 1px solid #ECEEF1; color: #14181F; font-size: 1rem; text-decoration: none; }
+.bc-links li:last-child a { border-bottom: 0; }
+.bc-links a:hover { color: var(--accent); }
+.bc-links svg { flex: none; color: var(--accent); }
+
+.bc-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #ECEEF1; }
+.bc-org { display: block; width: 92px; color: #14181F; }
+.bc-org svg { display: block; width: 100%; height: auto; }
+/* No underline at rest; on hover one draws in from the left (drawn as a background, so it can animate). */
+.bc-form { padding-bottom: 3px; color: var(--accent-ink); font-weight: 700; font-size: .95rem; text-decoration: none;
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 2px; transition: background-size 125ms ease-out, color .15s ease; }
+.bc-form:hover, .bc-form:focus-visible { color: var(--accent-ink-hi); background-size: 100% 2px; }
+@media (prefers-reduced-motion: reduce) { .bc-form { transition: none; } }
+
+@media (max-width: 420px) {
+  .bc-card { padding: 24px 20px 18px; }
+  .bc-photo { width: 76px; height: 76px; }
+  .bc-name { font-size: 1.3rem; }
+}
+.bc-card:focus { outline: none; }

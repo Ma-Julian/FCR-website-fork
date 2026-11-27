@@ -1,0 +1,17 @@
+[
+  {
+    "id": "gnosis",
+    "name": "Gnosis",
+    "type": "l2",
+    "signLine": "Gnosis Chain",
+    "active": true
+  },
+  {
+    "id": "chainlink",
+    "name": "Chainlink",
+    "type": "bridge",
+    "signLine": "CCIP lane",
+    "laneColor": "#375BD2",
+    "active": true
+  }
+]

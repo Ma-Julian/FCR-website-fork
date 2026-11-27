@@ -1,0 +1,269 @@
+[
+  {
+    "name": "Base",
+    "wait": "slots",
+    "slots": 14,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 14 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "OP Mainnet",
+    "wait": "slots",
+    "slots": 6,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 6 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Unichain",
+    "wait": "slots",
+    "slots": 4,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 4 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Ink",
+    "wait": "slots",
+    "slots": 5,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 5 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Zora",
+    "wait": "slots",
+    "slots": 5,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 5 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Mode",
+    "wait": "slots",
+    "slots": 5,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 5 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "World Chain",
+    "wait": "slots",
+    "slots": 6,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 6 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Soneium",
+    "wait": "slots",
+    "slots": 5,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 5 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Mantle",
+    "wait": "slots",
+    "slots": 3,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 3 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Metal",
+    "wait": "slots",
+    "slots": 5,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 5 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Hemi",
+    "wait": "slots",
+    "slots": 8,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 8 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Arbitrum One",
+    "wait": "justified",
+    "source": "Nitro sequencer reads the L1 safe (justified) block; deposit timings on chain match",
+    "sourceUrl": "https://github.com/OffchainLabs/nitro/blob/ccc5c828d9ea22f161efc784bac4d4a6559b7e59/arbnode/delayed_sequencer.go#L120-L126",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Arbitrum Nova",
+    "wait": "justified",
+    "source": "Nitro sequencer reads the L1 safe (justified) block; deposit timings on chain match",
+    "sourceUrl": "https://github.com/OffchainLabs/nitro/blob/ccc5c828d9ea22f161efc784bac4d4a6559b7e59/arbnode/delayed_sequencer.go#L120-L126",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Robinhood Chain",
+    "wait": "justified",
+    "source": "Nitro sequencer reads the L1 safe (justified) block; deposit timings on chain match",
+    "sourceUrl": "https://github.com/OffchainLabs/nitro/blob/ccc5c828d9ea22f161efc784bac4d4a6559b7e59/arbnode/delayed_sequencer.go#L120-L126",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Linea",
+    "wait": "finalized",
+    "source": "Linea coordinator reads L1 messages up to FINALIZED; deposit timings on chain match",
+    "sourceUrl": "https://github.com/Consensys/linea-monorepo/blob/5e5ea64898561935078dd061047c1eb625b016ff/coordinator/config/src/main/kotlin/lineth/coordinator/config/v2/toml/MessageAnchoringConfigToml.kt#L29-L33",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Scroll",
+    "wait": "finalized",
+    "source": "Scroll l2geth forces L1 confirmations to finalized on mainnet; deposit timings on chain match",
+    "sourceUrl": "https://github.com/scroll-tech/go-ethereum/blob/206013805c3e0c57a4e2110299f18ecfdd590c67/cmd/utils/flags.go#L2033-L2035",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "ZKsync Era",
+    "wait": "finalized",
+    "source": "ZKsync mainnet config reads L1 deposits up to finalized; deposit timings on chain match",
+    "sourceUrl": "https://github.com/matter-labs/zksync-era/blob/ff5f519b11cff863edcfa0f75af10fea113806b0/etc/env/file_based/overrides/mainnet.yaml#L22",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Morph",
+    "wait": "finalized",
+    "source": "Morph node reads L1 deposits up to finalized by default; deposit timings on chain match",
+    "sourceUrl": "https://github.com/morph-l2/morph/blob/50d14fe339b3a5faed663cb0b340fee5aab95909/node/sync/config.go#L38",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Starknet",
+    "wait": "slots",
+    "slots": 10,
+    "source": "Starknet sequencer config: finality of 10 L1 blocks; deposit timings on chain match",
+    "sourceUrl": "https://github.com/starkware-libs/sequencer/blob/93f58aa57f7f6cd1659aaafe08599c8a57bf3496/deployments/sequencer/configs/jsonnet/lib/applicative_config/components/l1_events_scraper.libsonnet#L4",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Paradex",
+    "wait": "slots",
+    "slots": 10,
+    "source": "Starknet sequencer config: finality of 10 L1 blocks; measured 9–11 on chain",
+    "sourceUrl": "https://github.com/starkware-libs/sequencer/blob/93f58aa57f7f6cd1659aaafe08599c8a57bf3496/deployments/sequencer/configs/jsonnet/lib/applicative_config/components/l1_events_scraper.libsonnet#L4",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "ADI Chain",
+    "wait": "slots",
+    "slots": 2,
+    "source": "zksync-os server default: 2 L1 confirmations; measured exactly 2 on chain",
+    "sourceUrl": "https://github.com/matter-labs/zksync-os-server/blob/e29a2c0a584b7f3f985e9a414bfbe179456c093d/node/bin/src/config/mod.rs#L1385-L1387",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Lighter",
+    "wait": "slots",
+    "slots": 8,
+    "source": "Measured on chain by the FCR team, Oct 2026: 174 deposits credited with 8–9 L1 blocks on top",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "X Layer",
+    "wait": "finalized",
+    "source": "Agglayer bridge syncs L1 exit roots at FinalizedBlock by default; deposit timings on chain match",
+    "sourceUrl": "https://github.com/agglayer/aggkit/blob/b8dce2b40f12847214bedfddc75eda0f7d8f6041/config/default.go#L106",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Katana",
+    "wait": "slots",
+    "slots": 13,
+    "source": "Measured on chain by the FCR team, Oct 2026: Agglayer deposits usable with 12–15 L1 blocks on top",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Taiko",
+    "wait": "based",
+    "slots": 21,
+    "source": "Based rollup: L2 blocks anchor an Ethereum block; measured 5–36 slots, median 21, Oct 2026",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Aztec",
+    "wait": "slots",
+    "slots": 16,
+    "how": "Waits for two Aztec checkpoints, about 16 blocks",
+    "source": "Measured on chain by the FCR team, Oct 2026: L1→L2 messages usable after 11–30 L1 blocks, median 16",
+    "checkedOn": "2026-10-19"
+  },
+  {
+    "name": "Celo",
+    "wait": "finalized",
+    "source": "Celo’s sequencer follows only finalized Ethereum blocks; measured 96 deposits, 836–1299 s, median 1060 s",
+    "sourceUrl": "https://docs.celo.org/specs/finality",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Polygon PoS",
+    "wait": "slots",
+    "slots": 64,
+    "source": "Heimdall waits main_chain_tx_confirmations = 64 Ethereum blocks; measured 17 state syncs, 937–1285 s",
+    "sourceUrl": "https://heimdall-api.polygon.technology/chainmanager/params",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Ronin",
+    "wait": "finalized",
+    "how": "Its bridge, Chainlink CCIP, waits for finality",
+    "change": "Switch the Ethereum → Ronin CCIP lane to FCR once Chainlink enables it on mainnet (it is live on testnet).",
+    "source": "Ronin’s bridge runs on Chainlink CCIP, which waits for Ethereum finality by default",
+    "sourceUrl": "https://roninchain.com/blog/posts/the-ronin-bridge-ccip-migration-has-begun",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "MegaETH",
+    "wait": "finalized",
+    "source": "Measured: L1 origin follows finalized Ethereum blocks, deposits included 867–1147 s after their block",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Gnosis Chain",
+    "wait": "finalized",
+    "how": "Its bridges waited for finality",
+    "change": "Done: Gnosis’s bridge validators switched Ethereum deposits to FCR on 7 October 2026.",
+    "live": {
+      "note": "Gnosis Chain has used FCR for deposits from Ethereum since 7 October 2026: its bridges wait for FCR instead of finality, about 13 minutes.",
+      "sinceText": "7 October 2026",
+      "before": "~13 min",
+      "beforeSeconds": 780,
+      "now": "24 s",
+      "nowSeconds": 24
+    },
+    "source": "Gnosis bridge validators switched Ethereum deposits from finality to FCR on 7 Oct 2026",
+    "sourceUrl": "https://github.com/gnosischain/bridge-validator/pull/9",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "BOB",
+    "wait": "slots",
+    "slots": 5,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 5 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Fraxtal",
+    "wait": "slots",
+    "slots": 15,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 15 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Manta Pacific",
+    "wait": "slots",
+    "slots": 11,
+    "source": "Measured on chain by the FCR team, Sep–Oct 2026: 11 L1 blocks on top of the deposit block",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Plume",
+    "wait": "justified",
+    "source": "Arbitrum Nitro chain: reads L1 safe (justified); 6 deposits measured 443–665 s",
+    "checkedOn": "2026-10-21"
+  },
+  {
+    "name": "Metis",
+    "wait": "slots",
+    "slots": 13,
+    "source": "Measured on chain by the FCR team, Oct 2026: L1 deposits included 153–163 s after their block (about 13 blocks)",
+    "checkedOn": "2026-10-21"
+  }
+]

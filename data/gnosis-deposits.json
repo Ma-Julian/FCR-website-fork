@@ -1,0 +1,189 @@
+{
+ "source": "Omnibridge, Ethereum 0x88ad09518695c6c3712AC10a214bE5109a655671 (TokensBridgingInitiated, WETH) matched to Gnosis 0xf6A78083ca3e2a662D6dd1703c939c8aCE2e268d (TokensBridged) by messageId",
+ "fcrSince": "2026-10-07T18:00:00Z",
+ "checkedOn": "2026-10-20",
+ "deposits": [
+  {
+   "tx": "0xb1da56f7a12c06bd8ee9f05c5cd917a43b30d684d68c74a3ddf79ff1e77c7a83",
+   "gnosisTx": "0xde336a962c823572d8012ca5b242a6a78e66f95a1a17b814274677defea201d7",
+   "time": "2026-10-19T16:16Z",
+   "eth": 0.24,
+   "seconds": 17
+  },
+  {
+   "tx": "0x8ce2b6115d994465447283779ebbcbfca8889b97dcac80afc22de618f8f68ba6",
+   "gnosisTx": "0x06a29db199713f9da072587810b484dfe581e6f4baa3f2fc1d7684e74f998fa1",
+   "time": "2026-10-17T21:50Z",
+   "eth": 1,
+   "seconds": 23
+  },
+  {
+   "tx": "0xdc8286a467e530d26b44c86adf0b9dd3686e62ea5e1230e5e250434e78a84616",
+   "gnosisTx": "0x1bf7e50db4d11d1929223c29c2773c6c851a40ff29babb6b541165f16b0913c8",
+   "time": "2026-10-17T06:10Z",
+   "eth": 0.399805,
+   "seconds": 20
+  },
+  {
+   "tx": "0xb36919f1d24f4bf072a252544f64e427050a63bc86084cc87a58aa5f1f3c97a3",
+   "gnosisTx": "0x5e69190c82fd6af521c508b6c7a6198407c1cd6199a02ce9aceb7b1affb14d83",
+   "time": "2026-10-16T15:31Z",
+   "eth": 0.225,
+   "seconds": 24
+  },
+  {
+   "tx": "0xaa0d53bf6a9e1258c88d6877584dbb83fc7ef94e8f9ca428ab359d227ce5a141",
+   "gnosisTx": "0x30d70bdae07cbcd8bc358f60f0c2da90f672e39417d9b5a2ac419813375b42ba",
+   "time": "2026-10-16T13:01Z",
+   "eth": 10,
+   "seconds": 19
+  },
+  {
+   "tx": "0x9877f1c0e38ecaba2653efa33f71546446662c077131656048ce0df57f26862b",
+   "gnosisTx": "0xd9b4385b56da834c05b5d424bc1a961e07e83ad4edc515587ef426bade719170",
+   "time": "2026-10-14T12:34Z",
+   "eth": 0.25901,
+   "seconds": 31
+  },
+  {
+   "tx": "0x746bf6325035bf6b3a0c419e32b3330a5f1b868966095cac6f133043e8dd5ab6",
+   "gnosisTx": "0x51faca3802f1e8f6621bcf2af1c0706fb1a7a3d9158c951e44ccb3ab7cc1dafb",
+   "time": "2026-10-14T12:29Z",
+   "eth": 10,
+   "seconds": 20
+  },
+  {
+   "tx": "0xca723b898f4b9841e02089e7d411dc14b95a6a9a6e5f7adf8a02524f7dc1b7aa",
+   "gnosisTx": "0x0575b12a59befbd31fa4fc7205c2fc739071f654a8c97c2a39167391e8b03c91",
+   "time": "2026-10-13T20:03Z",
+   "eth": 31.25,
+   "seconds": 35
+  },
+  {
+   "tx": "0x59f80d8eca73e502f90074ecc6bb8857f6dd9e8aae5984f8a724e1b0851b84d9",
+   "gnosisTx": "0xd93a9dec6671898f667861bec2e2c88cfc99174da93c5caa987300be3279cf8d",
+   "time": "2026-10-13T19:26Z",
+   "eth": 31.2,
+   "seconds": 24
+  },
+  {
+   "tx": "0x49f47c2bb638073a328b3fd444f2ba82e242bbc70dbdfd11566ead612be3a8de",
+   "gnosisTx": "0xecffc215c67b50da801078953023058b9ad6cc37c83e68936d754b51ed2e5dd0",
+   "time": "2026-10-13T17:58Z",
+   "eth": 0.47,
+   "seconds": 23
+  },
+  {
+   "tx": "0x6ea86ff1a0267a4f8f1dbfcc15070b0162519328b350d97388d731dcedca6aa4",
+   "gnosisTx": "0x6c09ca5fcf057a540f28afbc0e06671cc08e3a33c1a5fb42ae06b0fa70f8ea53",
+   "time": "2026-10-13T14:53Z",
+   "eth": 0.165,
+   "seconds": 24
+  },
+  {
+   "tx": "0x1fc6228d4103748bd9db12e54a3e22e0f0d551ba1e3d904fc1fb17e2dc7b329a",
+   "gnosisTx": "0xf966f367658692e03da606fb428e3cfdbb34ffda325fe5eb4d4ab1e13159196d",
+   "time": "2026-10-12T23:02Z",
+   "eth": 1.651,
+   "seconds": 23
+  },
+  {
+   "tx": "0x61880b57b2001c10e4fd882b2994cfe8c2a4f16af5038a7ffd2e2bbf0c1e4a7b",
+   "gnosisTx": "0x513aa2f8fe17dd1ee94f2a97f8ad28cefea3a72d48c82d8c73802656f58b51d3",
+   "time": "2026-10-12T07:04Z",
+   "eth": 2,
+   "seconds": 37
+  },
+  {
+   "tx": "0x1f2357a059464bf595d1d59a0b1d9080026c753816224c145b93d946544c7a9c",
+   "gnosisTx": "0x8dea8dc8f936dac99624855f53f3e153d8e5c4dc493199a96f1a93c1aa6661f6",
+   "time": "2026-10-11T21:49Z",
+   "eth": 0.058402,
+   "seconds": 27
+  },
+  {
+   "tx": "0xd67d63512f9d7b63b60684143cdf92efc4ab1d13cef16f1fee2f129978851bdc",
+   "gnosisTx": "0x9f6c4e8b689490df52e197bdcbd9936c9f0168721a9c1cd6d3d9f3f30bf713d9",
+   "time": "2026-10-11T13:49Z",
+   "eth": 0.19,
+   "seconds": 22
+  },
+  {
+   "tx": "0x9be8c2f4d3cd4f327bca7c3315a1098fd6bb8dd32bf9b4492d61cfd92444868a",
+   "gnosisTx": "0xf0ed1a7506f3aac3d293e0e1d62323247f2472a1ebc43c86d25e00ff86f33203",
+   "time": "2026-10-09T20:13Z",
+   "eth": 0.1859,
+   "seconds": 25
+  },
+  {
+   "tx": "0x7fe6954a94f85c588c5b31cf3562a253440900703a071b41e9c61c59f9d807ff",
+   "gnosisTx": "0xd4db18ff620007a5a3e7cf6d4cad19d5fd4dd20ae501183ed292c3524e0e0115",
+   "time": "2026-10-09T19:12Z",
+   "eth": 0.23,
+   "seconds": 32
+  },
+  {
+   "tx": "0xfaf22d0fe0b835069143759bc33109ce44d526882b418d33e5de204a08a89b62",
+   "gnosisTx": "0x545da9f890730deadd7696f1c01fb24ca2efc70750e912c48f5e0610c6fb7ca2",
+   "time": "2026-10-09T06:16Z",
+   "eth": 0.380126,
+   "seconds": 37
+  },
+  {
+   "tx": "0xa007d2a72db16edaae98f87115244ca59867795eff551c5fcfd1ffa78786fa02",
+   "gnosisTx": "0x3aabce0e099010f822c47e9582086c7352490382c934390a295d8f86b4e47d3a",
+   "time": "2026-10-08T19:46Z",
+   "eth": 30,
+   "seconds": 29
+  },
+  {
+   "tx": "0x7e82e7f11fa8ad945476a6796fe302c8010f218dfbf96e72c8c8774b52f6ab7c",
+   "gnosisTx": "0x6bba85da5c3f9e45387054223cab32ab9bde9d67cf035acf65e9b1388cc19e7b",
+   "time": "2026-10-08T16:09Z",
+   "eth": 1.7,
+   "seconds": 22
+  },
+  {
+   "tx": "0x45475ed358e51bc4887dff4e0ed33d15c3681666ad4e1e0a3548a5b24c42a9fc",
+   "gnosisTx": "0x1ccfabb9cd3729278bf4dc91dd1738514877273cdfebdf83c4c0261580ff6058",
+   "time": "2026-10-08T15:39Z",
+   "eth": 2,
+   "seconds": 320
+  },
+  {
+   "tx": "0x132e4df66d768f29532c08cff23b4a90543f37d5510712b6df3687b98f17fcc3",
+   "gnosisTx": "0x07f8addca54573d515c389e6b438d5ac6ff743df32fa8b165111ce8b6d0e9a66",
+   "time": "2026-10-08T14:27Z",
+   "eth": 0.2,
+   "seconds": 30
+  },
+  {
+   "tx": "0xdf1adb9626736c65f751f5712eac6c3b0ae72212434afc35027045ef28714e5a",
+   "gnosisTx": "0x261e991557d06f2926cd190d6a6a9971fb645474de520fdca685623429549e74",
+   "time": "2026-10-08T11:20Z",
+   "eth": 0.8,
+   "seconds": 31
+  },
+  {
+   "tx": "0x25b244cb29b4d2be2fe83bd00b5f39dfa924d2a9ec5b59cb2302af273c74ace2",
+   "gnosisTx": "0x310bd2cc8d2435fb6bf06e0df250b203a829beee58846e299a1179fa78c4a6f6",
+   "time": "2026-10-08T10:40Z",
+   "eth": 10,
+   "seconds": 25
+  },
+  {
+   "tx": "0x9684eee20f0a47fd04975729b4141daf861c964dffb60a256800d0ec863779a6",
+   "gnosisTx": "0xabc18f157eaf40bd031dc70978894d7599111858a474b06f7dfdfc9c52ff62ae",
+   "time": "2026-10-07T19:42Z",
+   "eth": 10.01,
+   "seconds": 40
+  },
+  {
+   "tx": "0x3d1010c9da346de5fb1ba57d8ac2ae16c427fd644ca4082a69570e76c405c92d",
+   "gnosisTx": "0x0c6ebfa7d9268d00ed30aea2c6c2918eda344739cb6321aa1115a42800a67197",
+   "time": "2026-10-07T18:09Z",
+   "eth": 0.1,
+   "seconds": 39
+  }
+ ]
+}

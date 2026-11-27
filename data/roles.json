@@ -1,0 +1,6 @@
+[
+  { "id": "rollup", "phrase": "work on a chain", "tab": "DEPOSITS", "connector": "called", "title": "Chains", "placeholder": "your chain", "list": "chains", "usesWaits": true },
+  { "id": "bridge", "phrase": "run a bridge", "tab": "MESSAGES", "connector": "called", "title": "Bridges and messaging", "placeholder": "your protocol", "list": "bridges", "usesWaits": false },
+  { "id": "issuer", "phrase": "issue an asset", "tab": "MINTS", "connector": "with", "title": "How you issue it", "placeholder": "Ethereum and …", "list": "issuance", "usesWaits": false },
+  { "id": "solver", "phrase": "fill orders", "tab": "RISK WINDOW", "connector": "on", "title": "Venues", "placeholder": "your venue", "list": "venues", "usesWaits": false }
+]

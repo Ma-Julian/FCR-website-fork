@@ -1,0 +1,25 @@
+{
+  "name": "Fast Confirmation Rule",
+  "url": "https://fastconfirm.it",
+  "contactUrl": "https://fastconfirm.paperform.co/",
+  "docsUrl": "/docs/",
+  "timing": {
+    "slotSeconds": 12,
+    "fcrMinimumSeconds": 24,
+    "fcrTodaySeconds": 12,
+    "finalitySeconds": 780,
+    "justifiedSeconds": 540
+  },
+  "contact": {
+    "name": "Julian Ma",
+    "role": [
+      "Co-founder of Ethlabs",
+      "Leads FCR go-to-market"
+    ],
+    "telegram": "julianzma",
+    "x": "_julianma",
+    "email": "julian@ethlabs.org",
+    "org": "Ethlabs",
+    "orgUrl": "https://ethlabs.org/"
+  }
+}

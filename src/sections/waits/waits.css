@@ -1,0 +1,46 @@
+.waits { background: var(--bg); color: var(--text); }
+.waits-inner { max-width: var(--wrap); margin: 0 auto; padding-block: var(--sec-pad); padding-inline: var(--gutter-l) var(--gutter-r); }
+
+/* Two columns of name | bar | value on one scale; each has FCR's line at its minimum, 24 s. */
+.wt { --name: 8.25rem; --value: 5.75rem; --gap: .75rem; position: relative; }
+.wt-body { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(32px, 5vw, 64px); }
+@media (max-width: 900px) { .wt-body { grid-template-columns: minmax(0, 1fr); row-gap: 4px; } .wt-col + .wt-col .wt-axis { display: none; } }
+.wt-col-body { position: relative; }
+.wt-axis { display: grid; grid-template-columns: var(--name) 1fr var(--value); gap: 0 var(--gap); font-size: .8125rem; margin-bottom: .4rem; }
+.wt-axis-bar { position: relative; height: 1.4em; }
+.wt-fcr-label { position: absolute; bottom: 0; transform: translateX(-2px); white-space: nowrap; color: var(--accent-ink); font-weight: 800; }
+.wt-list { list-style: none; margin: 0; padding: 0; position: relative; }
+.wt-lines { position: absolute; top: 0; bottom: 0; left: calc(var(--name) + var(--gap)); right: calc(var(--value) + var(--gap)); pointer-events: none; }
+.wt-fcr-line { position: absolute; top: 0; bottom: 0; width: 0; border-left: 2px solid var(--accent); z-index: 1; }
+.wt-row { display: grid; grid-template-columns: var(--name) 1fr var(--value); gap: 0 var(--gap); align-items: center; padding: .3rem 0; border-radius: 6px; cursor: default; }
+.wt-row.is-on .wt-name { color: var(--accent-ink); }
+.wt-row.is-on .wt-track { background: rgba(28, 23, 20, .09); }
+.wt-row:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.wt-name { font-weight: 700; font-size: .9375rem; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.wt-track { height: 10px; border-radius: 999px; background: rgba(28, 23, 20, .05); overflow: hidden; }
+.wt-bar { display: block; height: 100%; background: #CFC9BD; border-radius: 999px; }
+.wt-row.is-live .wt-bar { background: var(--accent); }
+.wt-row.is-live .wt-name, .wt-row.is-live .wt-value { color: var(--accent-ink); }
+.wt-value { font-family: var(--mono); font-size: .875rem; font-weight: 600; white-space: nowrap; display: flex; flex-direction: column; line-height: 1.2; font-variant-numeric: tabular-nums; }
+.wt-how { font-family: var(--font); font-size: .6875rem; font-weight: 600; color: var(--muted); }
+.wt-note { margin: var(--gap-sm) auto 0; max-width: 62ch; text-align: center; font-size: .9rem; color: var(--muted); text-wrap: balance; }
+.wt-note a { color: var(--text); text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
+.wt-note a:hover { color: var(--accent-ink); text-decoration-color: var(--accent); }
+
+/* The comparison tooltip: one element, moved under whichever row is hovered, focused or tapped. */
+.wt-tip { position: absolute; left: 0; top: 0; z-index: 3; width: min(420px, 100%); padding: 14px 16px; border-radius: var(--r-md); background: var(--surface); border: 1px solid var(--line);
+  box-shadow: 0 1px 2px rgba(28, 23, 20, .06), 0 8px 24px rgba(28, 23, 20, .10), 0 24px 48px rgba(28, 23, 20, .06); pointer-events: none; font-size: .875rem; line-height: 1.35; }
+.wt-tip-name { margin: 0 0 10px; font-weight: 800; font-size: 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+.wt-tip-badge { padding: 4px 9px; line-height: 1; border-radius: 999px; background: var(--accent-ink); color: #FFFFFF; font-size: .75rem; font-weight: 800; }
+.wt-tip-grid { display: grid; grid-template-columns: auto minmax(0, 1fr) minmax(0, 1fr); gap: 6px 14px; align-items: baseline; color: var(--text); }
+.wt-tip-col, .wt-tip-k { font-size: .6875rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.wt-tip-grid .is-fcr { color: var(--accent-ink); font-weight: 700; }
+.wt-tip-foot { margin: 10px 0 0; color: var(--muted); font-size: .8125rem; }
+
+@media (max-width: 640px) {
+  .wt { --name: 6.6rem; --value: 5rem; --gap: .5rem; }
+  .wt-name { font-size: .85rem; }
+  .wt-value { font-size: .8rem; }
+}
+/* Until the chart first comes into view, its bars wait empty (waits.js grows them in). */
+.wt-body.is-waiting .wt-bar { clip-path: inset(0 100% 0 0); }

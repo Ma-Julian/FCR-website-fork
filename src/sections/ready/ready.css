@@ -1,0 +1,48 @@
+.ready { background: var(--bg-alt); color: var(--text); }
+.ready-inner { max-width: var(--wrap); margin: 0 auto; padding-block: var(--sec-pad); padding-inline: var(--gutter-l) var(--gutter-r); }
+
+/* Clients, then who uses it, stacked; each a grid of three, so the six clients sit in two even rows. */
+.rd-groups { display: grid; gap: clamp(32px, 4vw, 48px); }
+.rd-col-title { margin: 0 0 .75rem; font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); }
+.rd-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 40px); }
+/* Packed at the top: an item stretches to its row's tallest neighbour, and without align-content the
+   extra height would open up between its name and its detail. The tag is centred on the name's line. */
+.rd-item { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: start; gap: .2rem 1rem; padding: 1rem 0; border-top: 1px solid var(--line-strong); align-items: center; }
+.rd-name { font-weight: 800; font-size: 1.25rem; letter-spacing: -.01em; }
+a.rd-name { color: inherit; text-decoration: none; }
+a.rd-name:hover, a.rd-name:focus-visible { color: var(--accent-ink); }
+.rd-detail { grid-column: 1 / -1; font-size: .9rem; line-height: 1.4; color: var(--muted); }
+.rd-pill { justify-self: end; font-size: .6875rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 4px 9px; line-height: 1; border-radius: 999px; border: 1px solid var(--line-strong); color: var(--muted); white-space: nowrap; }
+.rd-pill.is-serves { background: var(--accent-ink); border-color: var(--accent-ink); color: #FFFFFF; }
+/* Shipped and live: the same green as the card's "Live" tag. */
+.rd-pill.is-shipped, .rd-pill.is-live { background: var(--live); border-color: var(--live); color: #FFFFFF; }
+.rd-pill.is-experimental, .rd-pill.is-testnet, .rd-pill.is-building { border-color: var(--accent-line); color: var(--accent-ink); }
+/* Who uses it: more room between the name-and-tag row and the line under it. */
+[data-ready-users] .rd-item { row-gap: .7rem; }
+@media (max-width: 860px) { .rd-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .rd-list { grid-template-columns: minmax(0, 1fr); } }
+
+/* Why you can trust it: four cards in the original site's shape, with a thin grey outline that fills white on hover.
+   The icon is the only orange on them. */
+.rd-proof-title { margin-top: clamp(40px, 5vw, 64px); }
+.rd-proof-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.rd-proof { display: flex; flex-direction: column; gap: .35rem; height: 100%; padding: 24px 22px 22px; border: 1px solid var(--line-strong); border-radius: var(--r-lg); background: transparent; color: inherit; text-decoration: none;
+  transition: background-color .15s ease, border-color .15s ease, scale .15s ease-out; }
+/* Pressed: a little smaller. Hovered (on devices that hover): a little larger. */
+.rd-proof:active { scale: .97; }
+.rd-proof-icon { width: 32px; height: 32px; color: var(--accent); margin-bottom: .75rem; }
+.rd-proof-label { font-weight: 800; font-size: 1.125rem; line-height: 1.25; color: var(--text); }
+.rd-proof-arrow { display: inline-block; margin-left: .3em; vertical-align: -.15em; transition: translate .15s ease-out; }
+.rd-proof-detail { font-size: .9rem; color: var(--muted); line-height: 1.45; }
+.rd-proof:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; background: var(--surface); }
+@media (hover: hover) and (pointer: fine) {
+  .rd-proof:hover { background: var(--surface); border-color: rgba(28, 23, 20, .32); color: inherit; scale: 1.03; }
+  .rd-proof:hover:active { scale: .97; }
+  .rd-proof:hover .rd-proof-arrow { translate: 2px -2px; }
+}
+@media (max-width: 860px) { .rd-proof-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .rd-proof-list { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) {
+  .rd-proof, .rd-proof-arrow { transition: none; }
+  .rd-proof:hover, .rd-proof:active, .rd-proof:hover:active { scale: 1; }
+}
