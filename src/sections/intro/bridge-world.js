@@ -65,7 +65,8 @@ function plane(cls, x, w, y, bg, near, far) {
   return `<div class="br-plane ${cls}" style="width:${w}px;height:${far + 220 + near}px;transform:translate3d(${x}px,${y}px,${near}px) rotateX(-90deg);background:${bg}"></div>`
 }
 
-// `near` is how far toward the camera the deck reaches; the game's high camera sees further back.
+// `near` is how far toward the camera the deck reaches; the game's high camera sees further back, but
+// never as far as the viewer's eye (game.js, DECK_NEAR).
 // `nearDrawn` is the nearest distance the cables and suspenders are drawn at. Both the intro and
 // the game draw them as near as the deck reaches, so they run off the screen's edges with it.
 // `spans` is how many spans ahead are drawn: 3 by default, or 2 for a lighter scene (phones), where

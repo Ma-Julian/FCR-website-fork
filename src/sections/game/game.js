@@ -27,7 +27,15 @@ const CAM_Z = -310 // world px it is pulled back
 const CAM_FOLLOW = 0.6 // how much of the truck's sideways moves the camera follows
 
 // ---- world (world px; the camera's distance along the bridge is d). The course is in course.js ----
-const NEAR = -1400, FAR = 7130
+// Nothing may reach the viewer's eye, which sits 700 (the scene's perspective) + 310 (CAM_Z) = 1010
+// behind the camera. Chrome cuts off what lies past it. On iPhones (Safari's engine, in every iPhone
+// browser) the game opened to the page's orange or broke (Julian, 27 Nov 2026); the likely cause is
+// planes reaching past the eye, which Safari can't clip and so seems to hold whole in memory, as the
+// intro, whose deck stops short of the eye, never did. So objects fade out from FADE_FROM and are
+// gone at NEAR, and the deck and girders end at DECK_NEAR; by then all of them have left the bottom
+// of the screen but the slot arches, which sit higher and fade.
+const NEAR = -950, FADE_FROM = -650, FAR = 7130
+const DECK_NEAR = 900
 const FINALITY_MIN = Math.round(site.timing.finalitySeconds / 60)
 // The docs page that walks through real attacks on FCR, step by step with diagrams (docs PR #9).
 // VitePress makes the anchors from the headings "Large adversarial stake" and "Network asynchrony".
@@ -108,6 +116,7 @@ function createGame() {
   const opener = document.activeElement
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const touch = window.matchMedia('(pointer: coarse)').matches
+  const phone = window.matchMedia('(max-width: 600px)').matches
 
   const el = document.createElement('div')
   el.className = 'gm'
@@ -133,11 +142,15 @@ function createGame() {
   const fit = () => { fitScene(host, hills, window.innerWidth, window.innerHeight); s?.world?.redraw() }
 
   // A quick fade over the page; the page underneath is then taken out so it stops drawing.
+  // On touch screens (phones, tablets) the game appears at once and the page goes in the same moment,
+  // so the intro's 3D bridge and the game's are never drawn together, which is the most a phone has
+  // to hold in memory.
+  if (touch) el.classList.add('is-in')
   root.classList.add('gm-active')
   document.body.appendChild(el)
   fit()
-  requestAnimationFrame(() => el.classList.add('is-in'))
-  const hideTimer = setTimeout(() => root.classList.add('gm-hidden'), 220)
+  if (!touch) requestAnimationFrame(() => el.classList.add('is-in'))
+  const hideTimer = touch ? (root.classList.add('gm-hidden'), 0) : setTimeout(() => root.classList.add('gm-hidden'), 220)
 
 
   // A course that keeps both promises in course.js: fast confirmation at 24 s is possible, and
@@ -161,7 +174,8 @@ function createGame() {
       arches: new Set(), capped: false,
     }
     worldEl.innerHTML = ''
-    s.world = createWorld(worldEl, { destinations, routes: bridgeRoutes, rng, near: 1500 })
+    // Phones draw two spans ahead instead of three, as the intro does there: less to hold in memory.
+    s.world = createWorld(worldEl, { destinations, routes: bridgeRoutes, rng, near: DECK_NEAR, spans: phone ? 2 : 3 })
     const layer = document.createElement('div')
     layer.className = 'gm-layer'
     layer.innerHTML = `
@@ -227,7 +241,8 @@ function createGame() {
       else o.el.style.transform = `translate3d(-340px,-150px,${z}px)`
       // A hazard sign is knocked flat once the truck reaches it, so it never hides the truck.
       const passed = o.kind === 'hazard' && r < HEAD_R
-      o.el.style.opacity = o.taken || passed ? 0 : fog(r).toFixed(2)
+      const near = r < FADE_FROM ? Math.max(0, (r - NEAR) / (FADE_FROM - NEAR)) : 1
+      o.el.style.opacity = o.taken || passed ? 0 : Math.min(fog(r), near).toFixed(2)
     }
     s.truckEl.style.transform = `translateX(${s.x.toFixed(1)}px)`
     aim(s.x)

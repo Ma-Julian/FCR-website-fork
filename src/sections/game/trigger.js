@@ -43,15 +43,20 @@ export function mountGameTrigger() {
 
   // Touch screens have no keyboard: three quick taps on the FCR wordmark in the header. This runs on
   // the home page only, where the wordmark links to the page you are on, so a tap scrolls to the
-  // top instead of reloading.
+  // top instead of reloading. That scroll waits until the taps stop: started on the first tap, it
+  // moved the page under the next ones, and on iPhones the triple tap rarely got through.
   const mark = document.querySelector('.site-header .wordmark')
   if (!mark) return
-  let taps = []
+  // No double-tap zoom on the wordmark, so each quick tap arrives as a click.
+  mark.style.touchAction = 'manipulation'
+  let taps = 0, timer = 0
   mark.addEventListener('click', (e) => {
     e.preventDefault()
-    const now = Date.now()
-    taps = [...taps.filter((t) => now - t < 1200), now]
-    if (taps.length >= 3) { taps = []; start() }
-    else window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+    clearTimeout(timer)
+    if (++taps >= 3) { taps = 0; start(); return }
+    timer = setTimeout(() => {
+      taps = 0
+      window.scrollTo({ top: 0, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' })
+    }, 600)
   })
 }
