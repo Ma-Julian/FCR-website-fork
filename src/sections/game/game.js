@@ -117,6 +117,13 @@ function createGame() {
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const touch = window.matchMedia('(pointer: coarse)').matches
   const phone = window.matchMedia('(max-width: 600px)').matches
+  // On phones, the back gesture or button is how people leave a full-screen view, and it left the site
+  // instead (Julian, 27 Nov 2026). Opening the game adds a history entry, so back closes the game;
+  // leaving by its own buttons or Escape takes that entry away again. Added before the page is
+  // hidden, so the entry the browser returns to keeps the page's real scroll position.
+  history.pushState({ ...(history.state || {}), fcrGame: true }, '')
+  const onPop = () => close(true)
+  window.addEventListener('popstate', onPop)
 
   const el = document.createElement('div')
   el.className = 'gm'
@@ -536,12 +543,6 @@ function createGame() {
   const onVisibility = () => { paused = document.hidden; if (!paused) last = performance.now() }
   document.addEventListener('visibilitychange', onVisibility)
   window.addEventListener('resize', fit)
-  // On phones, the back gesture or button is how people leave a full-screen view, and it left the site
-  // instead (Julian, 27 Nov 2026). Opening the game adds a history entry, so back closes the game;
-  // leaving by its own buttons or Escape takes that entry away again.
-  history.pushState({ ...(history.state || {}), fcrGame: true }, '')
-  const onPop = () => close(true)
-  window.addEventListener('popstate', onPop)
 
   function close(fromHistory) {
     if (!current) return
@@ -554,14 +555,20 @@ function createGame() {
     document.removeEventListener('keydown', onKeyOutside, true)
     document.removeEventListener('visibilitychange', onVisibility)
     window.removeEventListener('resize', fit)
+    const done = () => { el.remove(); root.classList.remove('gm-active'); opener?.focus?.({ preventScroll: true }) }
+    // On touch screens the game goes first and the page comes back in the same moment, as when it
+    // opened: fading the game out over the page drew both 3D bridges at once, and on iPhones "Back"
+    // left only the page's orange (Julian, 27 Nov 2026). Elsewhere it fades out over the page.
+    if (touch) {
+      done()
+      root.classList.remove('gm-hidden')
+      window.scrollTo(0, scrollY)
+      return
+    }
     root.classList.remove('gm-hidden')
     window.scrollTo(0, scrollY)
     el.classList.remove('is-in')
-    setTimeout(() => {
-      el.remove()
-      root.classList.remove('gm-active')
-      opener?.focus?.({ preventScroll: true })
-    }, 350)
+    setTimeout(done, 350)
   }
 
   newRun()
