@@ -168,15 +168,17 @@ a:hover { color: var(--accent-ink-hi); }
 .site-footer span a { color: inherit; text-decoration: underline; text-decoration-color: var(--line-strong); text-underline-offset: 3px; }
 .site-footer span a:hover { color: var(--accent-ink); }
 .footer-mark-wrap { container-type: inline-size; padding: clamp(48px, 7vw, 96px) max(var(--gutter-r), var(--frame-r)) 0 max(var(--gutter-l), var(--frame-r)); }
-/* --fit scales the line to the width; --descent pulls the baseline down onto the bottom edge. */
-.footer-mark { display: flex; width: max-content; flex-direction: row; align-items: baseline; gap: .3em; font-size: calc(var(--fit, 6.6) * 1cqi); margin-bottom: calc(var(--descent, .2) * -1em); }
+/* --fit scales the line to the width. --below, the depth of the mark's box under the baseline at the size
+   shown, comes off as a negative margin, so the baseline lands exactly on the footer's bottom edge; 1.5 px
+   more sinks the letters into the frame (the same orange), so no hairline of the footer's white shows where
+   they meet, at any width, zoom or screen density (Julian, 27 Nov 2026). */
+.footer-mark { display: flex; width: max-content; flex-direction: row; align-items: baseline; gap: .3em; font-size: calc(var(--fit, 6.6) * 1cqi); margin-bottom: calc(-1 * var(--below, .2em) - 1.5px); }
 .footer-mark .wordmark-fcr { line-height: 1; }
 /* The sub's letter-spacing trails after its last letter; pull it back so the line ends flush. */
 .footer-mark .wordmark-sub { margin-right: -.2em; }
 /* Phones: stacked like the header's mark, FCR over "Fast Confirmation Rule". The longer line, the sub,
    spans the width, and its baseline meets the bottom edge. */
-/* It sinks 1 px past the edge, so the letters read as set into the frame rather than resting on it. */
-@media (max-width: 600px) { .footer-mark { flex-direction: column; align-items: flex-start; gap: .19em; margin-bottom: calc(var(--descent, .2) * -1em - 1px); } }
+@media (max-width: 600px) { .footer-mark { flex-direction: column; align-items: flex-start; gap: .19em; } }
 
 /* Entrances (src/lib/reveal.js): each part waits hidden, then arrives after its --rv-delay. The individual
    translate and scale properties leave transform, and any hover scale, to the element's own rules. */
