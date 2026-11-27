@@ -1,13 +1,13 @@
-/* "User time saved with FCR": a road sign centred above the tagline, in one line and one size:
-   "≥ 293 hours saved with FCR" (Julian, 27 Nov 2026). Same green, white inset border and sign typeface
-   as the exit signs on the bridge (src/sections/intro/intro.css .br-sign), which also keep to one size. */
+/* "User time saved with FCR": a road sign centred above the tagline, in one line: the figure, then
+   "saved with FCR". Same green, white inset border and sign typeface as the exit signs on the bridge
+   (src/sections/intro/intro.css .br-sign). */
 .saved-box {
   --sign-green: var(--live);
-  /* One size, so the figure and the label share a baseline; their line is centred in the sign
-     (align-content needs the wrap to apply to a single line). */
+  /* The figure and the label share a baseline; their line is centred in the sign (align-content
+     needs the wrap to apply to a single line). */
   display: flex; flex-wrap: wrap; align-items: baseline; align-content: center; justify-content: center; gap: 5px;
   /* A fixed height, so the tagline under it never moves while fonts or the number load. */
-  box-sizing: border-box; height: 48px; padding: 0 18px; margin: 0 0 .4rem; white-space: nowrap; overflow: hidden;
+  box-sizing: border-box; height: 56px; padding: 0 18px; margin: 0 0 .4rem; white-space: nowrap; overflow: hidden;
   background: var(--sign-green); color: #FFFFFF; border-radius: 8px;
   box-shadow: inset 0 0 0 3px var(--sign-green), inset 0 0 0 5px #FFFFFF;
   font-family: var(--font-sign);
@@ -18,14 +18,15 @@
    above the capitals, so a centred line box sits the text high. Trimmed to cap height and baseline,
    the gap above the figure's capitals matches the gap below its baseline. */
 .saved-figure, .saved-label { line-height: 1; text-box: trim-both cap alphabetic; }
-/* The number stands out by weight only. */
-.saved-figure, .saved-label { font-size: 1.25rem; }
-.saved-figure { font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
-.saved-more { margin-right: 4px; }
-.saved-label { font-weight: 700; }
+.saved-figure { font-size: 2rem; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+.saved-more { font-size: .6em; margin-right: 5px; }
+.saved-unit { margin-left: 5px; }
+/* "hours" and "saved with FCR" read as one phrase: the same size and weight. */
+.saved-unit, .saved-label { font-size: 1rem; font-weight: 700; }
 
 /* Phones: a smaller sign. */
 @media (max-width: 600px) {
-  .saved-box { height: 40px; gap: 4px; padding-inline: 14px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--sign-green), inset 0 0 0 4px #FFFFFF; }
-  .saved-figure, .saved-label { font-size: 1.05rem; }
+  .saved-box { height: 46px; gap: 4px; padding-inline: 14px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--sign-green), inset 0 0 0 4px #FFFFFF; }
+  .saved-figure { font-size: 1.5rem; }
+  .saved-unit, .saved-label { font-size: .8125rem; }
 }
