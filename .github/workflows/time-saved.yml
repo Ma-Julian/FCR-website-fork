@@ -1,0 +1,63 @@
+# Refreshes data/time-saved.json and time-saved-daily.json every day: re-measures the recent days for every integration in
+# scripts/time-saved/integrations/ and commits the result to main if the data check passes. Netlify then redeploys
+# fastconfirm.it, so the site's "hours saved" follows within minutes.
+# It runs in the official repo, ethereum/fcr-website, only: Actions are free for public repos, and the data is
+# published from there. (In the private working copy it was blocked by the organisation's Actions billing,
+# every day from 29 Oct to 27 Nov 2026.) The public RPCs in the scripts need no secrets; ETH_RPC, GNO_RPC
+# and BASE_RPC repository secrets replace them if set.
+# Run it by hand from the Actions tab ("Run workflow"); tick "full" to re-measure from scratch.
+name: Time saved by FCR
+
+on:
+  schedule:
+    - cron: '17 5 * * *' # 05:17 UTC daily
+  workflow_dispatch:
+    inputs:
+      full:
+        description: Re-measure every transfer from scratch
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: time-saved
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    if: github.repository == 'ethereum/FCR-website'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # An integration that fails keeps its last good numbers; commit the others, then fail below.
+      - id: measure
+        continue-on-error: true
+        run: node scripts/time-saved/run.mjs ${{ inputs.full && '--full' || '' }}
+        env:
+          ETH_RPC: ${{ secrets.ETH_RPC }}
+          GNO_RPC: ${{ secrets.GNO_RPC }}
+          BASE_RPC: ${{ secrets.BASE_RPC }}
+      - run: npm run validate
+      - name: Commit if anything changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/time-saved.json data/time-saved-daily.json
+          if git diff --cached --quiet; then echo "No new transfers."; exit 0; fi
+          git commit -m "Refresh time saved by FCR"
+          # Something may have been merged while it measured.
+          git pull --rebase origin main
+          git push
+      - name: Fail if an integration could not be measured
+        if: steps.measure.outcome == 'failure'
+        run: |
+          echo "::error::An integration failed; its previous numbers were kept (see the measure step)."
+          exit 1

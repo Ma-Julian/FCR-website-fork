@@ -69,7 +69,7 @@ No per-transfer data. Two files, both written by `run.mjs`:
 ```
 
 **How a run works:**
-- Each run re-measures the **last 3 full days** from the chain, to catch transfers that arrive late, and replaces those days.
+- Each run re-measures the **last 3 full days** from the chain, to catch transfers that arrive late, and replaces those days. After missed or failed runs it reaches back to the days still open at the last good run, so the gap is filled.
 - Older days are final.
 - Check days that leave the 30-day window are dropped. FCR days stay.
 - `--full` rebuilds everything from scratch.
