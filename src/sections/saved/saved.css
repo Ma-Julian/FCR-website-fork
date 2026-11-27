@@ -1,10 +1,11 @@
-/* "User time saved with FCR": a road sign centred above the tagline, in one line: the figure, then
-   "saved with FCR". Same green, white inset border and sign typeface as the exit signs on the bridge
+/* "User time saved with FCR": a road sign centred above the tagline, in one line: the number, then
+   "hours saved with FCR". Same green, white inset border and sign typeface as the exit signs on the bridge
    (src/sections/intro/intro.css .br-sign). */
 .saved-box {
   --sign-green: var(--live);
-  /* "saved with FCR" is centred on the figure, halfway up its capitals, not on its baseline (Julian,
-     27 Nov 2026); their line is centred in the sign (align-content needs the wrap to apply to a single line). */
+  /* "hours saved with FCR" is centred on the number, halfway up its capitals, not on its baseline
+     (Julian, 27 Nov 2026); their line is centred in the sign (align-content needs the wrap to apply to a
+     single line). */
   display: flex; flex-wrap: wrap; align-items: center; align-content: center; justify-content: center; gap: 5px;
   /* A fixed height, so the tagline under it never moves while fonts or the number load. */
   box-sizing: border-box; height: 56px; padding: 0 18px; margin: 0 0 .4rem; white-space: nowrap; overflow: hidden;
@@ -20,13 +21,12 @@
 .saved-figure, .saved-label { line-height: 1; text-box: trim-both cap alphabetic; }
 .saved-figure { font-size: 2rem; font-weight: 800; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
 .saved-more { font-size: .6em; margin-right: 5px; }
-.saved-unit { margin-left: 5px; }
-/* "hours" and "saved with FCR": the same size and weight. */
-.saved-unit, .saved-label { font-size: 1rem; font-weight: 700; }
+/* "hours saved with FCR": one phrase, smaller than the number. */
+.saved-label { font-size: 1rem; font-weight: 700; }
 
 /* Phones: a smaller sign. */
 @media (max-width: 600px) {
   .saved-box { height: 46px; gap: 4px; padding-inline: 14px; border-radius: 6px; box-shadow: inset 0 0 0 2px var(--sign-green), inset 0 0 0 4px #FFFFFF; }
   .saved-figure { font-size: 1.5rem; }
-  .saved-unit, .saved-label { font-size: .8125rem; }
+  .saved-label { font-size: .8125rem; }
 }
