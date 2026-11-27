@@ -29,11 +29,6 @@
 .bc-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; padding-top: 14px; border-top: 1px solid #ECEEF1; }
 .bc-org { display: block; width: 92px; color: #14181F; }
 .bc-org svg { display: block; width: 100%; height: auto; }
-/* No underline at rest; on hover one draws in from the left (drawn as a background, so it can animate). */
-.bc-form { padding-bottom: 3px; color: var(--accent-ink); font-weight: 700; font-size: .95rem; text-decoration: none;
-  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 2px; transition: background-size 125ms ease-out, color .15s ease; }
-.bc-form:hover, .bc-form:focus-visible { color: var(--accent-ink-hi); background-size: 100% 2px; }
-@media (prefers-reduced-motion: reduce) { .bc-form { transition: none; } }
 
 @media (max-width: 420px) {
   .bc-card { padding: 24px 20px 18px; }
