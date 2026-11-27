@@ -6,6 +6,9 @@
 /Fast%20Confirmation%20Rule%20for%20L2s.pdf        /docs/integrate/rollups        301
 /Fast%20Confirmation%20Rule%20for%20RPCs.pdf       /docs/integrate/rpc-providers  301
 
-# Unknown URLs get the docs' 404 page with a 404 status (Netlify only finds a root 404.html on its own).
-# Rules without ! never shadow files that exist, so real pages are unaffected. Keep this last.
-/*  /docs/404.html  404
+# Unknown URLs get a not-found page with a 404 status: the docs' own under /docs/, the site's everywhere
+# else (the docs' page outside /docs/ broke: its router jumped to /docs/ and showed an empty page).
+# Netlify only finds a root 404.html on its own, so the docs need their rule. Rules without ! never
+# shadow files that exist, so real pages are unaffected. Keep these last.
+/docs/*  /docs/404.html  404
+/*       /404.html       404

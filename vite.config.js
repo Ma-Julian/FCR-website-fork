@@ -91,7 +91,9 @@ export default defineConfig(({ command }) => ({
   build: {
     outDir: resolve(here, 'dist'),
     emptyOutDir: true,
-    rollupOptions: { input: findPages(pagesDir) },
+    // pages/404.html, the not-found page, builds to dist/404.html, where hosts look for it; it isn't a
+    // page of its own, so it stays out of findPages and the sitemap.
+    rollupOptions: { input: { ...findPages(pagesDir), '404': resolve(pagesDir, '404.html') } },
   },
   server: { port: 5172, fs: { allow: [here] } },
 }))

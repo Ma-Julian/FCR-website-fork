@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Page not found · Fast Confirmation Rule</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta name="theme-color" content="#F05F36">
+  <script type="module" src="../src/pages/not-found.js"></script>
+</head>
+<!-- The site's not-found page. The host serves it, with a 404 status, for any address outside the docs,
+     which have their own (public/_redirects). It shows at any depth, so every link is absolute. -->
+<body>
+  <header class="site-header is-static">
+    <a class="wordmark" href="/" aria-label="FCR, Fast Confirmation Rule: home">
+      <span class="wordmark-fcr">FCR</span><span class="wordmark-sub">Fast Confirmation Rule</span>
+    </a>
+    <nav class="site-nav" aria-label="Main">
+      <a class="nav-docs" href="{{site.docsUrl}}">Docs</a>
+      <a class="nav-contact" href="{{site.contactUrl}}">Talk to us</a>
+      <a class="btn btn-accent" href="{{site.docsUrl}}">Integrate FCR</a>
+    </nav>
+  </header>
+
+  <main class="not-found">
+    <div class="wrap">
+      <p class="not-found-code">404</p>
+      <h1 class="sec-title">Page not found</h1>
+      <p class="sec-sub">This page doesn’t exist, or it has moved.</p>
+      <p class="not-found-actions">
+        <a class="btn btn-accent" href="/">Go to the home page</a>
+        <a class="not-found-docs" href="{{site.docsUrl}}">Read the docs</a>
+      </p>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="inner">
+      <span>Fast Confirmation Rule. Developed by <a href="https://ethlabs.org">Ethlabs</a>, the <a href="https://ethereum.foundation">Ethereum Foundation</a> and Ethereum’s consensus-client teams.</span>
+      <nav aria-label="Footer">
+        <a href="{{site.docsUrl}}">Docs</a>
+        <a href="https://arxiv.org/abs/2405.00549">Research paper</a>
+        <a href="{{site.contactUrl}}">Talk to us</a>
+      </nav>
+    </div>
+    <div class="footer-mark-wrap">
+      <a class="wordmark footer-mark" href="/" aria-label="FCR, Fast Confirmation Rule: home" data-footer-mark>
+        <span class="wordmark-fcr">FCR</span><span class="wordmark-sub">Fast Confirmation Rule</span>
+      </a>
+    </div>
+  </footer>
+</body>
+</html>
