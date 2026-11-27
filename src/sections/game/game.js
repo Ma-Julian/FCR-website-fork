@@ -536,10 +536,18 @@ function createGame() {
   const onVisibility = () => { paused = document.hidden; if (!paused) last = performance.now() }
   document.addEventListener('visibilitychange', onVisibility)
   window.addEventListener('resize', fit)
+  // On phones, the back gesture or button is how people leave a full-screen view, and it left the site
+  // instead (Julian, 27 Nov 2026). Opening the game adds a history entry, so back closes the game;
+  // leaving by its own buttons or Escape takes that entry away again.
+  history.pushState({ ...(history.state || {}), fcrGame: true }, '')
+  const onPop = () => close(true)
+  window.addEventListener('popstate', onPop)
 
-  function close() {
+  function close(fromHistory) {
     if (!current) return
     current = null
+    window.removeEventListener('popstate', onPop)
+    if (fromHistory !== true && history.state?.fcrGame) history.back()
     if (raf) cancelAnimationFrame(raf)
     clearTimeout(hideTimer); clearTimeout(bannerTimer)
     s.phase = 'closed'
