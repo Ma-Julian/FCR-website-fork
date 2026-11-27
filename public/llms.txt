@@ -8,7 +8,7 @@ Key facts:
 - Security: FCR checks that validators keep the block in the chain, under stated assumptions about adversarial stake and network synchrony. If those fail, a fast-confirmed block can reorg; integrators re-check once the block is finalized.
 - Evidence: a research paper (https://arxiv.org/abs/2405.00549), a Lean 4 formal safety proof (https://github.com/fradamt/verified-fast-confirmation), in scope of the Ethereum Foundation bug bounty, and a one-year replay of mainnet through the clients' FCR code with 0 false confirmations (2.56M slots; no fast-confirmed block was reorged).
 - Client support: shipped in Lighthouse, Prysm, Nimbus (on by default) and Lodestar; experimental in Teku.
-- RPC providers: some already serve FCR under `safe`; many still return the justified block, so check what yours returns.
+- RPC providers that serve FCR: Alchemy, Chainstack, Quicknode and Tenderly.
 - In production: Gnosis Chain has used FCR for deposits from Ethereum since 7 October 2026 (its bridges wait for FCR instead of finality, ~13 minutes). Chainlink CCIP 2.0 has it live on testnet.
 - Developed by Ethlabs, the Ethereum Foundation and Ethereum's consensus-client teams.
 

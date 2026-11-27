@@ -147,7 +147,7 @@
       <div class="ready-inner" data-ready>
         <div class="sec-head">
           <h2 class="sec-title" id="ready-title">Readiness</h2>
-          <p class="sec-sub">Four clients have shipped FCR.</p>
+          <p class="sec-sub">Four clients have shipped FCR, and <a href="{{site.docsUrl}}integrate/rpc-providers">four RPC providers</a> serve it.</p>
         </div>
         <div class="rd-groups">
           <div class="rd-group">
@@ -172,7 +172,7 @@
       <div class="adopt-inner" data-adopt>
         <div class="sec-head">
           <h2 class="sec-title" id="adopt-title">Easy to adopt</h2>
-          <p class="sec-sub">No hard fork, no new contracts. FCR runs in the consensus client you already have. The core change is the block you read:</p>
+          <p class="sec-sub">FCR runs in your node or via your RPC provider. All you do is flip a flag, read a different block, and test for production.</p>
         </div>
         <div class="adopt-main">
           <div class="adopt-diff" aria-label="Read the safe block instead of the finalized block">
@@ -181,7 +181,7 @@
           </div>
           <ul class="adopt-points">
             <li><strong>Turn it on.</strong> Enable FCR in Lighthouse, Prysm, Lodestar or Nimbus, or use an RPC provider that serves it.</li>
-            <li><strong>Handle the rare reorg.</strong> Re-check deposits once they are finalized.</li>
+            <li><strong>Be able to handle reorgs.</strong> While reorgs would only occur in extremely exceptional circumstances, you should be able to handle them.</li>
           </ul>
         </div>
         <nav class="adopt-guides" aria-label="Integration guides" data-adopt-guides></nav>

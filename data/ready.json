@@ -84,7 +84,24 @@
       "detail": "Live on testnet in CCIP 2.0; mainnet lanes come next"
     }
   ],
-  "rpc": [],
+  "rpc": [
+    {
+      "name": "Alchemy",
+      "url": "https://www.alchemy.com/"
+    },
+    {
+      "name": "Chainstack",
+      "url": "https://chainstack.com/"
+    },
+    {
+      "name": "Quicknode",
+      "url": "https://www.quicknode.com/"
+    },
+    {
+      "name": "Tenderly",
+      "url": "https://tenderly.co/"
+    }
+  ],
   "proof": [
     {
       "label": "Research paper",
