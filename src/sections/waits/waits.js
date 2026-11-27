@@ -139,13 +139,24 @@ export function mountWaits(root) {
     tip.hidden = true
   }
 
-  const rowOf = (t) => t.closest?.('.wt-row')
+  const rowOf = (t) => t?.closest?.('.wt-row')
+  // Focus from the keyboard opens the tooltip; focus from a click or tap doesn't, as the pointer handlers
+  // place it then. Opening it on that focus too moved it to the middle of the bars between mouse down and
+  // up, and on phones the tap's click then read as a second tap and closed it again: the card flickered
+  // and a tap could never open it (Julian, 27 Nov 2026).
+  const byKeyboard = (el) => { try { return el.matches(':focus-visible') } catch { return true } }
   body.addEventListener('pointermove', (ev) => {
     if (ev.pointerType === 'touch') return
     const row = rowOf(ev.target)
     if (row) show(row, ev.clientX)
   })
-  body.addEventListener('pointerleave', (ev) => { if (ev.pointerType !== 'touch' && !body.contains(document.activeElement)) hide() })
+  // Leaving the chart closes the tooltip, unless a row has keyboard focus: then it goes back to that row.
+  body.addEventListener('pointerleave', (ev) => {
+    if (ev.pointerType === 'touch') return
+    const focused = rowOf(document.activeElement)
+    if (focused && body.contains(focused) && byKeyboard(focused)) show(focused)
+    else hide()
+  })
   // Touch: tap a row to open its tooltip, tap it again (or anywhere else) to close it.
   body.addEventListener('click', (ev) => {
     const row = rowOf(ev.target)
@@ -154,7 +165,7 @@ export function mountWaits(root) {
     else show(row, ev.clientX || undefined)
   })
   document.addEventListener('click', (ev) => { if (current && !body.contains(ev.target)) hide() })
-  body.addEventListener('focusin', (ev) => { const row = rowOf(ev.target); if (row) show(row) })
+  body.addEventListener('focusin', (ev) => { const row = rowOf(ev.target); if (row && byKeyboard(ev.target)) show(row) })
   body.addEventListener('focusout', (ev) => { if (!body.contains(ev.relatedTarget)) hide() })
   root.addEventListener('keydown', (ev) => {
     if (ev.key === 'Escape') hide()
