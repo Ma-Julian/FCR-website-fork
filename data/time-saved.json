@@ -8,10 +8,10 @@
    "attribution": "date",
    "fcrSince": "2026-10-07T16:00:00Z",
    "firstFcrDate": "2026-10-07",
-   "measuredUntil": "2026-11-27T16:23:55Z",
+   "measuredUntil": "2026-11-27T17:37:14Z",
    "script": "scripts/time-saved/integrations/gnosis.mjs",
-   "transfers": 2696,
-   "savedSeconds": 2494511,
+   "transfers": 2700,
+   "savedSeconds": 2498489,
    "routes": [
     {
      "id": "amb",
@@ -24,8 +24,8 @@
       "ethereum": "0x4C36d2919e407f0Cc2Ee3c993ccF8ac26d9CE64e",
       "gnosis": "0x75Df5AF045d91108662D8080fD1FEFAd6aA0bb59"
      },
-     "transfers": 2332,
-     "savedSeconds": 2162506,
+     "transfers": 2336,
+     "savedSeconds": 2166484,
      "slowerThanFloor": 5,
      "typicalSeconds": 24,
      "typicalFloorSeconds": 960,
@@ -73,7 +73,7 @@
    "attribution": "date",
    "fcrSince": null,
    "firstFcrDate": null,
-   "measuredUntil": "2026-11-03T13:21:31Z",
+   "measuredUntil": "2026-11-27T17:37:14Z",
    "script": "scripts/time-saved/integrations/base.mjs",
    "transfers": 0,
    "savedSeconds": 0,
@@ -96,12 +96,12 @@
      "typicalFloorSeconds": null,
      "pending": 0,
      "check": {
-      "from": "2026-10-04T13:21:31Z",
-      "to": "2026-11-03T13:21:31Z",
-      "transfers": 14205,
+      "from": "2026-10-28T17:37:14Z",
+      "to": "2026-11-27T17:37:14Z",
+      "transfers": 20599,
       "beatFloor": 0,
-      "minAboveFloorSeconds": 6,
-      "typicalAboveFloorSeconds": 10
+      "minAboveFloorSeconds": 1,
+      "typicalAboveFloorSeconds": 5
      }
     }
    ]
