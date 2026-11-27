@@ -1,5 +1,5 @@
 {
- "checkedOn": "2026-11-03",
+ "checkedOn": "2026-11-27",
  "integrations": {
   "gnosis": {
    "amb": [
@@ -60,7 +60,31 @@
     {"date":"2026-10-31","fcr":{"transfers":28,"savedSeconds":25815,"slowerThanFloor":0,"medianSeconds":27,"medianFloorSeconds":960}},
     {"date":"2026-11-01","fcr":{"transfers":34,"savedSeconds":30967,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":924}},
     {"date":"2026-11-02","fcr":{"transfers":43,"savedSeconds":40234,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":948}},
-    {"date":"2026-11-03","fcr":{"transfers":35,"savedSeconds":32551,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":948}}
+    {"date":"2026-11-03","fcr":{"transfers":68,"savedSeconds":64377,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":972}},
+    {"date":"2026-11-04","fcr":{"transfers":89,"savedSeconds":83579,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":972}},
+    {"date":"2026-11-05","fcr":{"transfers":49,"savedSeconds":45530,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":960}},
+    {"date":"2026-11-06","fcr":{"transfers":32,"savedSeconds":29514,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":930}},
+    {"date":"2026-11-07","fcr":{"transfers":33,"savedSeconds":30828,"slowerThanFloor":0,"medianSeconds":28,"medianFloorSeconds":960}},
+    {"date":"2026-11-08","fcr":{"transfers":41,"savedSeconds":38251,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":960}},
+    {"date":"2026-11-09","fcr":{"transfers":64,"savedSeconds":58783,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":966}},
+    {"date":"2026-11-10","fcr":{"transfers":70,"savedSeconds":65600,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":948}},
+    {"date":"2026-11-11","fcr":{"transfers":57,"savedSeconds":52495,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":924}},
+    {"date":"2026-11-12","fcr":{"transfers":56,"savedSeconds":53239,"slowerThanFloor":0,"medianSeconds":26,"medianFloorSeconds":984}},
+    {"date":"2026-11-13","fcr":{"transfers":66,"savedSeconds":63121,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":1002}},
+    {"date":"2026-11-14","fcr":{"transfers":58,"savedSeconds":54464,"slowerThanFloor":0,"medianSeconds":26,"medianFloorSeconds":984}},
+    {"date":"2026-11-15","fcr":{"transfers":71,"savedSeconds":66398,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":960}},
+    {"date":"2026-11-16","fcr":{"transfers":36,"savedSeconds":33469,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":948}},
+    {"date":"2026-11-17","fcr":{"transfers":49,"savedSeconds":44686,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":900}},
+    {"date":"2026-11-18","fcr":{"transfers":90,"savedSeconds":83295,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":936}},
+    {"date":"2026-11-19","fcr":{"transfers":50,"savedSeconds":45600,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":936}},
+    {"date":"2026-11-20","fcr":{"transfers":106,"savedSeconds":97318,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":960}},
+    {"date":"2026-11-21","fcr":{"transfers":44,"savedSeconds":41144,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":966}},
+    {"date":"2026-11-22","fcr":{"transfers":38,"savedSeconds":34763,"slowerThanFloor":0,"medianSeconds":26,"medianFloorSeconds":930}},
+    {"date":"2026-11-23","fcr":{"transfers":44,"savedSeconds":39288,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":918}},
+    {"date":"2026-11-24","fcr":{"transfers":47,"savedSeconds":43207,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":912}},
+    {"date":"2026-11-25","fcr":{"transfers":85,"savedSeconds":79543,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}},
+    {"date":"2026-11-26","fcr":{"transfers":32,"savedSeconds":29835,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}},
+    {"date":"2026-11-27","fcr":{"transfers":29,"savedSeconds":27179,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}}
    ],
    "xdai": [
     {"date":"2026-09-07","check":{"transfers":3,"beatFloor":0,"minAboveFloorSeconds":17,"medianAboveFloorSeconds":20}},
@@ -120,7 +144,31 @@
     {"date":"2026-10-31","fcr":{"transfers":7,"savedSeconds":6088,"slowerThanFloor":0,"medianSeconds":21,"medianFloorSeconds":852}},
     {"date":"2026-11-01","fcr":{"transfers":9,"savedSeconds":7963,"slowerThanFloor":0,"medianSeconds":22,"medianFloorSeconds":900}},
     {"date":"2026-11-02","fcr":{"transfers":7,"savedSeconds":6438,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":960}},
-    {"date":"2026-11-03","fcr":{"transfers":3,"savedSeconds":2636,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":912}}
+    {"date":"2026-11-03","fcr":{"transfers":6,"savedSeconds":5436,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":948}},
+    {"date":"2026-11-04","fcr":{"transfers":5,"savedSeconds":4387,"slowerThanFloor":0,"medianSeconds":26,"medianFloorSeconds":888}},
+    {"date":"2026-11-05","fcr":{"transfers":11,"savedSeconds":10195,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":948}},
+    {"date":"2026-11-06","fcr":{"transfers":12,"savedSeconds":10864,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":924}},
+    {"date":"2026-11-07","fcr":{"transfers":11,"savedSeconds":10401,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":1020}},
+    {"date":"2026-11-08","fcr":{"transfers":9,"savedSeconds":8076,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":924}},
+    {"date":"2026-11-09","fcr":{"transfers":11,"savedSeconds":10304,"slowerThanFloor":0,"medianSeconds":26,"medianFloorSeconds":924}},
+    {"date":"2026-11-10","fcr":{"transfers":4,"savedSeconds":4063,"slowerThanFloor":0,"medianSeconds":22,"medianFloorSeconds":1044}},
+    {"date":"2026-11-11","fcr":{"transfers":11,"savedSeconds":10525,"slowerThanFloor":0,"medianSeconds":27,"medianFloorSeconds":1056}},
+    {"date":"2026-11-12","fcr":{"transfers":9,"savedSeconds":7803,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":900}},
+    {"date":"2026-11-13","fcr":{"transfers":8,"savedSeconds":7257,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":906}},
+    {"date":"2026-11-14","fcr":{"transfers":1,"savedSeconds":746,"slowerThanFloor":0,"medianSeconds":22,"medianFloorSeconds":768}},
+    {"date":"2026-11-15","fcr":{"transfers":9,"savedSeconds":8522,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":996}},
+    {"date":"2026-11-16","fcr":{"transfers":4,"savedSeconds":3731,"slowerThanFloor":0,"medianSeconds":21,"medianFloorSeconds":924}},
+    {"date":"2026-11-17","fcr":{"transfers":8,"savedSeconds":7602,"slowerThanFloor":0,"medianSeconds":22,"medianFloorSeconds":978}},
+    {"date":"2026-11-18","fcr":{"transfers":7,"savedSeconds":6460,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":948}},
+    {"date":"2026-11-19","fcr":{"transfers":4,"savedSeconds":3625,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":942}},
+    {"date":"2026-11-20","fcr":{"transfers":4,"savedSeconds":3634,"slowerThanFloor":0,"medianSeconds":31,"medianFloorSeconds":930}},
+    {"date":"2026-11-21","fcr":{"transfers":2,"savedSeconds":1808,"slowerThanFloor":0,"medianSeconds":26,"medianFloorSeconds":930}},
+    {"date":"2026-11-22","fcr":{"transfers":10,"savedSeconds":9094,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":894}},
+    {"date":"2026-11-23","fcr":{"transfers":9,"savedSeconds":8127,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":936}},
+    {"date":"2026-11-24","fcr":{"transfers":6,"savedSeconds":5580,"slowerThanFloor":0,"medianSeconds":27,"medianFloorSeconds":978}},
+    {"date":"2026-11-25","fcr":{"transfers":10,"savedSeconds":9000,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":912}},
+    {"date":"2026-11-26","fcr":{"transfers":7,"savedSeconds":6216,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":888}},
+    {"date":"2026-11-27","fcr":{"transfers":5,"savedSeconds":4658,"slowerThanFloor":0,"medianSeconds":21,"medianFloorSeconds":936}}
    ]
   },
   "base": {
