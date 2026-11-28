@@ -1,5 +1,5 @@
 {
- "checkedOn": "2026-11-27",
+ "checkedOn": "2026-11-28",
  "method": "Lower bound. For every transfer that relied on FCR: the earliest moment the old rule could have let it through, minus when it actually arrived. See scripts/time-saved/README.md.",
  "integrations": [
   {
@@ -8,10 +8,10 @@
    "attribution": "date",
    "fcrSince": "2026-10-07T16:00:00Z",
    "firstFcrDate": "2026-10-07",
-   "measuredUntil": "2026-11-27T17:37:14Z",
+   "measuredUntil": "2026-11-28T05:21:23Z",
    "script": "scripts/time-saved/integrations/gnosis.mjs",
-   "transfers": 2700,
-   "savedSeconds": 2498489,
+   "transfers": 2716,
+   "savedSeconds": 2513086,
    "routes": [
     {
      "id": "amb",
@@ -24,8 +24,8 @@
       "ethereum": "0x4C36d2919e407f0Cc2Ee3c993ccF8ac26d9CE64e",
       "gnosis": "0x75Df5AF045d91108662D8080fD1FEFAd6aA0bb59"
      },
-     "transfers": 2336,
-     "savedSeconds": 2166484,
+     "transfers": 2348,
+     "savedSeconds": 2177504,
      "slowerThanFloor": 5,
      "typicalSeconds": 24,
      "typicalFloorSeconds": 960,
@@ -50,11 +50,11 @@
       "ethereum": "0x4aa42145Aa6Ebf72e164C9bBC74fbD3788045016",
       "gnosis": "0x7301CFA0e1756B71869E93d4e4Dca5c7d0eb0AA6"
      },
-     "transfers": 364,
-     "savedSeconds": 332005,
+     "transfers": 368,
+     "savedSeconds": 335582,
      "slowerThanFloor": 1,
-     "typicalSeconds": 24,
-     "typicalFloorSeconds": 930,
+     "typicalSeconds": 25,
+     "typicalFloorSeconds": 924,
      "pending": 0,
      "check": {
       "from": "2026-09-07T16:00:00Z",
@@ -73,7 +73,7 @@
    "attribution": "date",
    "fcrSince": null,
    "firstFcrDate": null,
-   "measuredUntil": "2026-11-27T17:37:14Z",
+   "measuredUntil": "2026-11-28T05:21:23Z",
    "script": "scripts/time-saved/integrations/base.mjs",
    "transfers": 0,
    "savedSeconds": 0,
@@ -94,11 +94,11 @@
      "slowerThanFloor": 0,
      "typicalSeconds": null,
      "typicalFloorSeconds": null,
-     "pending": 0,
+     "pending": 4,
      "check": {
-      "from": "2026-10-28T17:37:14Z",
-      "to": "2026-11-27T17:37:14Z",
-      "transfers": 20599,
+      "from": "2026-10-29T05:21:23Z",
+      "to": "2026-11-28T05:21:23Z",
+      "transfers": 20362,
       "beatFloor": 0,
       "minAboveFloorSeconds": 1,
       "typicalAboveFloorSeconds": 5

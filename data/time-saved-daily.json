@@ -1,5 +1,5 @@
 {
- "checkedOn": "2026-11-27",
+ "checkedOn": "2026-11-28",
  "integrations": {
   "gnosis": {
    "amb": [
@@ -84,7 +84,8 @@
     {"date":"2026-11-24","fcr":{"transfers":47,"savedSeconds":43207,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":912}},
     {"date":"2026-11-25","fcr":{"transfers":85,"savedSeconds":79543,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}},
     {"date":"2026-11-26","fcr":{"transfers":32,"savedSeconds":29835,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}},
-    {"date":"2026-11-27","fcr":{"transfers":33,"savedSeconds":31157,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}}
+    {"date":"2026-11-27","fcr":{"transfers":40,"savedSeconds":37761,"slowerThanFloor":0,"medianSeconds":24,"medianFloorSeconds":984}},
+    {"date":"2026-11-28","fcr":{"transfers":5,"savedSeconds":4416,"slowerThanFloor":0,"medianSeconds":32,"medianFloorSeconds":864}}
    ],
    "xdai": [
     {"date":"2026-09-07","check":{"transfers":3,"beatFloor":0,"minAboveFloorSeconds":17,"medianAboveFloorSeconds":20}},
@@ -168,12 +169,12 @@
     {"date":"2026-11-24","fcr":{"transfers":6,"savedSeconds":5580,"slowerThanFloor":0,"medianSeconds":27,"medianFloorSeconds":978}},
     {"date":"2026-11-25","fcr":{"transfers":10,"savedSeconds":9000,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":912}},
     {"date":"2026-11-26","fcr":{"transfers":7,"savedSeconds":6216,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":888}},
-    {"date":"2026-11-27","fcr":{"transfers":5,"savedSeconds":4658,"slowerThanFloor":0,"medianSeconds":21,"medianFloorSeconds":936}}
+    {"date":"2026-11-27","fcr":{"transfers":8,"savedSeconds":7130,"slowerThanFloor":0,"medianSeconds":25,"medianFloorSeconds":870}},
+    {"date":"2026-11-28","fcr":{"transfers":1,"savedSeconds":1105,"slowerThanFloor":0,"medianSeconds":23,"medianFloorSeconds":1128}}
    ]
   },
   "base": {
    "deposits": [
-    {"date":"2026-10-28","check":{"transfers":441,"beatFloor":0,"minAboveFloorSeconds":6,"medianAboveFloorSeconds":10}},
     {"date":"2026-10-29","check":{"transfers":449,"beatFloor":0,"minAboveFloorSeconds":6,"medianAboveFloorSeconds":10}},
     {"date":"2026-10-30","check":{"transfers":481,"beatFloor":0,"minAboveFloorSeconds":6,"medianAboveFloorSeconds":10}},
     {"date":"2026-10-31","check":{"transfers":352,"beatFloor":0,"minAboveFloorSeconds":6,"medianAboveFloorSeconds":10}},
@@ -203,7 +204,8 @@
     {"date":"2026-11-24","check":{"transfers":440,"beatFloor":0,"minAboveFloorSeconds":2,"medianAboveFloorSeconds":5}},
     {"date":"2026-11-25","check":{"transfers":400,"beatFloor":0,"minAboveFloorSeconds":2,"medianAboveFloorSeconds":5}},
     {"date":"2026-11-26","check":{"transfers":505,"beatFloor":0,"minAboveFloorSeconds":2,"medianAboveFloorSeconds":5}},
-    {"date":"2026-11-27","check":{"transfers":355,"beatFloor":0,"minAboveFloorSeconds":3,"medianAboveFloorSeconds":5}}
+    {"date":"2026-11-27","check":{"transfers":482,"beatFloor":0,"minAboveFloorSeconds":2,"medianAboveFloorSeconds":5}},
+    {"date":"2026-11-28","check":{"transfers":77,"beatFloor":0,"minAboveFloorSeconds":2,"medianAboveFloorSeconds":5}}
    ]
   }
  }
